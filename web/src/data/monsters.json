@@ -11246,5 +11246,329 @@
       "ptolus-native"
     ],
     "description": "The largest D'stradi demon — a poison-clawed brute that vomits energy-draining bile and summons more of its kind. The shock-troops of the Fallen at the Dark Reliquary."
+  },
+  {
+    "name": "Blessed Child (Balsam)",
+    "cr": "1/2",
+    "cr_value": 0.5,
+    "size": "Medium",
+    "type": "Outsider",
+    "subtype": "Extraplanar, Good",
+    "alignment": "Always good",
+    "hd": "2d8+6",
+    "hp": 15,
+    "initiative": 0,
+    "speed": "fly 80 ft. (average)",
+    "ac": {
+      "total": 14,
+      "touch": 10,
+      "flat_footed": 14,
+      "notes": "+4 natural"
+    },
+    "bab": 2,
+    "grapple": 3,
+    "attacks": {
+      "melee": "Longsword +3 (1d8+1)",
+      "ranged": null,
+      "full_attack": "Longsword +3 (1d8+1)"
+    },
+    "space_reach": "5 ft./5 ft.",
+    "special_attacks": [],
+    "special_qualities": [
+      "+3 turn resistance",
+      "unborn spirit",
+      "darkvision 60 ft."
+    ],
+    "saves": {
+      "fort": 6,
+      "ref": 3,
+      "will": 4
+    },
+    "abilities": {
+      "str": 12,
+      "dex": 10,
+      "con": 16,
+      "int": 6,
+      "wis": 12,
+      "cha": 15
+    },
+    "skills": [
+      "Diplomacy +4",
+      "Heal +6",
+      "Hide +5",
+      "Listen +8",
+      "Move Silently +5",
+      "Sense Motive +6",
+      "Spot +7"
+    ],
+    "feats": [
+      "Alertness"
+    ],
+    "environments": [
+      "ptolus_necropolis",
+      "ptolus_streets",
+      "urban"
+    ],
+    "organization": "Solitary",
+    "treasure": "None",
+    "languages": [],
+    "source": "Ptolus 619",
+    "tags": [
+      "outsider",
+      "celestial",
+      "good",
+      "guardian",
+      "ptolus-native"
+    ],
+    "description": "One of the Blessed Children — good guardian spirits ('unborn spirit' quality) with turn resistance, set against the undead of Ptolus."
+  },
+  {
+    "name": "Blessed Child (Dayod)",
+    "cr": "4",
+    "cr_value": 4,
+    "size": "Medium",
+    "type": "Outsider",
+    "subtype": "Extraplanar, Good",
+    "alignment": "Always good",
+    "hd": "6d8+18",
+    "hp": 45,
+    "initiative": 0,
+    "speed": "fly 80 ft. (perfect)",
+    "ac": {
+      "total": 16,
+      "touch": 10,
+      "flat_footed": 16,
+      "notes": "+6 natural"
+    },
+    "bab": 6,
+    "grapple": 9,
+    "attacks": {
+      "melee": "Greatsword +9 (2d6+4)",
+      "ranged": null,
+      "full_attack": "Greatsword +9/+4 (2d6+4)"
+    },
+    "space_reach": "5 ft./5 ft.",
+    "special_attacks": [
+      "smite undead"
+    ],
+    "special_qualities": [
+      "+5 turn resistance",
+      "unborn spirit",
+      "darkvision 60 ft.",
+      "DR 5/magic"
+    ],
+    "saves": {
+      "fort": 8,
+      "ref": 5,
+      "will": 7
+    },
+    "abilities": {
+      "str": 16,
+      "dex": 10,
+      "con": 16,
+      "int": 10,
+      "wis": 14,
+      "cha": 15
+    },
+    "skills": [
+      "Diplomacy +4",
+      "Heal +11",
+      "Hide +9",
+      "Knowledge (religion) +9",
+      "Listen +13",
+      "Move Silently +9",
+      "Search +9",
+      "Sense Motive +11",
+      "Spot +13"
+    ],
+    "feats": [
+      "Alertness",
+      "Combat Reflexes",
+      "Improved Initiative"
+    ],
+    "environments": [
+      "ptolus_necropolis",
+      "ptolus_streets",
+      "urban"
+    ],
+    "organization": "Solitary",
+    "treasure": "None",
+    "languages": [],
+    "source": "Ptolus 619",
+    "tags": [
+      "outsider",
+      "celestial",
+      "good",
+      "guardian",
+      "ptolus-native"
+    ],
+    "description": "One of the Blessed Children — good guardian spirits ('unborn spirit' quality) with turn resistance, set against the undead of Ptolus."
+  },
+  {
+    "name": "Blessed Child (Fealom)",
+    "cr": "7",
+    "cr_value": 7,
+    "size": "Medium",
+    "type": "Outsider",
+    "subtype": "Extraplanar, Good",
+    "alignment": "Always good",
+    "hd": "10d8+40",
+    "hp": 85,
+    "initiative": 5,
+    "speed": "fly 80 ft. (perfect)",
+    "ac": {
+      "total": 17,
+      "touch": 11,
+      "flat_footed": 16,
+      "notes": "+1 Dex, +6 natural"
+    },
+    "bab": 10,
+    "grapple": 14,
+    "attacks": {
+      "melee": "Greatsword +14 (2d6+6)",
+      "ranged": null,
+      "full_attack": "Greatsword +14/+9 (2d6+6)"
+    },
+    "space_reach": "5 ft./5 ft.",
+    "special_attacks": [
+      "smite undead"
+    ],
+    "special_qualities": [
+      "+5 turn resistance",
+      "unborn spirit",
+      "darkvision 60 ft.",
+      "DR 10/magic"
+    ],
+    "saves": {
+      "fort": 11,
+      "ref": 8,
+      "will": 14
+    },
+    "abilities": {
+      "str": 18,
+      "dex": 12,
+      "con": 18,
+      "int": 10,
+      "wis": 16,
+      "cha": 18
+    },
+    "skills": [
+      "Diplomacy +26",
+      "Heal +16",
+      "Hide +14",
+      "Knowledge (religion) +13",
+      "Listen +18",
+      "Move Silently +14",
+      "Search +13",
+      "Sense Motive +16",
+      "Spot +18"
+    ],
+    "feats": [
+      "Alertness",
+      "Combat Reflexes",
+      "Improved Initiative",
+      "Iron Will"
+    ],
+    "environments": [
+      "ptolus_necropolis",
+      "ptolus_streets",
+      "urban"
+    ],
+    "organization": "Solitary",
+    "treasure": "None",
+    "languages": [],
+    "source": "Ptolus 619",
+    "tags": [
+      "outsider",
+      "celestial",
+      "good",
+      "guardian",
+      "ptolus-native"
+    ],
+    "description": "One of the Blessed Children — good guardian spirits ('unborn spirit' quality) with turn resistance, set against the undead of Ptolus."
+  },
+  {
+    "name": "Blessed Child (Hallas)",
+    "cr": "10",
+    "cr_value": 10,
+    "size": "Medium",
+    "type": "Outsider",
+    "subtype": "Extraplanar, Good",
+    "alignment": "Always good",
+    "hd": "16d8+64",
+    "hp": 136,
+    "initiative": 5,
+    "speed": "fly 100 ft. (perfect)",
+    "ac": {
+      "total": 21,
+      "touch": 11,
+      "flat_footed": 20,
+      "notes": "+1 Dex, +10 natural"
+    },
+    "bab": 16,
+    "grapple": 22,
+    "attacks": {
+      "melee": "Greatsword +22 (2d6+9)",
+      "ranged": null,
+      "full_attack": "Greatsword +22/+17/+12 (2d6+9)"
+    },
+    "space_reach": "5 ft./5 ft.",
+    "special_attacks": [
+      "smite undead"
+    ],
+    "special_qualities": [
+      "+5 turn resistance",
+      "unborn spirit",
+      "darkvision 60 ft.",
+      "DR 10/magic"
+    ],
+    "saves": {
+      "fort": 14,
+      "ref": 13,
+      "will": 17
+    },
+    "abilities": {
+      "str": 22,
+      "dex": 12,
+      "con": 18,
+      "int": 12,
+      "wis": 20,
+      "cha": 20
+    },
+    "skills": [
+      "Diplomacy +26",
+      "Heal +24",
+      "Hide +20",
+      "Knowledge (religion) +20",
+      "Listen +26",
+      "Move Silently +20",
+      "Search +20",
+      "Sense Motive +24",
+      "Spot +26"
+    ],
+    "feats": [
+      "Alertness",
+      "Combat Reflexes",
+      "Improved Initiative",
+      "Iron Will",
+      "Lightning Reflexes"
+    ],
+    "environments": [
+      "ptolus_necropolis",
+      "ptolus_streets",
+      "urban"
+    ],
+    "organization": "Solitary",
+    "treasure": "None",
+    "languages": [],
+    "source": "Ptolus 619",
+    "tags": [
+      "outsider",
+      "celestial",
+      "good",
+      "guardian",
+      "ptolus-native"
+    ],
+    "description": "One of the Blessed Children — good guardian spirits ('unborn spirit' quality) with turn resistance, set against the undead of Ptolus."
   }
 ]
