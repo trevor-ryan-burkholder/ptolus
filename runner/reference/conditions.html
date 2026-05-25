@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conditions — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .bar { padding:12px 20px; display:flex; gap:10px; align-items:center; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .bar input { max-width:340px; }
+  .tabs button.active { background:var(--gold); color:#1a1a1a; }
+  .wrap { padding:16px 20px 60px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; }
+  .ccard { background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:12px 14px; }
+  .ccard h3 { margin:0 0 6px; color:var(--gold); font-size:18px; }
+  .ccard p { margin:0; font-size:14px; line-height:1.4; }
+  .hide { display:none; }
+  footer { color:var(--muted); font-size:13px; padding:0 20px 30px; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <div class="tabs btn-row" style="margin:0;">
+    <button id="tab-cond" class="active">Conditions</button>
+    <button id="tab-dc">Save DCs</button>
+  </div>
+  <input id="search" placeholder="Filter conditions…" autofocus>
+</div>
+<div class="wrap">
+  <div id="conds" class="grid"></div>
+  <div id="dcs" class="hide"></div>
+</div>
+<footer>Source: PHB Appendix / Glossary. Combat conditions reference.</footer>
+
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Condition Quick Reference', 'All 3.5e conditions, one page');
+UI.diceTray();
+const C = [
+  ['Blinded', "Can't see. −2 AC, lose Dex to AC. −4 on Search and most Str/Dex skills. 50% miss chance. Opponents have total concealment from you."],
+  ['Confused', 'Roll d% each round: 01–10 normal / 11–20 babble / 21–50 deal 1d8+Str to self / 51–70 attack nearest / 71–100 flee. No AoOs.'],
+  ['Cowering', 'Overcome by fear, can do nothing. −2 AC, lose Dex to AC.'],
+  ['Dazed', 'Take no actions. No AC penalty.'],
+  ['Dazzled', '−1 on attacks and sight-based Perception.'],
+  ['Dead', 'HP at −10 or below (or 0 Con). Dead.'],
+  ['Disabled', 'Exactly 0 HP. One move OR standard per round. A standard action is strenuous: take 1 damage after, become dying.'],
+  ['Dying', 'Unconscious, losing HP. −1 HP/round. At −10, dead. Stabilize: DC 15 Heal or magical healing.'],
+  ['Energy Drained', 'Each negative level: −1 to all checks, attacks, saves, effective level. Levels = total → dead. Negate with restoration.'],
+  ['Entangled', 'Move halved. −2 attack, −4 Dex. Spellcasting needs Concentration DC 15.'],
+  ['Exhausted', 'Half speed. −6 Str/Dex. No run/charge. 1 hour rest → fatigued.'],
+  ['Fascinated', 'Watches the effect quietly. −4 Perception. Any obvious threat breaks it.'],
+  ['Fatigued', '−2 Str/Dex. No run/charge. 8 hours rest to remove.'],
+  ['Flat-Footed', 'Before your first turn. Lose Dex to AC. No AoOs.'],
+  ['Frightened', '−2 attacks/saves/checks. Must flee if able; can attack if cornered.'],
+  ['Grappled', 'No free movement. −4 Dex, −2 attack (light weapons OK). No ranged except crossbow. Cast: Concentration DC 20 + spell level.'],
+  ['Helpless', 'Dex effectively 0. Attackers +4. Can be coup de graced (auto-crit + Fort DC 10+damage or die).'],
+  ['Incorporeal', 'No body. Immune to nonmagical attacks. 50% to ignore magic. Hit only by incorporeal, +1 weapons, or effects that hit incorporeal.'],
+  ['Invisible', "Can't be seen. Attackers 50% miss. You get +2 attack vs. those who can't see you; they lose Dex to AC."],
+  ['Nauseated', 'Move actions only. No attacks, spells, or concentration.'],
+  ['Panicked', '−2 saves/checks. Drops held items. Flees randomly. Defends only if cornered.'],
+  ['Paralyzed', 'Str and Dex effectively 0. Helpless. Fliers fall; swimmers may sink.'],
+  ['Petrified', 'Turned to stone. Unconscious, unaware. May suffer permanent damage if broken.'],
+  ['Pinned', 'Held immobile in a grapple. Helpless but may try to break free.'],
+  ['Prone', 'On the ground. −4 melee attack. +4 AC vs. ranged, −4 AC vs. adjacent melee. Standing provokes AoO.'],
+  ['Shaken', '−2 attacks/saves/checks.'],
+  ['Sickened', '−2 attacks/damage/saves/checks.'],
+  ['Stable', 'Negative HP, no longer losing HP. Unconscious. Not dying without new damage.'],
+  ['Staggered', 'Exactly 0 HP (or massive-damage stun). One move OR standard, not both.'],
+  ['Stunned', 'Drops everything. No actions. −2 AC, lose Dex to AC. Attackers +2.'],
+  ['Turned', "Undead fleeing a cleric's turning for 10 rounds. If cornered, −2 saves/checks."],
+  ['Unconscious', 'Knocked out. Helpless. Falls prone.'],
+];
+const cg = UI.el('conds');
+cg.innerHTML = C.map(c => '<div class="ccard" data-name="' + c[0].toLowerCase() + '"><h3>' + UI.esc(c[0]) + '</h3><p>' + UI.esc(c[1]) + '</p></div>').join('');
+
+UI.el('search').addEventListener('input', e => {
+  const q = e.target.value.toLowerCase().trim();
+  cg.querySelectorAll('.ccard').forEach(card => {
+    card.classList.toggle('hide', q && card.getAttribute('data-name').indexOf(q) === -1);
+  });
+});
+
+// Save DCs tab
+UI.el('dcs').innerHTML =
+  '<h2 style="color:var(--gold)">Save DCs at a Glance</h2>' +
+  '<p class="hint">Spell save DC = 10 + spell level + casting ability modifier. Common cases below.</p>' +
+  '<table class="ref"><tr><th>Spell Lvl</th><th>Abil +2</th><th>+3</th><th>+4</th><th>+5</th><th>+6</th><th>+7</th></tr>' +
+  [0,1,2,3,4,5,6,7,8,9].map(L => '<tr><td>' + L + '</td>' + [2,3,4,5,6,7].map(m => '<td>' + (10+L+m) + '</td>').join('') + '</tr>').join('') +
+  '</table>' +
+  '<h2 style="color:var(--gold);margin-top:18px">Common Fixed DCs</h2>' +
+  '<table class="ref"><tr><th>Action</th><th>DC</th></tr>' +
+  '<tr><td>Stabilize a dying ally (Heal)</td><td>15</td></tr>' +
+  '<tr><td>Defensive casting (avoid AoO)</td><td>15 + spell level</td></tr>' +
+  '<tr><td>Cast while entangled (Concentration)</td><td>15 + spell level</td></tr>' +
+  '<tr><td>Cast while grappling (Concentration)</td><td>20 + spell level</td></tr>' +
+  '<tr><td>Cast after taking damage (Concentration)</td><td>10 + damage + spell level</td></tr>' +
+  '<tr><td>Coup de grace Fort save (or die)</td><td>10 + damage dealt</td></tr>' +
+  '<tr><td>Tumble past a foe (avoid AoO)</td><td>15 (25 through their square)</td></tr>' +
+  '<tr><td>Break a simple wooden door</td><td>13 (Str)</td></tr>' +
+  '<tr><td>Break a good wooden door</td><td>18 (Str)</td></tr>' +
+  '<tr><td>Pry up a sewer grate</td><td>22 (Str)</td></tr>' +
+  '</table>';
+
+function show(tab) {
+  UI.el('conds').classList.toggle('hide', tab !== 'cond');
+  UI.el('dcs').classList.toggle('hide', tab !== 'dc');
+  UI.el('search').style.visibility = tab === 'cond' ? 'visible' : 'hidden';
+  UI.el('tab-cond').classList.toggle('active', tab === 'cond');
+  UI.el('tab-dc').classList.toggle('active', tab === 'dc');
+}
+UI.el('tab-cond').addEventListener('click', () => show('cond'));
+UI.el('tab-dc').addEventListener('click', () => show('dc'));
+</script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dungeon Room Generator — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+</head>
+<body>
+<div class="runner-main">
+  <div class="panel">
+    <h2>Dungeon Room</h2>
+    <label for="region">Region</label>
+    <select id="region">
+      <option value="ptolus_dungeon" selected>The Dungeon (Ptolus)</option>
+      <option value="ptolus_undercity">Undercity</option>
+      <option value="ptolus_necropolis">Necropolis</option>
+      <option value="dungeon">Generic Dungeon</option>
+      <option value="underground">Underground (caves)</option>
+    </select>
+    <label for="plevel">Party Level (1–20)</label>
+    <input type="number" id="plevel" min="1" max="20" value="5">
+    <label for="mode">Contents Mode</label>
+    <select id="mode">
+      <option value="random" selected>Random (full roll)</option>
+      <option value="dressing">Empty + Dressing</option>
+      <option value="monster">Monster + Treasure</option>
+      <option value="trap">Trap</option>
+      <option value="special">Special / Puzzle</option>
+    </select>
+    <button class="primary" id="gen">Generate Room</button>
+
+    <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+    <label for="rooms">Stock a Level — Rooms (3–20)</label>
+    <input type="number" id="rooms" min="3" max="20" value="8">
+    <button id="stock" style="width:100%;">Stock a Level (map + key)</button>
+    <p class="hint">Generates a connected level: ASCII map plus a numbered room key. Contents Mode is ignored — each room rolls its own.</p>
+    <div id="seed"></div>
+  </div>
+
+  <div>
+    <div class="log-head"><h2>Room Log</h2><button id="clear">Clear Log</button></div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/tables.js"></script>
+<script src="../shared/data.js"></script>
+<script src="../shared/state.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Dungeon Room Generator', 'Keyed rooms, ready at the table');
+UI.contextBar();
+UI.diceTray();
+UI.seedControl('seed');
+const log = UI.logger('log', 'clear');
+const D = Dice;
+const gp = Tables.gp;
+const REGION_LABEL = { ptolus_dungeon: 'The Dungeon', ptolus_undercity: 'Undercity', ptolus_necropolis: 'Necropolis', dungeon: 'Generic Dungeon', underground: 'Underground' };
+
+/* ---- shape ---- */
+const SHAPES = [
+  ['rect', 40], ['square', 20], ['L', 10], ['cavern', 15], ['circle', 10], ['intersection', 5],
+];
+function shape() {
+  const s = D.weightedPick(SHAPES);
+  if (s === 'rect') { const w = D.range(1, 4) * 10, l = w + D.range(1, 3) * 10; return 'Rectangular (' + w + '×' + l + ' ft), ' + ceil(false) + ' ceiling'; }
+  if (s === 'square') { const w = D.range(2, 4) * 10; return 'Square (' + w + '×' + w + ' ft), ' + ceil(false) + ' ceiling'; }
+  if (s === 'L') { return 'L-shaped (~' + (D.range(2, 4) * 10) + ' ft per leg), ' + ceil(false) + ' ceiling'; }
+  if (s === 'cavern') { return 'Irregular cavern (~' + (D.range(3, 6) * 10) + ' ft across), ' + ceil(true) + ' ceiling, uneven floor'; }
+  if (s === 'circle') { return 'Circular (radius ' + D.range(15, 30) + ' ft), ' + ceil(false) + ' ceiling'; }
+  return 'Corridor intersection (' + D.pick(['four-way', 'T-junction', 'Y-fork']) + '), ' + ceil(false) + ' ceiling';
+}
+function ceil(cavern) { return cavern ? (D.range(1, 6) + 2) * 5 + ' ft' : Math.max(8, (D.range(1, 4) + 1) * 2) + ' ft'; }
+
+/* ---- exits ---- */
+const EXIT_TYPE = [
+  ['open passage (10 ft wide)', 30], ['open passage (5 ft wide)', 20], ['wooden door', 20],
+  ['iron door', 10], ['portcullis', 5], ['secret door (Search DC ' , 10], ['collapsed rubble (Athletics DC 18 to clear)', 5],
+];
+const DIRS = ['N', 'S', 'E', 'W', 'NE', 'SW'];
+const DOOR_STATE = ['open', 'closed', 'closed', 'locked (DC 20)', 'locked (good lock, DC 25)', 'stuck (Str DC 15)'];
+function exits() {
+  const n = D.range(1, 4);
+  const dirs = D.pickN(DIRS, n);
+  return dirs.map(dir => {
+    let t = D.weightedPick(EXIT_TYPE);
+    if (t.indexOf('secret door') !== -1) t = 'secret door (Search DC ' + (20 + D.range(1, 4)) + ')';
+    if (/door|portcullis/.test(t) && t.indexOf('secret') === -1) t += ' — ' + D.pick(DOOR_STATE);
+    return dir + ' (' + t + ')';
+  }).join(', ');
+}
+
+/* ---- monsters (region-filtered, near party EL) ---- */
+function poolFor(region) {
+  return DATA.monsters.filter(m => Array.isArray(m.environments) && m.cr_value > 0 && (m.environments.indexOf(region) !== -1 || m.environments.indexOf('any') !== -1));
+}
+function pickNearCR(pool, target) {
+  if (!pool.length) return null;
+  for (let tol = 0.5; tol <= 25; tol += 1) { const c = pool.filter(m => Math.abs(m.cr_value - target) <= tol); if (c.length) return D.pick(c); }
+  return pool.slice().sort((a, b) => Math.abs(a.cr_value - target) - Math.abs(b.cr_value - target))[0];
+}
+function buildEncounter(region, el) {
+  const pool = poolFor(region);
+  if (!pool.length) return null;
+  const picks = [];
+  const tpl = D.pick(['single', 'pair', 'group', 'group']);
+  if (tpl === 'single') { const m = pickNearCR(pool, el); if (m) picks.push(m); }
+  else if (tpl === 'pair') { const m = pickNearCR(pool, el - 2); if (m) picks.push(m, m); }
+  else {
+    const cnt = D.range(3, 5); const mook = pickNearCR(pool, Math.max(0.25, el - 4));
+    if (mook) for (let i = 0; i < cnt; i++) picks.push(mook);
+    const boss = pickNearCR(pool.filter(m => m !== mook), el - 2) || pickNearCR(pool, el - 2);
+    if (boss) picks.push(boss);
+  }
+  if (!picks.length) { const m = pickNearCR(pool, el); if (m) picks.push(m); }
+  return picks.length ? picks : null;
+}
+function tally(picks) { const map = new Map(); picks.forEach(m => { const e = map.get(m.name) || { m, n: 0 }; e.n++; map.set(m.name, e); }); return [...map.values()]; }
+function tactics(toughest) {
+  const t = (toughest.type || '').toLowerCase();
+  if (t === 'undead') return 'mindless undead shamble forward; any leader directs them at the living';
+  if (t === 'aberration') return 'uses ranged/mental attacks; keeps distance and isolates a target';
+  if (t === 'magical beast' || t === 'animal' || t === 'vermin') return 'attacks on instinct; fights to the death if cornered, flees if hurt badly';
+  if (/(humanoid|giant)/.test(t)) return 'fighters engage in front; any caster/leader holds back and targets spellcasters';
+  return 'reacts to the party\'s first move; protects the strongest member';
+}
+
+/* ---- treasure ---- */
+function loot(el) { const t = Tables.treasureValueByEL(el); return gp(t.coins_gp) + ' coins | ' + gp(t.goods_gp) + ' goods | ' + gp(t.items_gp) + ' items'; }
+
+/* ---- traps ---- */
+const TRAPS = [
+  ['Pit trap (10 ft)', 'CR 1', 'Reflex DC 15', '1d6 falling'],
+  ['Pit trap (20 ft)', 'CR 2', 'Reflex DC 20', '2d6 falling'],
+  ['Swinging blade', 'CR 2', 'Reflex DC 20', '1d8+3 slashing'],
+  ['Poison dart', 'CR 2', 'Fort DC 14', '1d4 + Str poison'],
+  ['Collapsing ceiling', 'CR 3', 'Reflex DC 20', '8d6 bludgeoning'],
+  ['Glyph of Warding (blast)', 'CR 4', 'Reflex DC 14', '5d8 (random energy type)'],
+  ['Symbol of Pain', 'CR 5', 'Fort DC 17', '−4 attacks/skills for 1 hour'],
+  ['Flooding room', 'CR 3', '—', 'fills in 1 min; Swim DC 15/round'],
+];
+
+/* ---- special / puzzle ---- */
+const SPECIAL = [
+  'A locked vault door inscribed with a riddle (Knowledge or Int DC 18 to solve; wrong answer sprung a trap, now disarmed).',
+  'A pedestal with three levers. The correct combination opens a hidden cache; a wrong pull triggers a CR 3 trap.',
+  'A still pool reflects a version of this room that is subtly different — and something moves in the reflection.',
+  'A statue slowly turns to face whoever speaks. It has been listening for a very long time.',
+  'A chasm split the room; a narrow stone bridge crosses it. Something patient waits in the dark below.',
+  'A magically sealed door (knock, or DC 25 to bypass) bears a warning in Draconic: "What we kept here, keep keeping."',
+];
+
+/* ---- dressing ---- */
+const SMELL = ['decay and old stone', 'rot', 'old blood', 'damp stone', 'sulfur', 'nothing at all', 'old ash', 'cloying incense', 'mold', 'stagnant water'];
+const SOUND = ['dripping water', 'a distant scraping', 'silence', 'wind through cracks', 'faint chanting, far off', 'water rushing somewhere below', 'skittering in the dark', 'nothing'];
+const FLOOR = ['cracked stone', 'a rubble pile', 'a cold, old campfire', 'chains embedded in one wall', 'dried blood, a lot of it', 'a partially destroyed mosaic', 'iron rings set into the floor', 'a concealed pit (Perception DC 15, 1d6×5 ft deep)', 'a row of arrow slits in one wall'];
+const DETAIL_GENERIC = ['broken delver gear — a pack, a lantern, cut rope', 'an old campsite, weeks cold', 'alchemical residue staining the stone', 'a coin from an ancient empire (worthless, fascinating)', 'a sprung brass rune-plate (already discharged)'];
+const DETAIL_PTOLUS = ['a chaositech component embedded in the wall, humming faintly', 'monster-den markings — bones, scat, a claimed corner', 'cult symbols carved into the floor'];
+const CULT = ['Orcus (a horned skull)', 'Orcus (a horned skull)', 'a chaos cult (a shattered eight-pointed star)', 'the Forsaken (a coiled serpent)', 'drow (a downward spider)', 'unknown — no one recognizes it'];
+
+function dressing(region) {
+  let detailPool = DETAIL_GENERIC.slice();
+  if (region === 'ptolus_dungeon') detailPool = detailPool.concat(DETAIL_PTOLUS, DETAIL_PTOLUS); // weight Ptolus flavor higher
+  else detailPool = detailPool.concat(DETAIL_PTOLUS);
+  let detail = D.pick(detailPool);
+  if (detail.indexOf('cult symbols') !== -1) detail += ' — ' + D.pick(CULT) + ' markings';
+  if (detail.indexOf('monster-den') !== -1) detail += region === 'ptolus_necropolis' ? ' (ghoul)' : '';
+  return 'DRESSING:\n  Smell: ' + D.pick(SMELL) + '\n  Sound: ' + D.pick(SOUND) + '\n  Feature: ' + D.pick(FLOOR) + '\n  Detail: ' + detail;
+}
+
+/* ---- contents resolver ---- */
+const CONTENTS_RANDOM = [
+  ['empty', 25], ['dressing', 10], ['monster', 15], ['monster_treasure', 25], ['treasure', 10], ['trap', 10], ['special', 5],
+];
+function resolveContents(mode) {
+  if (mode === 'random') return D.weightedPick(CONTENTS_RANDOM);
+  if (mode === 'dressing') return 'dressing';
+  if (mode === 'monster') return 'monster_treasure';
+  if (mode === 'trap') return 'trap';
+  if (mode === 'special') return 'special';
+  return 'empty';
+}
+
+/* ---- contents block (shared by single-room + level stocker) ---- */
+function contentsBlock(region, plevel, contents) {
+  let out = '';
+  if (contents === 'empty') {
+    out += 'Empty.';
+  } else if (contents === 'dressing') {
+    out += 'Empty, but notable.';
+  } else if (contents === 'monster' || contents === 'monster_treasure') {
+    const picks = buildEncounter(region, plevel);
+    if (!picks) { out += '<span class="bad">Monster — but no monsters tagged for this region. Add to monsters.json.</span>'; }
+    else {
+      const groups = tally(picks);
+      const el = Tables.elFromCRs(picks.map(m => m.cr_value));
+      const toughest = picks.slice().sort((a, b) => b.cr_value - a.cr_value)[0];
+      out += 'Monster\n';
+      out += '  ' + groups.map(g => g.m.name + ' (CR ' + g.m.cr + ')' + (g.n > 1 ? ' ×' + g.n : '')).join(' + ') + ' — approx EL ' + el + '\n';
+      out += '  Tactics: ' + tactics(toughest);
+      if (contents === 'monster_treasure') out += '\n  Treasure: EL ' + el + ' avg — ' + loot(el);
+    }
+  } else if (contents === 'treasure') {
+    out += 'Hidden treasure (Search DC 20)\n  EL ' + plevel + ' avg — ' + loot(plevel);
+  } else if (contents === 'trap') {
+    const t = D.pick(TRAPS);
+    out += 'Trap\n  ' + t[0] + ' (' + t[1] + ') — Save: ' + t[2] + ' — Effect: ' + t[3] + '\n  Detect: Search DC ' + (15 + D.range(0, 10)) + ' · Disable Device DC ' + (15 + D.range(0, 10));
+  } else if (contents === 'special') {
+    out += 'Special / Puzzle\n  ' + D.pick(SPECIAL);
+  }
+  return out;
+}
+
+function generate() {
+  const region = UI.el('region').value;
+  const plevel = Math.max(1, Math.min(20, parseInt(UI.el('plevel').value, 10) || 1));
+  const mode = UI.el('mode').value;
+  const contents = resolveContents(mode);
+
+  let out = '<span class="head">[ROOM — ' + REGION_LABEL[region] + ' — Party Lvl ' + plevel + ']</span>\n\n';
+  out += 'SHAPE: ' + shape() + '\n';
+  out += 'EXITS: ' + exits() + '\n\n';
+  out += 'CONTENTS: ' + contentsBlock(region, plevel, contents) + '\n';
+  out += '\n' + dressing(region);
+  log.append(out);
+}
+UI.el('gen').addEventListener('click', generate);
+
+/* ---- Stock a Level: connected multi-room map + key ---- */
+const DIRS4 = [[0, -1], [0, 1], [-1, 0], [1, 0]];
+function placeRooms(n) {
+  const coords = [{ x: 0, y: 0 }];
+  const occ = { '0,0': true };
+  const edges = new Set();
+  function addEdge(a, b) { edges.add(Math.min(a, b) + '-' + Math.max(a, b)); }
+  while (coords.length < n) {
+    const cands = [];
+    coords.forEach((c, i) => {
+      DIRS4.forEach(d => { const k = (c.x + d[0]) + ',' + (c.y + d[1]); if (!occ[k]) cands.push({ i: i, x: c.x + d[0], y: c.y + d[1] }); });
+    });
+    if (!cands.length) break;
+    const ch = D.pick(cands);
+    const idx = coords.length;
+    coords.push({ x: ch.x, y: ch.y });
+    occ[ch.x + ',' + ch.y] = true;
+    addEdge(ch.i + 1, idx + 1);
+  }
+  // occasional loop connections between adjacent-but-unconnected rooms
+  for (let i = 0; i < coords.length; i++) {
+    for (const d of DIRS4) {
+      const tx = coords[i].x + d[0], ty = coords[i].y + d[1];
+      let j = -1;
+      for (let m = 0; m < coords.length; m++) { if (coords[m].x === tx && coords[m].y === ty) { j = m; break; } }
+      if (j > i) { const key = (i + 1) + '-' + (j + 1); if (!edges.has(key) && D.rand() < 0.25) edges.add(key); }
+    }
+  }
+  return { coords: coords, edges: edges };
+}
+function pad2(n) { n = String(n); return n.length >= 2 ? n : (' ' + n); }
+function renderMap(coords, edges) {
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  const at = {};
+  coords.forEach((c, i) => { at[c.x + ',' + c.y] = i + 1; minX = Math.min(minX, c.x); maxX = Math.max(maxX, c.x); minY = Math.min(minY, c.y); maxY = Math.max(maxY, c.y); });
+  const linked = (a, b) => edges.has(Math.min(a, b) + '-' + Math.max(a, b));
+  const lines = [];
+  for (let y = minY; y <= maxY; y++) {
+    let row = '';
+    for (let x = minX; x <= maxX; x++) {
+      const r = at[x + ',' + y];
+      row += r ? pad2(r) : '  ';
+      if (x < maxX) { const r2 = at[(x + 1) + ',' + y]; row += (r && r2 && linked(r, r2)) ? '──' : '  '; }
+    }
+    lines.push(row);
+    if (y < maxY) {
+      let crow = '';
+      for (let x = minX; x <= maxX; x++) {
+        const r = at[x + ',' + y], r3 = at[x + ',' + (y + 1)];
+        crow += (r && r3 && linked(r, r3)) ? ' │' : '  ';
+        if (x < maxX) crow += '  ';
+      }
+      lines.push(crow);
+    }
+  }
+  return lines.join('\n');
+}
+function rollDoor() {
+  let t = D.weightedPick(EXIT_TYPE);
+  if (t.indexOf('secret door') !== -1) t = 'secret door (Search DC ' + (20 + D.range(1, 4)) + ')';
+  if (/door|portcullis/.test(t) && t.indexOf('secret') === -1) t += ' — ' + D.pick(DOOR_STATE);
+  return t;
+}
+function exitsFor(r, coords, edges, doors) {
+  const me = coords[r - 1];
+  const conns = [];
+  for (let j = 0; j < coords.length; j++) {
+    if (j === r - 1) continue;
+    const key = Math.min(r, j + 1) + '-' + Math.max(r, j + 1);
+    if (!edges.has(key)) continue;
+    const o = coords[j];
+    const dir = o.y < me.y ? 'N' : o.y > me.y ? 'S' : o.x > me.x ? 'E' : 'W';
+    conns.push(dir + '→ room ' + (j + 1) + ' (' + doors[key] + ')');
+  }
+  return conns.length ? conns.join(', ') : 'none (dead end)';
+}
+function stockLevel() {
+  const region = UI.el('region').value;
+  const plevel = Math.max(1, Math.min(20, parseInt(UI.el('plevel').value, 10) || 1));
+  const n = Math.max(3, Math.min(20, parseInt(UI.el('rooms').value, 10) || 8));
+  const { coords, edges } = placeRooms(n);
+  const doors = {};
+  edges.forEach(e => { doors[e] = rollDoor(); });
+
+  let out = '<span class="head">[LEVEL — ' + REGION_LABEL[region] + ' — ' + coords.length + ' rooms — Party Lvl ' + plevel + ']</span>\n\n';
+  out += 'MAP (room 1 = entrance):\n' + renderMap(coords, edges) + '\n\n';
+  out += '— KEY —\n\n';
+  for (let i = 0; i < coords.length; i++) {
+    const r = i + 1;
+    out += '<span class="head">' + r + '. ' + shape() + '</span>\n';
+    out += '  Exits: ' + exitsFor(r, coords, edges, doors) + '\n';
+    const body = contentsBlock(region, plevel, resolveContents('random'));
+    out += '  ' + body.replace(/\n/g, '\n  ') + '\n\n';
+  }
+  log.append(out);
+}
+UI.el('stock').addEventListener('click', stockLevel);
+</script>
+</body>
+</html>

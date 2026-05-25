@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campaign Save — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .wrap { padding:18px 20px; max-width:880px; }
+  table.ref td .k { font-family:'Courier New', monospace; font-size:13px; color:var(--muted); }
+  .present { color:var(--good); } .absent { color:var(--muted); }
+  .danger { color:var(--bad); border-color:var(--bad); }
+  textarea#blob { font-family:'Courier New', monospace; font-size:12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panel">
+    <h2>Export — back up everything</h2>
+    <p class="hint" style="margin-top:0;">Bundles every Adventure Runner tool's saved state (party, combat, calendar, city-turn clocks, factions, corruption, quests, delve, context) into one file. Save it somewhere safe, or move it to another computer.</p>
+    <div class="btn-row">
+      <button class="primary" id="export" style="margin-top:0;">Build backup</button>
+      <button id="download">⬇ Download .json</button>
+      <button id="copy">Copy to clipboard</button>
+    </div>
+    <textarea id="blob" rows="6" placeholder="Click &quot;Build backup&quot; — the full campaign JSON appears here." style="margin-top:10px;"></textarea>
+    <div class="hint" id="exportinfo"></div>
+  </div>
+
+  <div class="panel" style="margin-top:18px;">
+    <h2>Current saved data</h2>
+    <table class="ref" id="status"><tbody></tbody></table>
+    <button class="danger" id="wipe" style="width:auto;margin-top:10px;">⚠ Wipe ALL campaign data</button>
+  </div>
+
+  <div class="panel" style="margin-top:18px;">
+    <h2>Import / restore</h2>
+    <p class="hint" style="margin-top:0;">Paste a backup below (or load a file), then choose how to apply it. <b>Replace</b> clears current data first; <b>Merge</b> overwrites only the keys present in the backup.</p>
+    <input type="file" id="file" accept=".json,application/json" style="margin-bottom:8px;">
+    <textarea id="inblob" rows="6" placeholder="Paste backup JSON here…"></textarea>
+    <div class="btn-row">
+      <button class="primary" id="replace" style="margin-top:0;">Replace all</button>
+      <button id="merge">Merge</button>
+    </div>
+    <div class="hint" id="importinfo"></div>
+  </div>
+</div>
+
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Campaign Save', 'One file holds the whole campaign');
+const esc = UI.esc;
+
+// Authoritative list of the app's keys + friendly labels.
+const KNOWN = [
+  ['ptolus-ctx-v1', 'Campaign context (level, district, party, date)'],
+  ['ptolus-calendar-v1', 'Calendar / current date'],
+  ['ptolus-combat-v1', 'Combat tracker'],
+  ['ptolus-cityturn-v1', 'City Turn — faction clocks'],
+  ['ptolus-factions-v1', 'Faction tracker'],
+  ['ptolus-corruption-v1', 'Corruption tracker'],
+  ['ptolus-dungeon-zones-v1', 'Dungeon zones'],
+  ['ptolus-quests-v1', 'Quests & plot threads'],
+  ['ptolus-delve-v1', 'Delve tracker'],
+];
+const LABEL = {}; KNOWN.forEach(k => LABEL[k[0]] = k[1]);
+// transient handoff/display keys — not part of a campaign backup
+const EXCLUDE = ['ptolus-pending-encounter', 'ptolus-pending-xp', 'ptolus-broadcast'];
+
+function discoveredKeys() {
+  const set = {};
+  KNOWN.forEach(k => set[k[0]] = true);
+  try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.indexOf('ptolus-') === 0) set[k] = true; } } catch (e) {}
+  return Object.keys(set).filter(k => EXCLUDE.indexOf(k) === -1);
+}
+function bytes(s) { return s == null ? 0 : (typeof TextEncoder !== 'undefined' ? new TextEncoder().encode(s).length : s.length); }
+function fmtBytes(n) { return n < 1024 ? n + ' B' : (n / 1024).toFixed(1) + ' KB'; }
+
+/* ---- export ---- */
+function buildBackup() {
+  const data = {};
+  let count = 0, total = 0;
+  discoveredKeys().forEach(k => {
+    const raw = localStorage.getItem(k);
+    if (raw == null) return;
+    count++; total += bytes(raw);
+    try { data[k] = JSON.parse(raw); } catch (e) { data[k] = raw; } // store parsed where possible, raw otherwise
+  });
+  return { backup: { app: 'ptolus-runner', version: 1, exported: new Date().toISOString(), keys: count, data: data }, count: count, total: total };
+}
+function doExport() {
+  const b = buildBackup();
+  UI.el('blob').value = JSON.stringify(b.backup, null, 2);
+  UI.el('exportinfo').textContent = b.count + ' key(s), ' + fmtBytes(b.total) + ' of saved data.';
+  return b;
+}
+UI.el('export').addEventListener('click', doExport);
+UI.el('copy').addEventListener('click', () => {
+  if (!UI.el('blob').value) doExport();
+  if (navigator.clipboard) navigator.clipboard.writeText(UI.el('blob').value).catch(() => {});
+  UI.el('exportinfo').textContent = 'Copied to clipboard.';
+});
+UI.el('download').addEventListener('click', () => {
+  if (!UI.el('blob').value) doExport();
+  try {
+    const blob = new Blob([UI.el('blob').value], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const d = new Date();
+    a.href = url; a.download = 'ptolus-campaign-' + d.toISOString().slice(0, 10) + '.json';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  } catch (e) { UI.el('exportinfo').textContent = 'Download not available here — copy the text instead.'; }
+});
+
+/* ---- status table ---- */
+function renderStatus() {
+  const rows = discoveredKeys().map(k => {
+    const raw = localStorage.getItem(k);
+    const present = raw != null;
+    return '<tr><td><span class="k">' + esc(k) + '</span></td>' +
+      '<td>' + esc(LABEL[k] || '(unknown tool)') + '</td>' +
+      '<td>' + (present ? '<span class="present">saved · ' + fmtBytes(bytes(raw)) + '</span>' : '<span class="absent">— empty —</span>') + '</td>' +
+      '<td>' + (present ? '<button class="q-del" data-clear="' + esc(k) + '" style="font-size:12px;padding:3px 8px;">clear</button>' : '') + '</td></tr>';
+  }).join('');
+  UI.el('status').querySelector('tbody').innerHTML =
+    '<tr><th>Key</th><th>Tool</th><th>State</th><th></th></tr>' + rows;
+}
+UI.el('status').addEventListener('click', e => {
+  const b = e.target.closest('[data-clear]'); if (!b) return;
+  const k = b.getAttribute('data-clear');
+  if (confirm('Clear ' + k + '? This cannot be undone.')) { localStorage.removeItem(k); renderStatus(); }
+});
+UI.el('wipe').addEventListener('click', () => {
+  if (!confirm('Wipe ALL Ptolus campaign data from this browser? Export a backup first!')) return;
+  if (!confirm('Really wipe everything? Last chance.')) return;
+  discoveredKeys().forEach(k => localStorage.removeItem(k));
+  EXCLUDE.forEach(k => localStorage.removeItem(k));
+  renderStatus();
+  UI.el('importinfo').textContent = 'All campaign data wiped.';
+});
+
+/* ---- import ---- */
+function applyBackup(text, mode) {
+  let parsed;
+  try { parsed = JSON.parse(text); } catch (e) { UI.el('importinfo').innerHTML = '<span style="color:var(--bad)">Invalid JSON.</span>'; return; }
+  // accept either {app,data:{...}} or a flat {key:value} map
+  let data = (parsed && parsed.data && typeof parsed.data === 'object') ? parsed.data : parsed;
+  const keys = Object.keys(data).filter(k => k.indexOf('ptolus-') === 0);
+  if (!keys.length) { UI.el('importinfo').innerHTML = '<span style="color:var(--bad)">No ptolus- keys found in that backup.</span>'; return; }
+  if (!confirm((mode === 'replace' ? 'Replace ALL current data' : 'Merge ' + keys.length + ' key(s)') + '? This overwrites matching saved state.')) return;
+  if (mode === 'replace') { discoveredKeys().forEach(k => localStorage.removeItem(k)); }
+  let n = 0;
+  keys.forEach(k => {
+    if (EXCLUDE.indexOf(k) !== -1) return;
+    const v = data[k];
+    localStorage.setItem(k, typeof v === 'string' ? v : JSON.stringify(v));
+    n++;
+  });
+  renderStatus();
+  UI.el('importinfo').innerHTML = '<span style="color:var(--good)">Restored ' + n + ' key(s) (' + mode + '). Reopen the other tools to see the data.</span>';
+}
+UI.el('replace').addEventListener('click', () => applyBackup(UI.el('inblob').value, 'replace'));
+UI.el('merge').addEventListener('click', () => applyBackup(UI.el('inblob').value, 'merge'));
+UI.el('file').addEventListener('change', e => {
+  const f = e.target.files && e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { UI.el('inblob').value = r.result; UI.el('importinfo').textContent = 'Loaded ' + f.name + '. Choose Replace or Merge.'; };
+  r.readAsText(f);
+});
+
+renderStatus();
+</script>
+</body>
+</html>

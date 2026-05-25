@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Monster Advancer — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+</head>
+<body>
+<div class="runner-main">
+  <div class="panel">
+    <h2>Advance / Template</h2>
+    <label for="monster">Base monster</label>
+    <select id="monster"></select>
+
+    <label for="template">Transformation</label>
+    <select id="template">
+      <option value="advance" selected>Advance Hit Dice (+HD)</option>
+      <option value="giant">Increase size (+1 category)</option>
+      <option value="young">Young (−1 size)</option>
+      <option value="skeleton">Skeleton (undead)</option>
+      <option value="zombie">Zombie (undead)</option>
+      <option value="fiendish">Fiendish</option>
+      <option value="celestial">Celestial</option>
+      <option value="halfdragon">Half-Dragon</option>
+    </select>
+
+    <label for="addhd">Extra HD (Advance only)</label>
+    <input type="number" id="addhd" min="1" max="40" value="2">
+
+    <button class="primary" id="gen">Apply</button>
+    <p class="hint">Recomputes HP, BAB, attack, grapple, AC, saves &amp; CR from the base creature's real ability scores. CRs for advancement are DMG estimates — sanity-check against party power.</p>
+  </div>
+
+  <div>
+    <div class="log-head"><h2>Stat Block</h2><button id="clear">Clear Log</button></div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/data.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Monster Advancer', 'Scale & re-skin any creature to fit the fight');
+UI.diceTray();
+const log = UI.logger('log', 'clear');
+const esc = UI.esc;
+
+const SIZES = ['Fine', 'Diminutive', 'Tiny', 'Small', 'Medium', 'Large', 'Huge', 'Gargantuan', 'Colossal'];
+const SIZE_AC = { Fine: 8, Diminutive: 4, Tiny: 2, Small: 1, Medium: 0, Large: -1, Huge: -2, Gargantuan: -4, Colossal: -8 };
+const SIZE_GRP = { Fine: -16, Diminutive: -12, Tiny: -8, Small: -4, Medium: 0, Large: 4, Huge: 8, Gargantuan: 12, Colossal: 16 };
+const SK_NAT = { Fine: 0, Diminutive: 0, Tiny: 0, Small: 0, Medium: 2, Large: 2, Huge: 3, Gargantuan: 6, Colossal: 10 };
+function mod(s) { return s == null ? 0 : Math.floor((s - 10) / 2); }
+function sgn(n) { return n >= 0 ? '+' + n : '' + n; }
+function avgDie(d) { return (d + 1) / 2; }
+function up(size, n) { const i = Math.max(0, Math.min(SIZES.length - 1, SIZES.indexOf(size) + n)); return SIZES[i]; }
+function babFactor(type) { const t = (type || '').toLowerCase(); if (/dragon|magical beast|monstrous humanoid|outsider/.test(t)) return 1; if (/undead/.test(t)) return 0.5; return 0.75; }
+const GOOD = { aberration: ['will'], animal: ['fort', 'ref'], construct: [], dragon: ['fort', 'ref', 'will'], elemental: ['fort'], fey: ['ref', 'will'], giant: ['fort'], humanoid: ['fort'], 'magical beast': ['fort', 'ref'], 'monstrous humanoid': ['ref', 'will'], ooze: [], outsider: ['fort', 'ref', 'will'], plant: ['fort'], undead: ['will'], vermin: ['fort'] };
+function goodSaves(type) { const t = (type || '').toLowerCase(); for (const k in GOOD) if (t.indexOf(k) !== -1) return GOOD[k]; return ['fort']; }
+function saveProg(good, hd) { return good ? 2 + Math.floor(hd / 2) : Math.floor(hd / 3); }
+function parseHD(hd) { const m = String(hd || '').match(/(\d+)\s*d\s*(\d+)\s*([+-]\s*\d+)?/i); if (!m) return { count: 1, die: 8, mod: 0 }; return { count: +m[1], die: +m[2], mod: m[3] ? parseInt(m[3].replace(/\s/g, ''), 10) : 0 }; }
+
+// CR-by-HD for skeletons/zombies (MM)
+function bandCR(hd, bands) { for (const b of bands) if (hd <= b[0]) return b[1]; return bands[bands.length - 1][1]; }
+const SKELETON_CR = [[0.5, '1/6'], [1, '1/3'], [2, '1'], [5, '2'], [7, '3'], [9, '4'], [11, '5'], [14, '6'], [20, '7'], [99, '8']];
+const ZOMBIE_CR = [[0.5, '1/8'], [1, '1/4'], [2, '1/2'], [4, '1'], [6, '2'], [8, '3'], [10, '4'], [14, '5'], [17, '6'], [20, '7'], [99, '8']];
+
+// fiendish/celestial CR bump by HD
+function fiendCRdelta(hd) { return hd <= 3 ? 0 : hd <= 7 ? 1 : hd <= 10 ? 2 : 3; }
+function drByHD(hd) { return hd < 4 ? null : hd < 12 ? '5/magic' : '10/magic'; }
+function resByHD(hd) { return hd < 4 ? null : hd < 8 ? 5 : hd < 12 ? 10 : 15; }
+
+// derive base natural armor from the AC breakdown
+function baseNatural(m) {
+  const dexM = mod(m.abilities ? m.abilities.dex : null);
+  const szAC = SIZE_AC[m.size] || 0;
+  const nat = (m.ac && m.ac.total != null ? m.ac.total : 10) - 10 - szAC - dexM;
+  return Math.max(0, nat);
+}
+
+function transform(m, kind, addhd) {
+  const base = parseHD(m.hd);
+  const ab = Object.assign({ str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10 }, m.abilities || {});
+  const r = {
+    name: '', type: m.type, size: m.size, count: base.count, die: base.die, hdmod: base.mod,
+    ab: Object.assign({}, ab), natural: baseNatural(m), specials: [], crText: m.cr, freshUndead: false, note: ''
+  };
+  if (kind === 'advance') {
+    const n = Math.max(1, addhd || 1);
+    r.count = base.count + n;
+    r.name = 'Advanced ' + m.name + ' (' + r.count + ' HD)';
+    const crDelta = Math.max(1, Math.round(n / Math.max(1, base.count) * 2));
+    r.crText = (m.cr_value + crDelta) + ' (est.)';
+    r.note = 'Advancement CR is a DMG rule-of-thumb (~+1 CR per +50% HD). Consider a size step at large HD jumps.';
+  } else if (kind === 'giant') {
+    r.size = up(m.size, 1); r.ab.str += 8; r.ab.dex = Math.max(1, r.ab.dex - 2);
+    if (r.ab.con != null) r.ab.con += 4;
+    r.natural += 3; r.name = m.name + ' (' + r.size + ')';
+    r.crText = (m.cr_value + 1) + '';
+    r.specials.push('Size ' + r.size + ': +8 Str, +4 Con, −2 Dex, +3 natural armor (approx).');
+  } else if (kind === 'young') {
+    r.size = up(m.size, -1); r.ab.str = Math.max(1, r.ab.str - 4); r.ab.con = ab.con == null ? null : Math.max(1, r.ab.con - 4); r.ab.dex += 2;
+    r.natural = Math.max(0, r.natural - 1);
+    r.name = 'Young ' + m.name; r.crText = Math.max(1, m.cr_value - 1) + '';
+    r.specials.push('Young: −1 size, −4 Str, −4 Con, +2 Dex.');
+  } else if (kind === 'skeleton' || kind === 'zombie') {
+    const z = kind === 'zombie';
+    r.type = 'Undead'; r.die = 12; r.hdmod = 0; r.freshUndead = true;
+    r.count = z ? base.count * 2 : base.count;
+    r.ab.con = null; r.ab.int = null; r.ab.wis = 10; r.ab.cha = 1;
+    if (z) { r.ab.str += 2; r.ab.dex = Math.max(1, r.ab.dex - 2); } else { r.ab.dex += 2; }
+    r.natural = SK_NAT[r.size] || 0;
+    r.name = (z ? 'Zombie' : 'Skeleton') + ' (' + m.name + ')';
+    r.crText = bandCR(r.count, z ? ZOMBIE_CR : SKELETON_CR);
+    if (z) {
+      r.specials.push('Slam ' + atkDice(r.size, 'slam') + ' (single natural attack).', 'DR 5/slashing.', 'Single actions only (move OR standard each round).', 'Undead traits; immune to mind-affecting, poison, disease, crits.');
+    } else {
+      r.specials.push('2 claws ' + atkDice(r.size, 'claw') + ' (or use the original weapon).', 'DR 5/bludgeoning.', 'Immunity to cold.', 'Undead traits; immune to mind-affecting, poison, disease, crits.');
+    }
+  } else if (kind === 'fiendish' || kind === 'celestial') {
+    const fiend = kind === 'fiendish';
+    r.name = (fiend ? 'Fiendish ' : 'Celestial ') + m.name;
+    const dr = drByHD(r.count), res = resByHD(r.count);
+    const sr = r.count >= 1 ? Math.min(25, r.count + 5) : null;
+    if (dr) r.specials.push('DR ' + dr + '.');
+    if (res) r.specials.push((fiend ? 'Resistance to cold ' + res + ' and fire ' + res : 'Resistance to acid ' + res + ', cold ' + res + ' and electricity ' + res) + '.');
+    if (sr) r.specials.push('Spell resistance ' + sr + '.');
+    r.specials.push('Smite ' + (fiend ? 'good' : 'evil') + ' 1/day: +' + r.count + ' damage vs a ' + (fiend ? 'good' : 'evil') + ' foe.');
+    r.specials.push('Darkvision 60 ft.' + (fiend ? '' : ' Gains the [good] subtype & celestial bearing.'));
+    r.crText = (m.cr_value + fiendCRdelta(r.count)) + '';
+  } else if (kind === 'halfdragon') {
+    r.type = (/dragon/i.test(m.type) ? m.type : m.type + ' (Dragon)');
+    r.ab.str += 8; r.ab.con = ab.con == null ? null : r.ab.con + 2; r.ab.int += 2; r.ab.cha += 2;
+    r.natural += 4;
+    r.name = 'Half-Dragon ' + m.name;
+    r.specials.push('Bite ' + atkDice(r.size, 'bite') + ' + 2 claws ' + atkDice(r.size, 'claw') + '.');
+    r.specials.push('Breath weapon (by size & dragon parent, e.g. red = line/cone of fire; ~' + breathDice(r.size) + ', Reflex half).');
+    r.specials.push('Immunity to one energy type (by dragon parent). Low-light vision, darkvision 60 ft.');
+    if (SIZES.indexOf(r.size) >= SIZES.indexOf('Large')) r.specials.push('Wings: fly (clumsy) at base land speed.');
+    r.crText = (m.cr_value + 2) + '';
+  }
+  return r;
+}
+
+function atkDice(size, which) {
+  // rough natural-attack damage by size
+  const claw = { Tiny: '1d2', Small: '1d3', Medium: '1d4', Large: '1d6', Huge: '1d8', Gargantuan: '2d6', Colossal: '2d8' };
+  const slam = { Tiny: '1d3', Small: '1d4', Medium: '1d6', Large: '1d8', Huge: '2d6', Gargantuan: '2d8', Colossal: '4d6' };
+  const bite = slam;
+  const t = which === 'claw' ? claw : which === 'bite' ? bite : slam;
+  return (t[size] || '1d6');
+}
+function breathDice(size) { const t = { Small: '2d6', Medium: '6d6', Large: '6d8', Huge: '8d8', Gargantuan: '10d8', Colossal: '12d8' }; return t[size] || '6d6'; }
+
+function render(m, r) {
+  const conM = mod(r.ab.con), dexM = mod(r.ab.dex), strM = mod(r.ab.str);
+  // the base hd "+N" already bundles base Con; carry only the non-Con extra (Toughness, etc.) forward
+  const baseHDp = parseHD(m.hd);
+  const baseConMod = mod((m.abilities || {}).con);
+  const extra = r.freshUndead ? 0 : (baseHDp.mod - baseConMod * baseHDp.count);
+  const hdMod = (r.ab.con == null ? 0 : conM) * r.count + extra;
+  const hp = Math.max(1, Math.round(r.count * avgDie(r.die) + hdMod));
+  const bab = Math.floor(r.count * babFactor(r.type));
+  const szAtk = SIZE_AC[r.size] || 0; // size mod to attack = same as AC size mod
+  const melee = bab + strM + szAtk;
+  const grapple = bab + strM + (SIZE_GRP[r.size] || 0);
+  const ac = 10 + (SIZE_AC[r.size] || 0) + dexM + r.natural;
+  const touch = 10 + (SIZE_AC[r.size] || 0) + dexM;
+  const flat = ac - Math.max(0, dexM);
+  // saves
+  let fort, ref, will;
+  if (r.freshUndead) {
+    const gw = saveProg(true, r.count), gp = saveProg(false, r.count);
+    fort = gp + 0; ref = gp + dexM; will = gw + mod(r.ab.wis);
+  } else {
+    const base = m.saves || { fort: 0, ref: 0, will: 0 };
+    const baseHD = parseHD(m.hd).count;
+    const gs = goodSaves(r.type);
+    const dF = (gs.indexOf('fort') !== -1 ? saveProg(true, r.count) - saveProg(true, baseHD) : saveProg(false, r.count) - saveProg(false, baseHD));
+    const dR = (gs.indexOf('ref') !== -1 ? saveProg(true, r.count) - saveProg(true, baseHD) : saveProg(false, r.count) - saveProg(false, baseHD));
+    const dW = (gs.indexOf('will') !== -1 ? saveProg(true, r.count) - saveProg(true, baseHD) : saveProg(false, r.count) - saveProg(false, baseHD));
+    const bAb = m.abilities || {};
+    fort = base.fort + dF + (mod(r.ab.con) - mod(bAb.con));
+    ref = base.ref + dR + (mod(r.ab.dex) - mod(bAb.dex));
+    will = base.will + dW + (mod(r.ab.wis) - mod(bAb.wis));
+  }
+  const hdStr = r.count + 'd' + r.die + (hdMod ? sgn(hdMod) : '');
+  const ab = r.ab;
+  function abStr(k) { return ab[k] == null ? '—' : ab[k]; }
+
+  let out = '<span class="head">[' + esc(r.name).toUpperCase() + ']</span>\n';
+  out += '<span class="muted">was ' + esc(m.name) + ' (CR ' + m.cr + ', ' + m.size + ' ' + m.type + ', ' + m.hd + ')</span>\n\n';
+  out += 'CR ' + r.crText + ' · ' + r.size + ' ' + r.type + '\n';
+  out += 'HD: ' + hdStr + ' (' + hp + ' hp)\n';
+  out += 'Init: ' + sgn(dexM) + ' · Speed: ' + (m.speed || '—') + '\n';
+  out += 'AC ' + ac + ', touch ' + touch + ', flat-footed ' + flat + '  (' + sgn(SIZE_AC[r.size] || 0) + ' size, ' + sgn(dexM) + ' Dex, +' + r.natural + ' natural)\n';
+  out += 'BAB +' + bab + ' · Grapple ' + sgn(grapple) + '\n';
+  out += 'Primary melee attack: ' + sgn(melee) + ' (then iteratives at ' + sgn(melee - 5) + (bab >= 11 ? '/' + sgn(melee - 10) : '') + ')\n';
+  out += 'Saves: Fort ' + sgn(fort) + ', Ref ' + sgn(ref) + ', Will ' + sgn(will) + '\n';
+  out += 'Abilities: Str ' + abStr('str') + ', Dex ' + abStr('dex') + ', Con ' + abStr('con') + ', Int ' + abStr('int') + ', Wis ' + abStr('wis') + ', Cha ' + abStr('cha') + '\n';
+  if (r.specials.length) out += '\nAdds / changes:\n' + r.specials.map(s => '  • ' + s).join('\n') + '\n';
+  if (r.note) out += '\n<span class="muted">' + esc(r.note) + '</span>';
+  out += '\n<span class="muted">Recompute skills, feats & DCs from the new HD/abilities as needed.</span>';
+  log.append(out);
+}
+
+// populate dropdown
+DATA.monsters.slice().sort((a, b) => a.name.localeCompare(b.name)).forEach(m => {
+  const o = document.createElement('option'); o.value = m.name; o.textContent = m.name + ' (CR ' + m.cr + ')';
+  UI.el('monster').appendChild(o);
+});
+
+function go() {
+  const m = DATA.monsters.find(x => x.name === UI.el('monster').value);
+  if (!m) return;
+  const kind = UI.el('template').value;
+  const addhd = Math.max(1, Math.min(40, parseInt(UI.el('addhd').value, 10) || 1));
+  render(m, transform(m, kind, addhd));
+}
+UI.el('gen').addEventListener('click', go);
+</script>
+</body>
+</html>

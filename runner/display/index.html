@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Player View — Ptolus</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  body { overflow-x:hidden; }
+  .pv { padding:24px 32px 40px; max-width:1100px; margin:0 auto; }
+  .pv .topline { display:flex; align-items:baseline; gap:20px; color:var(--muted); border-bottom:1px solid var(--gold-dim); padding-bottom:10px; }
+  .pv .topline .title { color:var(--gold); font-size:22px; font-weight:bold; letter-spacing:1px; }
+  .pv .topline .date { margin-left:auto; color:var(--gold); font-size:18px; }
+  .readaloud { background:#15140f; border:1px solid var(--gold-dim); border-radius:10px; padding:24px 28px; margin:22px 0;
+               font-family:Georgia, serif; font-size:26px; line-height:1.5; white-space:pre-wrap; min-height:80px; }
+  .readaloud.empty { color:var(--muted); font-style:italic; font-size:20px; }
+  .initwrap h2 { color:var(--gold); font-size:16px; text-transform:uppercase; letter-spacing:2px; }
+  .initwrap .round { color:var(--gold); font-weight:bold; }
+  .ilist { list-style:none; padding:0; margin:8px 0; }
+  .ilist li { display:flex; align-items:center; gap:14px; font-size:30px; padding:10px 16px; border-bottom:1px solid var(--line); }
+  .ilist li.active { background:#2b2616; border-radius:8px; }
+  .ilist li .turn { width:30px; color:var(--gold); }
+  .ilist li .nm { flex:1; }
+  .badge { font-size:18px; font-weight:bold; padding:3px 14px; border-radius:6px; letter-spacing:1px; }
+  .b-ok { color:#9fdf9f; border:1px solid #3a6a3a; }
+  .b-bloodied { color:#e8b878; border:1px solid #7a5520; }
+  .b-down { color:#f0a0a0; border:1px solid #7a3030; }
+  .pv .none { color:var(--muted); font-style:italic; }
+  .pv .foot { color:var(--muted); font-size:13px; margin-top:24px; }
+</style>
+</head>
+<body>
+<div class="pv">
+  <div class="topline"><span class="title">PTOLUS</span><span id="sub">Player View</span><span class="date" id="date"></span></div>
+  <div class="readaloud empty" id="readaloud">The table awaits…</div>
+  <div class="initwrap">
+    <h2>Initiative <span class="round" id="round"></span></h2>
+    <ul class="ilist" id="ilist"></ul>
+  </div>
+  <div class="foot">Live view — push read-aloud from Weather, Street Scenes, Encounters, or Handouts; initiative mirrors the Combat Tracker. Open this in a separate window on the table display.</div>
+</div>
+
+<script src="../shared/ui.js"></script>
+<script>
+const MONTHS = ['Newyear','Birth','Wind','Rain','Bloom','Sun','Growth','Blessing','Toil','Harvest','Moons','Yearsend'];
+function ord(n){const s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
+function readJSON(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }
+
+function status(c) {
+  const dead = (c.conditions||[]).some(x => ['Dead','Dying','Unconscious','Stable'].indexOf(x.name)!==-1) || c.hpCur <= 0;
+  if (dead) return ['DOWN','b-down'];
+  if (c.hpMax && c.hpCur <= c.hpMax / 2) return ['BLOODIED','b-bloodied'];
+  return ['HEALTHY','b-ok'];
+}
+function render() {
+  // date
+  const cal = readJSON('ptolus-calendar-v1');
+  UI.el('date').textContent = (cal && cal.cur) ? (ord(cal.cur.d) + ' of ' + MONTHS[cal.cur.m-1] + ', ' + cal.cur.y + ' IA') : '';
+  // read-aloud
+  const bc = readJSON('ptolus-broadcast');
+  const ra = UI.el('readaloud');
+  if (bc && bc.text && bc.text.trim()) { ra.textContent = bc.text; ra.classList.remove('empty'); }
+  else { ra.textContent = 'The table awaits…'; ra.classList.add('empty'); }
+  // initiative
+  const cb = readJSON('ptolus-combat-v1');
+  const list = (cb && cb.combatants ? cb.combatants.slice() : []).sort((a,b)=> b.init - a.init || a.id - b.id);
+  UI.el('round').textContent = list.length ? '· Round ' + (cb.round||1) : '';
+  if (!list.length) { UI.el('ilist').innerHTML = '<li class="none">No combat in progress.</li>'; return; }
+  UI.el('ilist').innerHTML = list.map(c => {
+    const [label, cls] = status(c);
+    const act = cb.activeId === c.id;
+    return '<li' + (act?' class="active"':'') + '><span class="turn">' + (act?'▶':'') + '</span>' +
+      '<span class="nm">' + UI.esc(c.name) + (c.isPC?'':'') + '</span>' +
+      '<span class="badge ' + cls + '">' + label + '</span></li>';
+  }).join('');
+}
+window.addEventListener('storage', render);
+setInterval(render, 1500);
+render();
+</script>
+</body>
+</html>

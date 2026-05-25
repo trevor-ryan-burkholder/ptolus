@@ -1,0 +1,140 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import D from '../lib/dice.js';
+import { Layout, SeedControl, Log, useLog } from '../components/ui.jsx';
+
+// MINOR[1..19]: [name, desc, mech, duration, save]
+const MINOR = {
+  1: ['Chromatic Bleed', 'Skin or scales take on an iridescent shimmer — every color at once, shifting with movement.', 'None (cosmetic). Visible to True Seeing as chaos-touched.', '1d6 hours', 'Fort DC 12 to suppress 1 min'],
+  2: ['Sound Static', 'A low, tuneless hum fills the ears, as if the air vibrates with discordant noise.', '−1 Listen and Concentration while active.', '1d4 hours', 'Fort DC 13; success = 10 min'],
+  3: ['Shadow Smear', "Their shadow moves a half-second behind them — sometimes moves when they don't.", 'Cosmetic. −2 Diplomacy with superstitious NPCs in dim light.', '2d6 hours', 'None'],
+  4: ['Flavor Bleed', 'Everything tastes wrong — food like copper, water like smoke.', '−1 Fort vs. ingested effects (hesitant to taste-test).', '1d4 hours', 'Fort DC 12; success = 30 min'],
+  5: ['Fractured Temperature', 'They alternate between intense cold and heat regardless of the real temperature.', 'Concentration to sustain spells needs a DC 12 check.', '1d6 hours', 'Fort DC 13'],
+  6: ['Chromatic Eye', 'One eye shifts to a color not native to their race — gold, silver, or violet.', 'Cosmetic. +2 Intimidate vs. the unfamiliar; −2 Diplomacy with conservatives.', '1d3 days', 'None; fades'],
+  7: ['Echo Skin', 'Skin briefly echoes the texture of whatever they last touched.', '+1 Hide in terrain matching the last-touched surface.', '1d4 hours', 'Fort DC 12; success = 30 min'],
+  8: ['Memory Flicker', "Someone else's mundane memory intrudes, vivid as their own.", '−1 Spot/Search for 10 min after each occurrence (1d4/hr).', '1d6 hours', 'Will DC 14; success = 30 min'],
+  9: ['Scent Inversion', 'All scents are subtly wrong (roses smell of copper; fire of rain).', '−2 Survival relying on scent; Scent ability suppressed.', '1d4 hours', 'Fort DC 12'],
+  10: ['Weight Shift', 'They briefly weigh 20–30% less; footsteps quiet, motion floaty.', '+2 Move Silently; −1 Bull Rush/Trip/Grapple.', '1d4 hours', 'Fort DC 13; success = 30 min'],
+  11: ['Liminal Vision', 'Faint colorless outlines of Ethereal creatures/objects within 30 ft.', 'Perceive Ethereal creatures as shadowy (50% miss vs. total).', '1d6 hours', 'Will DC 14'],
+  12: ['Tongue Slip', 'Speech reverses or overlaps a second language. Casting unaffected.', '−2 Bluff and Diplomacy while active.', '1d4 hours', 'Will DC 13; success = 30 min'],
+  13: ['Hair Shift', 'Hair/fur changes color dramatically — fire-red, frost-white, deep blue.', 'Cosmetic. Fades over 1d6 weeks. (Re-roll if rolled again.)', '1d6 weeks', 'Fort DC 15; none if 2+ hrs exposure'],
+  14: ['Touch Echo', 'Everything touched transmits an emotional residue of who touched it last.', '−1 fine-dexterity checks; +1 Appraise on emotionally-charged items.', '1d6 hours', 'Will DC 14'],
+  15: ['Phase Flicker', 'They flicker transparent 1d4 times — briefly partly there.', '20% to not trip mundane pressure plates. Allies: Will DC 10 or shaken 1 rd (first time).', '1d4 hours', 'Fort DC 14'],
+  16: ['Cold Spot', 'They radiate cold; air within 5 ft. drops, breath fogs, frost forms.', 'Fire dmg to them −1; cold dmg +1. Uncomfortable for fire-vulnerable allies.', '1d6 hours', 'Fort DC 13'],
+  17: ['Refracted Light', 'Light bends around them; their outline blurs, shadows go wrong.', '+1 Hide. Darkvision sees them normally.', '1d4 hours', 'Fort DC 12'],
+  18: ['Gravity Seam', "Their personal gravity disagrees with everyone's by a few degrees.", 'Each NPC seeing them first time: Will DC 10 or stares (loses first action).', '1d2 hours', 'Fort DC 14'],
+  19: ['Resonance Mark', 'A faint Ghul-era glyph appears on the skin; hums near chaos.', 'Detect Pits & chaositech within 30 ft. (ping only). Permanent on 3rd occurrence.', '1d3 days', 'Fort DC 15 to prevent'],
+};
+// MAJOR[1..6]: [name, desc, mech, perm, save]
+const MAJOR = {
+  1: ['Limb Alteration', 'One limb is physically transformed — translucent with bone-light, bark/obsidian texture, or an extra wrong finger.', '−1 to Str or Dex (GM choice). Armor +50% to fit. −2 Diplomacy in conservative districts.', 'Permanent without regenerate/wish/miracle', 'Fort DC 20 → cosmetic only'],
+  2: ['Cognitive Fracture', 'The mind splinters across simultaneous timeframes — ecstatic and horrifying at once.', '1d4 temp Wis damage. Once/session the GM may "replay" a choice from the last minute (GM-invoked).', 'Temp Wis recovers; replay is permanent', 'Will DC 22 → 1 temp Wis, no replay'],
+  3: ['Chaos Sensitivity', 'The nervous system is recalibrated to feel the chaos spectrum as pain/heat/pressure.', 'Detect chaos-touched within 60 ft. passively. Pits within 100 ft. give −1 all rolls. [chaotic] spells nearby deal 1 nonlethal.', "Permanent; can't be dispelled", 'Fort DC 22 → 30 ft. range only'],
+  4: ['Partial Materialization', 'Part of the body cycles solid/insubstantial in an uncontrolled rhythm.', '25%/rd an attack on that region passes through; 25%/rd adjacent-region hits do +1 (chaos bleed).', 'Permanent w/o wish; break ench. DC 30 suppresses 24 hrs', 'Fort DC 23 → cosmetic flicker'],
+  5: ['Alignment Fracture', 'Their moral framework is rewritten in one area, creating an internal contradiction.', "Gain a chaotic compulsion (can't follow stated plans / changes targets on impulse / urge to unmake structures). Worsens under stress.", 'Indefinite; atonement helps shift, not compulsion', 'Will DC 24 → minor quirk'],
+  6: ['Chaos Manifestation', 'The body is partly rewritten. Roll 1d4: (1) a second face on the back of the head; (2) one arm reaches +1d4 ft; (3) slit eyes, +Darkvision but light sensitivity; (4) skin cycles three colors hourly.', '(1) +2 Spot vs flankers, can\'t be flanked from behind; (2) +5 ft reach that arm; (3) 60-ft Darkvision, −1 attacks in bright light; (4) +1 Intimidate, −2 Disguise.', 'Permanent; wish/miracle reverses', 'Fort DC 26 → a single Minor effect'],
+};
+const SURGE = [
+  [20, 'Targets make an extra Fort save vs. Pit alteration (roll Minor on them).'],
+  [50, 'Area spells land in a random area within range (GM places).'],
+  [70, 'Ranged target spells hit random targets within range.'],
+  [85, 'Touch spells affect the caster instead.'],
+  [88, 'Personal spells jump to a random target within 30 ft.'],
+  [91, 'Damage spells heal instead of harm.'],
+  [93, 'Effects become their opposites (shield −4 AC, etc.).'],
+  [95, 'Effects transform if possible (stone to flesh → random material change).'],
+  [97, 'Spell has no effect.'],
+  [99, 'Spell energy goes wild — random spell of the same level, same target if possible.'],
+  [100, 'SURGE: 50-ft. spread on the caster, 12d6 force (Reflex half).'],
+];
+
+function rollMinor(n) {
+  const m = MINOR[n];
+  return 'Effect: ' + m[0].toUpperCase() + ' (d20=' + n + ')\n' +
+    '"' + m[1] + '"\n' +
+    'Mechanical: ' + m[2] + '\n' +
+    'Duration: ' + m[3] + ' | Save: ' + m[4];
+}
+function rollMajor() {
+  const n = D.roll(6);
+  const m = MAJOR[n];
+  return '<span class="bad">MAJOR EFFECT (d6=' + n + '): ' + m[0].toUpperCase() + '</span>\n' +
+    '"' + m[1] + '"\n' +
+    'Mechanical: ' + m[2] + '\n' +
+    'Permanence: ' + m[3] + ' | Save: ' + m[4];
+}
+
+export default function Chaos() {
+  const log = useLog();
+  const [exposure, setExposure] = useState('proximity');
+  const [target, setTarget] = useState('Creature');
+
+  function generate() {
+    const exp = exposure;
+    const LABEL = { proximity: 'Proximity', extended: 'Extended Proximity', malfunction: 'Chaositech Malfunction', caverns: 'Caverns of the Galchutt', direct: 'Direct Contact' };
+    let out = '<span class="head">[CHAOS EXPOSURE — ' + LABEL[exp] + ' — ' + target + ']</span>\n\n';
+
+    if (exp === 'direct') {
+      out += '<span class="bad">DIRECT CONTACT — apply canonical damage first:</span>\n';
+      out += '  Fort DC 20 or 10d6 damage; Will DC 20 or 1d4 temp Int/Wis/Cha.\n';
+      out += '  (+1 save DC per consecutive round; after 3 rounds, Will DC 25 or insanity.)\n\n';
+      out += rollMajor();
+      log.append(out);
+      return;
+    }
+
+    // minor roll (handle 20 = roll twice)
+    let n = D.roll(20);
+    out += 'MINOR EFFECT TRIGGERED\n';
+    if (n === 20) {
+      out += '<span class="muted">(d20=20 — particularly intense; two effects apply)</span>\n\n';
+      const a = D.range(1, 19), b = D.range(1, 19);
+      out += rollMinor(a) + '\n\n' + rollMinor(b);
+    } else {
+      out += '\n' + rollMinor(n);
+    }
+
+    // escalation to Major
+    let major = false, note = '';
+    if (exp === 'extended') { major = D.roll(20) >= 16; note = 'Extended exposure: Fort DC 25 check — '; }
+    else if (exp === 'malfunction') { const r = D.roll(20); major = r >= 19; note = 'Malfunction (1d20=' + r + '): '; }
+    if (major) out += '\n\n' + note + 'a MAJOR effect also triggers:\n' + rollMajor();
+    else if (note) out += '\n\n<span class="muted">' + note + 'no Major effect this time.</span>';
+
+    log.append(out);
+  }
+  function surge() {
+    const r = D.percent();
+    let res = SURGE[SURGE.length - 1][1];
+    for (const [max, txt] of SURGE) { if (r <= max) { res = txt; break; } }
+    log.append('<span class="head">[WILD SURGE — d%=' + r + ']</span>\n' +
+      '<span class="muted">(Failed CL check: DC 20 + spell level to cast within 100 ft. of a Pit)</span>\n' + res);
+  }
+
+  return (
+    <Layout title="Pits of Insanity" sub="Chaos mutation & warping effects" contextBar={false}>
+      <div className="runner-main">
+        <div className="panel">
+          <h2>Chaos Exposure</h2>
+          <label>Exposure Type</label>
+          <select value={exposure} onChange={(e) => setExposure(e.target.value)}>
+            <option value="proximity">Proximity (within 100 ft.)</option>
+            <option value="extended">Extended Proximity (1+ hr)</option>
+            <option value="malfunction">Chaositech Malfunction</option>
+            <option value="caverns">Caverns of the Galchutt</option>
+            <option value="direct">Direct Contact</option>
+          </select>
+          <label>Target</label>
+          <select value={target} onChange={(e) => setTarget(e.target.value)}>
+            <option>Creature</option><option>Object</option><option>Both</option>
+          </select>
+          <button className="primary" onClick={generate}>Roll Effect</button>
+          <button style={{ width: '100%', marginTop: 8 }} onClick={surge}>Spellcasting Wild Surge</button>
+          <SeedControl />
+          <p className="hint">Pits of Insanity — raw chaos from the Entropy Sphere. Beneath the Streets (PT7) pp. 416–418. Log lasting exposure in the <Link to="/corruption">Corruption Tracker</Link>.</p>
+        </div>
+        <Log log={log} title="Chaos Log" />
+      </div>
+    </Layout>
+  );
+}

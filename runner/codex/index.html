@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Codex — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .tabs { display:flex; gap:6px; padding:10px 20px 0; flex-wrap:wrap; }
+  .tabs button { font-size:14px; padding:7px 12px; }
+  .tabs button.active { background:var(--gold); color:#1a1a1a; font-weight:bold; }
+  .codex { display:grid; grid-template-columns:320px 1fr; height:calc(100vh - 108px); }
+  @media (max-width:760px){ .codex{ grid-template-columns:1fr; height:auto; } .side{ max-height:42vh; } }
+  .side { border-right:1px solid var(--line); overflow-y:auto; padding:12px; }
+  .side input, .side select { margin-bottom:8px; }
+  .filters { display:flex; gap:6px; flex-wrap:wrap; }
+  .filters select { width:auto; flex:1; min-width:120px; }
+  .count { color:var(--muted); font-size:12px; margin:4px 0 8px; }
+  .row { display:block; padding:6px 8px; border-radius:5px; cursor:pointer; color:var(--text); font-size:14px; line-height:1.25; }
+  .row:hover { background:var(--bg-input); }
+  .row.active { background:var(--gold); color:#1a1a1a; }
+  .row .sub { color:var(--muted); font-size:12px; }
+  .row.active .sub { color:#3a3000; }
+  .detail { overflow-y:auto; padding:14px 28px 60px; }
+  .statblock { max-width:760px; font-family:Georgia, serif; line-height:1.5; }
+  .statblock h2 { color:var(--gold); margin:6px 0 2px; font-size:24px; display:flex; justify-content:space-between; align-items:baseline; }
+  .statblock h2 .cr { font-size:16px; color:var(--muted); }
+  .statblock .line { margin:3px 0; }
+  .statblock .k { color:var(--gold); font-weight:bold; }
+  .statblock .desc { margin-top:10px; white-space:pre-wrap; }
+  .statblock .src { color:var(--muted); font-size:13px; margin-top:12px; }
+  .statblock hr { border:none; border-top:1px solid var(--line); margin:8px 0; }
+  .tag { margin-top:8px; }
+  .nores { color:var(--muted); font-style:italic; padding:10px; }
+</style>
+</head>
+<body>
+<div class="tabs" id="tabs"></div>
+<div class="codex">
+  <div class="side">
+    <input id="search" placeholder="Search…" autofocus>
+    <div class="filters" id="filters"></div>
+    <div class="count" id="count"></div>
+    <div id="list"></div>
+  </div>
+  <div class="detail"><div class="statblock" id="detail"></div></div>
+</div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Codex', 'Monsters · spells · items · powers');
+UI.diceTray();
+const esc = UI.esc;
+function fmtGp(n) { return n == null ? '—' : Number(n).toLocaleString('en-US') + ' gp'; }
+function crSort(a, b) { return (a.cr_value || 0) - (b.cr_value || 0) || a.name.localeCompare(b.name); }
+function nameSort(a, b) { return a.name.localeCompare(b.name); }
+function spellLevels(e) { return Object.keys(e.level || {}).map(k => k + ' ' + e.level[k]).join(', '); }
+function minLevel(e) { const v = Object.values(e.level || {}); return v.length ? Math.min.apply(null, v) : 99; }
+
+function line(k, v) { return v == null || v === '' ? '' : '<div class="line"><span class="k">' + k + ':</span> ' + esc(v) + '</div>'; }
+function listLine(k, arr) { return arr && arr.length ? line(k, arr.join(', ')) : ''; }
+
+/* ---- detail renderers ---- */
+function monsterDetail(m) {
+  const ac = m.ac || {};
+  const ab = m.abilities || {};
+  const sv = m.saves || {};
+  const at = m.attacks || {};
+  let h = '<h2>' + esc(m.name) + '<span class="cr">CR ' + esc(m.cr) + '</span></h2>';
+  h += '<div class="line">' + esc([m.size, m.type].filter(Boolean).join(' ')) + (m.subtype ? ' (' + esc(m.subtype) + ')' : '') + (m.alignment ? ', ' + esc(m.alignment) : '') + '</div><hr>';
+  h += line('Init', m.initiative != null ? (m.initiative >= 0 ? '+' : '') + m.initiative : null);
+  h += line('AC', ac.total != null ? ac.total + ' (touch ' + ac.touch + ', flat-footed ' + ac.flat_footed + ')' + (ac.notes ? ' — ' + ac.notes : '') : null);
+  h += line('hp', m.hp != null ? m.hp + (m.hd ? ' (' + m.hd + ')' : '') : null);
+  h += line('Saves', 'Fort ' + sgn(sv.fort) + ', Ref ' + sgn(sv.ref) + ', Will ' + sgn(sv.will));
+  h += line('Speed', m.speed);
+  h += line('Melee', at.melee);
+  h += line('Ranged', at.ranged);
+  h += line('Full Attack', at.full_attack);
+  h += line('Space/Reach', m.space_reach);
+  h += listLine('Special Attacks', m.special_attacks);
+  h += listLine('Special Qualities', m.special_qualities);
+  h += line('Abilities', ['Str', 'Dex', 'Con', 'Int', 'Wis', 'Cha'].map(k => k + ' ' + (ab[k.toLowerCase()] != null ? ab[k.toLowerCase()] : '—')).join(', '));
+  h += listLine('Skills', m.skills);
+  h += listLine('Feats', m.feats);
+  h += '<hr>';
+  h += line('Environment', (m.environments || []).join(', '));
+  h += line('Organization', m.organization);
+  h += line('Treasure', m.treasure);
+  h += listLine('Languages', m.languages);
+  if (m.tags && m.tags.length) h += '<div class="tag">' + m.tags.map(t => '<span class="tag">' + esc(t) + '</span>').join(' ') + '</div>';
+  h += '<div class="src">' + esc(m.source || '') + '</div>';
+  return h;
+}
+function sgn(n) { return n == null ? '—' : (n >= 0 ? '+' + n : '' + n); }
+
+function spellDetail(s) {
+  let h = '<h2>' + esc(s.name) + '</h2>';
+  h += '<div class="line">' + esc(s.school) + (s.subschool ? ' (' + esc(s.subschool) + ')' : '') + (s.descriptors && s.descriptors.length ? ' [' + s.descriptors.join(', ') + ']' : '') + '</div><hr>';
+  h += line('Level', spellLevels(s));
+  h += listLine('Components', s.components);
+  h += line('Casting Time', s.casting_time);
+  h += line('Range', s.range);
+  h += line('Target', s.target || s.area || s.effect);
+  h += line('Duration', s.duration);
+  h += line('Saving Throw', s.saving_throw);
+  h += line('Spell Resistance', s.spell_resistance);
+  if (s.description) h += '<div class="desc">' + esc(s.description) + '</div>';
+  h += '<div class="src">' + esc(s.source || '') + '</div>';
+  return h;
+}
+function magicDetail(it) {
+  let h = '<h2>' + esc(it.name) + '<span class="cr">' + fmtGp(it.price_gp) + '</span></h2>';
+  h += '<div class="line">' + esc(it.category) + ' · ' + esc(it.tier) + (it.subtier ? '/' + esc(it.subtier) : '') + '</div><hr>';
+  h += line('Body Slot', it.body_slot);
+  h += line('Caster Level', it.caster_level);
+  h += line('Aura', it.aura);
+  if (it.description) h += '<div class="desc">' + esc(it.description) + '</div>';
+  if (it.tags && it.tags.length) h += '<div class="tag">' + it.tags.map(t => '<span class="tag">' + esc(t) + '</span>').join(' ') + '</div>';
+  h += '<div class="src">' + esc(it.source || '') + '</div>';
+  return h;
+}
+function mundaneDetail(it) {
+  let h = '<h2>' + esc(it.name) + '<span class="cr">' + fmtGp(it.price_gp) + '</span></h2>';
+  h += '<div class="line">' + esc(it.category) + (it.subcategory ? ' · ' + esc(it.subcategory) : '') + '</div><hr>';
+  if (it.damage) h += line('Damage', [it.damage.medium && 'M ' + it.damage.medium, it.damage.small && 'S ' + it.damage.small].filter(Boolean).join(' / '));
+  h += line('Critical', it.critical);
+  h += line('Damage Type', it.damage_type);
+  h += line('Range', it.range_ft ? it.range_ft + ' ft' : null);
+  h += line('Weight', it.weight_lb != null ? it.weight_lb + ' lb' : null);
+  if (it.description) h += '<div class="desc">' + esc(it.description) + '</div>';
+  h += '<div class="src">' + esc(it.source || '') + '</div>';
+  return h;
+}
+function powerDetail(p) {
+  let h = '<h2>' + esc(p.name) + '</h2>';
+  h += '<div class="line">' + esc(p.discipline || '') + (p.subdiscipline ? ' (' + esc(p.subdiscipline) + ')' : '') + '</div><hr>';
+  h += line('Level', spellLevels(p));
+  h += line('Power Points', p.pp_cost != null ? p.pp_cost : p.display);
+  h += line('Display', p.display);
+  h += line('Manifesting Time', p.manifesting_time);
+  h += line('Range', p.range);
+  h += line('Target/Area', p.area_or_target || p.target || p.area);
+  h += line('Duration', p.duration);
+  h += line('Saving Throw', p.saving_throw);
+  h += line('Power Resistance', p.power_resistance);
+  if (p.description) h += '<div class="desc">' + esc(p.description) + '</div>';
+  if (p.augment) h += '<div class="desc"><span class="k">Augment:</span> ' + esc(p.augment) + '</div>';
+  h += '<div class="src">' + esc(p.source || '') + '</div>';
+  return h;
+}
+
+/* ---- distinct value helper for filters ---- */
+function distinct(arr, fn) { const s = new Set(); arr.forEach(e => { const v = fn(e); (Array.isArray(v) ? v : [v]).forEach(x => { if (x != null && x !== '') s.add(x); }); }); return [...s].sort(); }
+
+/* ---- tab definitions ---- */
+const TABS = [
+  {
+    key: 'monsters', label: 'Monsters', data: () => DATA.monsters, sort: crSort, detail: monsterDetail,
+    sub: m => 'CR ' + m.cr + ' · ' + (m.type || ''),
+    text: m => (m.name + ' ' + (m.type || '') + ' ' + (m.tags || []).join(' ') + ' ' + (m.environments || []).join(' ')).toLowerCase(),
+    filters: [
+      { id: 'env', label: 'Environment', opts: d => distinct(d, m => m.environments), test: (m, v) => (m.environments || []).indexOf(v) !== -1 },
+      { id: 'cr', label: 'CR band', opts: () => ['≤1', '2–5', '6–10', '11–15', '16+'], test: (m, v) => crBand(m.cr_value, v) },
+    ],
+  },
+  {
+    key: 'spells', label: 'Spells', data: () => DATA.spells, sort: nameSort, detail: spellDetail,
+    sub: s => s.school + ' · ' + spellLevels(s),
+    text: s => (s.name + ' ' + s.school + ' ' + (s.descriptors || []).join(' ') + ' ' + (s.tags || []).join(' ')).toLowerCase(),
+    filters: [
+      { id: 'class', label: 'Class', opts: d => distinct(d, s => Object.keys(s.level || {})), test: (s, v) => s.level && s.level[v] != null },
+      { id: 'lvl', label: 'Level', opts: d => distinct(d, s => Object.values(s.level || {})).map(String), test: (s, v) => Object.values(s.level || {}).indexOf(+v) !== -1 },
+    ],
+  },
+  {
+    key: 'magicItems', label: 'Magic Items', data: () => DATA.magicItems, sort: (a, b) => (a.price_gp || 0) - (b.price_gp || 0) || nameSort(a, b), detail: magicDetail,
+    sub: it => it.tier + ' · ' + fmtGp(it.price_gp),
+    text: it => (it.name + ' ' + it.category + ' ' + (it.tags || []).join(' ') + ' ' + (it.description || '')).toLowerCase(),
+    filters: [
+      { id: 'tier', label: 'Tier', opts: d => distinct(d, it => it.tier), test: (it, v) => it.tier === v },
+      { id: 'cat', label: 'Category', opts: d => distinct(d, it => it.category), test: (it, v) => it.category === v },
+    ],
+  },
+  {
+    key: 'mundane', label: 'Gear', data: () => DATA.mundaneItems, sort: (a, b) => nameSort(a, b), detail: mundaneDetail,
+    sub: it => it.category + ' · ' + fmtGp(it.price_gp),
+    text: it => (it.name + ' ' + it.category + ' ' + (it.subcategory || '')).toLowerCase(),
+    filters: [
+      { id: 'cat', label: 'Category', opts: d => distinct(d, it => it.category), test: (it, v) => it.category === v },
+    ],
+  },
+  {
+    key: 'powers', label: 'Powers', data: () => DATA.powers, sort: (a, b) => minLevel(a) - minLevel(b) || nameSort(a, b), detail: powerDetail,
+    sub: p => (p.discipline || '') + ' · ' + spellLevels(p),
+    text: p => (p.name + ' ' + (p.discipline || '') + ' ' + (p.description || '')).toLowerCase(),
+    filters: [
+      { id: 'disc', label: 'Discipline', opts: d => distinct(d, p => p.discipline), test: (p, v) => p.discipline === v },
+      { id: 'lvl', label: 'Level', opts: d => distinct(d, p => Object.values(p.level || {})).map(String), test: (p, v) => Object.values(p.level || {}).indexOf(+v) !== -1 },
+    ],
+  },
+];
+function crBand(cv, v) {
+  if (v === '≤1') return cv <= 1; if (v === '2–5') return cv >= 2 && cv <= 5;
+  if (v === '6–10') return cv >= 6 && cv <= 10; if (v === '11–15') return cv >= 11 && cv <= 15;
+  return cv >= 16;
+}
+
+let tab = TABS[0];
+let selected = null;
+
+function renderTabs() {
+  UI.el('tabs').innerHTML = TABS.map(t => '<button data-tab="' + t.key + '"' + (t === tab ? ' class="active"' : '') + '>' + t.label + ' <span style="opacity:.6">' + t.data().length + '</span></button>').join('');
+}
+function renderFilters() {
+  UI.el('filters').innerHTML = tab.filters.map(f => {
+    const opts = ['<option value="">' + f.label + ': all</option>'].concat(f.opts(tab.data()).map(o => '<option value="' + esc(o) + '">' + esc(o) + '</option>'));
+    return '<select data-filter="' + f.id + '">' + opts.join('') + '</select>';
+  }).join('');
+}
+function currentFilters() {
+  const out = {};
+  UI.el('filters').querySelectorAll('[data-filter]').forEach(s => { if (s.value) out[s.getAttribute('data-filter')] = s.value; });
+  return out;
+}
+function renderList() {
+  const q = UI.el('search').value.toLowerCase().trim();
+  const fvals = currentFilters();
+  let items = tab.data().filter(e => {
+    if (q && tab.text(e).indexOf(q) === -1) return false;
+    for (const f of tab.filters) { if (fvals[f.id] != null && !f.test(e, fvals[f.id])) return false; }
+    return true;
+  }).slice().sort(tab.sort);
+  UI.el('count').textContent = items.length + ' of ' + tab.data().length;
+  if (!items.length) { UI.el('list').innerHTML = '<div class="nores">No matches.</div>'; return; }
+  UI.el('list').innerHTML = items.map(e =>
+    '<div class="row" data-name="' + esc(e.name) + '"><div>' + esc(e.name) + '</div><div class="sub">' + esc(tab.sub(e)) + '</div></div>').join('');
+  markActive();
+}
+function markActive() {
+  UI.el('list').querySelectorAll('.row').forEach(r => r.classList.toggle('active', selected && r.getAttribute('data-name') === selected));
+}
+function showEntry(name) {
+  const e = tab.data().find(x => x.name === name);
+  selected = name;
+  UI.el('detail').innerHTML = e ? tab.detail(e) : '<div class="nores">Select an entry.</div>';
+  document.querySelector('.detail').scrollTop = 0;
+  markActive();
+}
+
+function setTab(key, keepHash) {
+  tab = TABS.find(t => t.key === key) || TABS[0];
+  selected = null;
+  renderTabs(); renderFilters(); renderList();
+  UI.el('detail').innerHTML = '<div class="nores">Select an entry from the list.</div>';
+}
+
+UI.el('tabs').addEventListener('click', e => {
+  const b = e.target.closest('[data-tab]'); if (!b) return;
+  location.hash = b.getAttribute('data-tab');
+});
+UI.el('list').addEventListener('click', e => {
+  const r = e.target.closest('.row'); if (!r) return;
+  location.hash = tab.key + ':' + encodeURIComponent(r.getAttribute('data-name'));
+});
+UI.el('search').addEventListener('input', renderList);
+UI.el('filters').addEventListener('change', renderList);
+
+function applyHash() {
+  const raw = location.hash.slice(1);
+  if (!raw) { setTab(TABS[0].key); return; }
+  const ci = raw.indexOf(':');
+  const key = ci < 0 ? decodeURIComponent(raw) : raw.slice(0, ci);
+  const name = ci < 0 ? '' : decodeURIComponent(raw.slice(ci + 1));
+  const t = TABS.find(x => x.key === key);
+  if (t) { if (t !== tab || name) { tab = t; renderTabs(); renderFilters(); renderList(); } if (name) showEntry(name); else { selected = null; UI.el('detail').innerHTML = '<div class="nores">Select an entry from the list.</div>'; } }
+  else setTab(TABS[0].key);
+}
+window.addEventListener('hashchange', applyHash);
+applyHash();
+</script>
+</body>
+</html>

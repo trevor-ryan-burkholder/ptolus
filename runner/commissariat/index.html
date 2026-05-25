@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>City Watch Response Timer — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .timer-display { font-size:54px; color:var(--gold); font-weight:bold; text-align:center; margin:10px 0; font-family:'Courier New',monospace; }
+  .timer-display.arrived { color:var(--bad); }
+  .bar { height:26px; background:#141414; border:1px solid var(--line); border-radius:6px; overflow:hidden; margin:8px 0 18px; }
+  .bar .fill { height:100%; background:linear-gradient(90deg,var(--gold-dim),var(--gold)); width:100%; transition:width 0.4s linear; }
+  .bar .fill.warn { background:linear-gradient(90deg,#a05020,#d8a64b); }
+  .bar .fill.crit { background:linear-gradient(90deg,#7a2020,#c46a6a); }
+  .incident-head { font-size:22px; color:var(--gold); text-transform:uppercase; letter-spacing:1px; text-align:center; }
+  .block { background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:14px; margin-top:12px; white-space:pre-wrap; font-family:'Courier New',monospace; }
+  .block h3 { color:var(--gold); margin:0 0 8px; font-size:14px; letter-spacing:1px; }
+</style>
+</head>
+<body>
+<div class="runner-main">
+  <div class="panel">
+    <h2>Incident</h2>
+    <label for="grade">Threat Grade</label>
+    <select id="grade">
+      <option value="4">Grade 4</option>
+      <option value="3">Grade 3</option>
+      <option value="2" selected>Grade 2</option>
+      <option value="1">Grade 1</option>
+      <option value="0">Special Grade</option>
+    </select>
+    <label for="district">District</label>
+    <select id="district">
+      <option>Nobles' Quarter</option><option>Temple District</option>
+      <option selected>Midtown</option><option>Guildsman's District</option>
+      <option>Docks</option><option>Warrens</option>
+      <option>Necropolis</option><option>The Dungeon</option>
+    </select>
+    <label for="tod">Time of Day</label>
+    <select id="tod"><option>Day</option><option>Night</option></select>
+
+    <button class="primary" id="trigger">Trigger Incident</button>
+    <div class="btn-row">
+      <button id="complication">Complication</button>
+      <button id="escalate">Escalate</button>
+    </div>
+    <button id="reset" style="width:100%;margin-top:8px;">Reset</button>
+    <div id="seed"></div>
+    <p class="hint">Grades are a homebrew convenience. The book's force is the <strong>City Watch</strong> under Commissar Igor Urnst (Ptolus pp. 551–553).</p>
+  </div>
+
+  <div id="display">
+    <p class="hint" style="text-align:center;margin-top:40px;">Set a grade and district, then Trigger Incident.</p>
+  </div>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/state.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('City Watch Response Timer', 'How long until they arrive');
+UI.contextBar();
+UI.diceTray();
+UI.seedControl('seed');
+const D = Dice;
+
+const GRADE_LABEL = { '4':'Grade 4', '3':'Grade 3', '2':'Grade 2', '1':'Grade 1', '0':'Special Grade' };
+// base response in seconds
+function baseSeconds(g) {
+  if (g === '4') return D.roll(6) * 10 * 60;
+  if (g === '3') return D.roll(6) * 5 * 60;
+  if (g === '2') return D.roll(4) * 3 * 60;
+  if (g === '1') return D.rollN(2, 4) * 10;
+  return D.roll(4) * 6; // special: 1d4 rounds
+}
+function districtMod(d) {
+  if (d === "Nobles' Quarter" || d === 'Temple District') return -D.roll(4) * 60;
+  if (d === 'Docks' || d === 'Warrens') return D.roll(4) * 60;
+  if (d === 'Necropolis') return D.rollN(2, 6) * 60;
+  return 0;
+}
+const COMP = {
+  '4': '1d4+2 guards (Warrior 1–2) + 1 corporal (Warrior 3)',
+  '3': '2d4+4 guards + 1 sergeant (Warrior 4) + 1d2 specialists',
+  '2': '8–12 guards + 1 lieutenant (Fighter 4–6) + 1 mage (Wiz 5); possible cleric',
+  '1': 'City Watch Elite (6–8, Fighter 6–8) + commander + senior mage (Wiz 9); Commissar\'s Men may respond; backup waves',
+  '0': 'Full mobilization — all available units, district lockdown, city-wide alert; the Commissar himself may appear',
+};
+const DOACTION = 'Contain the threat. Subdue if possible, kill if not.\nAnyone near the scene is a witness. Anyone with a weapon drawn is a suspect.\nThe Watch keeps order, not justice — they won\'t investigate (Ptolus p. 553).';
+const COMPLICATIONS = [
+  'A second unit was already nearby — arrives in HALF the time.',
+  'The responding sergeant has a personal grudge — he knows someone in the party.',
+  'A broadsheet journalist is shadowing the patrol.',
+  'The unit is tied up with a separate incident nearby — delayed 1d6×5 min.',
+  'Political interference — a noble\'s runner asks the Watch to stand down.',
+  'The Covenant of Blood is already here — standing nearby, watching.',
+];
+
+let state = null;
+let interval = null;
+
+function render() {
+  const d = UI.el('display');
+  if (!state) { d.innerHTML = '<p class="hint" style="text-align:center;margin-top:40px;">Set a grade and district, then Trigger Incident.</p>'; return; }
+  if (state.district === 'The Dungeon') {
+    d.innerHTML = '<p class="incident-head">' + GRADE_LABEL[state.grade] + ' — The Dungeon</p>' +
+      '<div class="block"><h3>NO CITY WATCH RESPONSE</h3>The Watch does not enter the Dungeon. ' +
+      (state.grade === '0' ? 'Special Grade: the Watch seals the nearest surface entrance.' : (+state.grade <= 1 ? 'On a surface breach, the Delvers\' Guild may respond to Grade 1+.' : 'You\'re on your own down here.')) + '</div>';
+    return;
+  }
+  const remain = Math.max(0, state.remain);
+  const pct = state.total > 0 ? Math.round((remain / state.total) * 100) : 0;
+  const arrived = remain <= 0;
+  let fillCls = 'fill'; if (pct <= 20) fillCls += ' crit'; else if (pct <= 50) fillCls += ' warn';
+  d.innerHTML =
+    '<p class="incident-head">' + GRADE_LABEL[state.grade] + ' Incident — ' + state.district + (state.night ? ' (Night)' : '') + '</p>' +
+    '<div class="timer-display' + (arrived ? ' arrived' : '') + '">' + (arrived ? 'ARRIVED' : fmt(remain)) + '</div>' +
+    '<div class="bar"><div class="' + fillCls + '" style="width:' + pct + '%"></div></div>' +
+    '<div class="block"><h3>ARRIVING</h3>' + COMP[state.grade] + (state.district === 'Necropolis' ? '\n+ a Church of Lothian liaison (Necropolis protocol)' : '') + '</div>' +
+    '<div class="block"><h3>WHAT THEY\'LL DO</h3>' + DOACTION + '</div>' +
+    (state.notes.length ? '<div class="block"><h3>COMPLICATIONS</h3>' + state.notes.join('\n') + '</div>' : '');
+}
+function fmt(sec) {
+  const m = Math.floor(sec / 60), s = Math.floor(sec % 60);
+  return m + ':' + String(s).padStart(2, '0');
+}
+
+function trigger() {
+  const grade = UI.el('grade').value;
+  const district = UI.el('district').value;
+  const night = UI.el('tod').value === 'Night';
+  let total = baseSeconds(grade) + districtMod(district);
+  if (night) total = Math.round(total * 1.5);
+  total = Math.max(6, total);
+  state = { grade: grade, district: district, night: night, total: total, remain: total, special: grade === '0', notes: [] };
+  if (district !== 'The Dungeon') startTick();
+  render();
+}
+function startTick() {
+  if (interval) clearInterval(interval);
+  interval = setInterval(() => {
+    if (!state || state.remain <= 0) { clearInterval(interval); return; }
+    state.remain -= 1;
+    render();
+  }, 1000);
+}
+UI.el('trigger').addEventListener('click', trigger);
+UI.el('reset').addEventListener('click', () => { if (interval) clearInterval(interval); state = null; render(); });
+UI.el('escalate').addEventListener('click', () => {
+  if (!state) return;
+  const order = ['4', '3', '2', '1', '0'];
+  const i = order.indexOf(state.grade);
+  if (i < order.length - 1) { UI.el('grade').value = order[i + 1]; trigger(); }
+});
+UI.el('complication').addEventListener('click', () => {
+  if (!state) return;
+  const idx = D.range(1, COMPLICATIONS.length);
+  const c = '#' + idx + ': ' + COMPLICATIONS[idx - 1];
+  state.notes.push(c);
+  if (/HALF the time/.test(c)) state.remain = Math.round(state.remain / 2);
+  if (/delayed 1d6/.test(c)) state.remain += D.roll(6) * 5 * 60;
+  render();
+});
+
+render();
+</script>
+</body>
+</html>

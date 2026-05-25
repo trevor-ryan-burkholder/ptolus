@@ -1,0 +1,3381 @@
+[
+  {
+    "name": "Acid Splash",
+    "school": "Conjuration",
+    "subschool": "Creation",
+    "descriptors": [
+      "acid"
+    ],
+    "level": {
+      "sor": 0,
+      "wiz": 0
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One missile of acid",
+    "duration": "Instantaneous",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Ranged touch attack; 1d3 acid damage.",
+    "source": "PHB 195",
+    "tags": [
+      "damage",
+      "acid",
+      "cantrip"
+    ]
+  },
+  {
+    "name": "Detect Magic",
+    "school": "Divination",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 0,
+      "wiz": 0,
+      "clr": 0,
+      "drd": 0,
+      "brd": 0
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "60 ft.",
+    "target": "Cone-shaped emanation",
+    "duration": "Concentration, up to 1 min./level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Detects spells and magic items within 60 ft. cone. Each round of concentration reveals more: 1st presence/absence; 2nd number of auras and strongest; 3rd school and strength of each.",
+    "source": "PHB 219",
+    "tags": [
+      "detection",
+      "utility",
+      "cantrip",
+      "common"
+    ]
+  },
+  {
+    "name": "Light",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "light"
+    ],
+    "level": {
+      "sor": 0,
+      "wiz": 0,
+      "clr": 0,
+      "drd": 0,
+      "brd": 0
+    },
+    "components": [
+      "V",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Object touched",
+    "duration": "10 min./level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Object shines like a torch (20 ft. bright, +20 ft. shadowy).",
+    "source": "PHB 248",
+    "tags": [
+      "utility",
+      "light",
+      "cantrip",
+      "common"
+    ]
+  },
+  {
+    "name": "Mage Hand",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 0,
+      "wiz": 0,
+      "brd": 0
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One nonmagical, unattended object weighing up to 5 lb.",
+    "duration": "Concentration",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Move object up to 15 ft. with telekinetic force.",
+    "source": "PHB 249",
+    "tags": [
+      "utility",
+      "telekinetic",
+      "cantrip",
+      "common"
+    ]
+  },
+  {
+    "name": "Prestidigitation",
+    "school": "Universal",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 0,
+      "wiz": 0,
+      "brd": 0
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "10 ft.",
+    "target": "See text",
+    "duration": "1 hour",
+    "saving_throw": "See text",
+    "spell_resistance": "No",
+    "description": "Minor magical tricks \u2014 clean, soil, color, chill/warm, flavor up to 1 lb. material; create small object lasting 1 hour.",
+    "source": "PHB 264",
+    "tags": [
+      "utility",
+      "flavor",
+      "cantrip",
+      "common"
+    ]
+  },
+  {
+    "name": "Ray of Frost",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "cold"
+    ],
+    "level": {
+      "sor": 0,
+      "wiz": 0
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One creature",
+    "duration": "Instantaneous",
+    "saving_throw": "None",
+    "spell_resistance": "Yes",
+    "description": "Ranged touch attack; 1d3 cold damage.",
+    "source": "PHB 269",
+    "tags": [
+      "damage",
+      "cold",
+      "cantrip"
+    ]
+  },
+  {
+    "name": "Read Magic",
+    "school": "Divination",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 0,
+      "wiz": 0,
+      "clr": 0,
+      "drd": 0,
+      "brd": 0,
+      "pal": 1,
+      "rgr": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "F"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal",
+    "target": "You",
+    "duration": "10 min./level",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Read scrolls, spellbooks, and magical writing.",
+    "source": "PHB 269",
+    "tags": [
+      "utility",
+      "cantrip"
+    ]
+  },
+  {
+    "name": "Resistance",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 0,
+      "wiz": 0,
+      "clr": 0,
+      "drd": 0,
+      "brd": 0,
+      "pal": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 minute",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "+1 resistance bonus on saving throws.",
+    "source": "PHB 273",
+    "tags": [
+      "buff",
+      "saves",
+      "cantrip"
+    ]
+  },
+  {
+    "name": "Cure Minor Wounds",
+    "school": "Conjuration",
+    "subschool": "Healing",
+    "descriptors": [],
+    "level": {
+      "clr": 0,
+      "drd": 0
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "Instantaneous",
+    "saving_throw": "Will half (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Cures 1 hit point.",
+    "source": "PHB 217",
+    "tags": [
+      "healing",
+      "cantrip",
+      "common"
+    ]
+  },
+  {
+    "name": "Guidance",
+    "school": "Divination",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 0,
+      "drd": 0
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 minute or until discharged",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "+1 competence bonus on a single attack roll, save, or skill check.",
+    "source": "PHB 238",
+    "tags": [
+      "buff",
+      "cantrip",
+      "common"
+    ]
+  },
+  {
+    "name": "Burning Hands",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "fire"
+    ],
+    "level": {
+      "sor": 1,
+      "wiz": 1
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "15 ft.",
+    "target": "Cone-shaped burst",
+    "duration": "Instantaneous",
+    "saving_throw": "Reflex half",
+    "spell_resistance": "Yes",
+    "description": "1d4 fire damage per caster level (max 5d4).",
+    "source": "PHB 207",
+    "tags": [
+      "damage",
+      "fire",
+      "area",
+      "common"
+    ]
+  },
+  {
+    "name": "Charm Person",
+    "school": "Enchantment",
+    "subschool": "Charm",
+    "descriptors": [
+      "mind-affecting"
+    ],
+    "level": {
+      "sor": 1,
+      "wiz": 1,
+      "brd": 1
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One humanoid creature",
+    "duration": "1 hour/level",
+    "saving_throw": "Will negates",
+    "spell_resistance": "Yes",
+    "description": "Target regards caster as trusted friend; +5 bonus on the save if currently being threatened/attacked.",
+    "source": "PHB 209",
+    "tags": [
+      "control",
+      "social",
+      "common"
+    ]
+  },
+  {
+    "name": "Color Spray",
+    "school": "Illusion",
+    "subschool": "Pattern",
+    "descriptors": [
+      "mind-affecting"
+    ],
+    "level": {
+      "sor": 1,
+      "wiz": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "15 ft.",
+    "target": "Cone-shaped burst",
+    "duration": "Instantaneous",
+    "saving_throw": "Will negates",
+    "spell_resistance": "Yes",
+    "description": "2 HD or less: unconscious 2d4 rounds, blind 1d4, stunned 1; 3-4 HD: blind 1d4, stunned 1; 5+ HD: stunned 1 round.",
+    "source": "PHB 210",
+    "tags": [
+      "control",
+      "area",
+      "common"
+    ]
+  },
+  {
+    "name": "Comprehend Languages",
+    "school": "Divination",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 1,
+      "wiz": 1,
+      "clr": 1,
+      "brd": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal",
+    "target": "You",
+    "duration": "10 min./level",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Understand all spoken and written languages.",
+    "source": "PHB 212",
+    "tags": [
+      "utility",
+      "language"
+    ]
+  },
+  {
+    "name": "Disguise Self",
+    "school": "Illusion",
+    "subschool": "Glamer",
+    "descriptors": [],
+    "level": {
+      "sor": 1,
+      "wiz": 1,
+      "brd": 1
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal",
+    "target": "You",
+    "duration": "10 min./level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Change appearance (\u00b11 ft. height, similar build, clothing). Failed Spot reveals illusion as +10 DC.",
+    "source": "PHB 222",
+    "tags": [
+      "illusion",
+      "infiltration",
+      "common"
+    ]
+  },
+  {
+    "name": "Enlarge Person",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 1,
+      "wiz": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 round",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One humanoid creature",
+    "duration": "1 min./level (D)",
+    "saving_throw": "Fortitude negates",
+    "spell_resistance": "Yes",
+    "description": "Target grows one size category larger: +2 Str, -2 Dex, -1 attack, -1 AC, reach increased.",
+    "source": "PHB 226",
+    "tags": [
+      "buff",
+      "transmutation",
+      "common"
+    ]
+  },
+  {
+    "name": "Feather Fall",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 1,
+      "wiz": 1,
+      "brd": 1
+    },
+    "components": [
+      "V"
+    ],
+    "casting_time": "1 free action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "Personal or one Medium or smaller freefalling object or creature/level, no two of which can be more than 20 ft. apart",
+    "duration": "Until landing or 1 round/level",
+    "saving_throw": "Will negates (harmless or object)",
+    "spell_resistance": "Yes (object)",
+    "description": "Falling objects/creatures fall slowly; 60 ft./round, no damage on landing.",
+    "source": "PHB 229",
+    "tags": [
+      "utility",
+      "reactive",
+      "common"
+    ]
+  },
+  {
+    "name": "Grease",
+    "school": "Conjuration",
+    "subschool": "Creation",
+    "descriptors": [],
+    "level": {
+      "sor": 1,
+      "wiz": 1,
+      "brd": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One object or 10-ft. square",
+    "duration": "1 round/level (D)",
+    "saving_throw": "See text",
+    "spell_resistance": "No",
+    "description": "Coat object or area in grease: Balance DC 10 to move at half speed across; fail by 5+ falls. Held object: Reflex save or drop.",
+    "source": "PHB 237",
+    "tags": [
+      "control",
+      "area",
+      "common"
+    ]
+  },
+  {
+    "name": "Mage Armor",
+    "school": "Conjuration",
+    "subschool": "Creation",
+    "descriptors": [
+      "force"
+    ],
+    "level": {
+      "sor": 1,
+      "wiz": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "F"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 hour/level (D)",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "No",
+    "description": "+4 armor bonus to AC (force, so works against incorporeal touch attacks).",
+    "source": "PHB 249",
+    "tags": [
+      "defensive",
+      "buff",
+      "common"
+    ]
+  },
+  {
+    "name": "Magic Missile",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "force"
+    ],
+    "level": {
+      "sor": 1,
+      "wiz": 1
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "Up to five creatures, no two more than 15 ft. apart",
+    "duration": "Instantaneous",
+    "saving_throw": "None",
+    "spell_resistance": "Yes",
+    "description": "1d4+1 force damage per missile; +1 missile per 2 levels above 1st (max 5 at CL 9).",
+    "source": "PHB 251",
+    "tags": [
+      "damage",
+      "force",
+      "ranged",
+      "common"
+    ]
+  },
+  {
+    "name": "Magic Weapon",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 1,
+      "pal": 1,
+      "sor": 1,
+      "wiz": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Weapon touched",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates (harmless, object)",
+    "spell_resistance": "Yes (harmless, object)",
+    "description": "Weapon gains +1 enhancement bonus to attack and damage.",
+    "source": "PHB 251",
+    "tags": [
+      "buff",
+      "weapon"
+    ]
+  },
+  {
+    "name": "Obscuring Mist",
+    "school": "Conjuration",
+    "subschool": "Creation",
+    "descriptors": [],
+    "level": {
+      "sor": 1,
+      "wiz": 1,
+      "clr": 1,
+      "drd": 1
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "20 ft.",
+    "target": "Cloud spreads in 20-ft. radius, 20 ft. high",
+    "duration": "1 min./level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Fog obscures vision; creatures 5 ft. away have concealment (20% miss), 10+ ft. total concealment (50% miss, no Spot).",
+    "source": "PHB 258",
+    "tags": [
+      "control",
+      "area",
+      "common"
+    ]
+  },
+  {
+    "name": "Shield",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [
+      "force"
+    ],
+    "level": {
+      "sor": 1,
+      "wiz": 1
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal",
+    "target": "You",
+    "duration": "1 min./level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "+4 shield bonus to AC. Negates magic missile.",
+    "source": "PHB 278",
+    "tags": [
+      "defensive",
+      "buff",
+      "anti-missile"
+    ]
+  },
+  {
+    "name": "Sleep",
+    "school": "Enchantment",
+    "subschool": "Compulsion",
+    "descriptors": [
+      "mind-affecting"
+    ],
+    "level": {
+      "sor": 1,
+      "wiz": 1,
+      "brd": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 round",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "Living creatures within 10-ft.-radius burst",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates",
+    "spell_resistance": "Yes",
+    "description": "Puts to sleep 4 HD of creatures, beginning with lowest HD. Cannot affect 4+ HD or undead/constructs.",
+    "source": "PHB 280",
+    "tags": [
+      "control",
+      "area",
+      "common"
+    ]
+  },
+  {
+    "name": "True Strike",
+    "school": "Divination",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 1,
+      "wiz": 1
+    },
+    "components": [
+      "V",
+      "F"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal",
+    "target": "You",
+    "duration": "See text",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "+20 insight bonus on your next attack roll within 1 round.",
+    "source": "PHB 295",
+    "tags": [
+      "buff",
+      "attack"
+    ]
+  },
+  {
+    "name": "Unseen Servant",
+    "school": "Conjuration",
+    "subschool": "Creation",
+    "descriptors": [],
+    "level": {
+      "sor": 1,
+      "wiz": 1,
+      "brd": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One invisible mindless shapeless servant",
+    "duration": "1 hour/level",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Invisible force performs simple tasks; Str 2, speed 15 ft., 2 HP, no attacks.",
+    "source": "PHB 297",
+    "tags": [
+      "utility",
+      "summoning"
+    ]
+  },
+  {
+    "name": "Bless",
+    "school": "Enchantment",
+    "subschool": "Compulsion",
+    "descriptors": [
+      "mind-affecting"
+    ],
+    "level": {
+      "clr": 1,
+      "pal": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "50 ft.",
+    "target": "Allies in 50-ft. burst centered on you",
+    "duration": "1 min./level",
+    "saving_throw": "None",
+    "spell_resistance": "Yes (harmless)",
+    "description": "+1 morale bonus on attack rolls and saves vs. fear.",
+    "source": "PHB 205",
+    "tags": [
+      "buff",
+      "morale",
+      "area",
+      "common"
+    ]
+  },
+  {
+    "name": "Command",
+    "school": "Enchantment",
+    "subschool": "Compulsion",
+    "descriptors": [
+      "language-dependent",
+      "mind-affecting"
+    ],
+    "level": {
+      "clr": 1
+    },
+    "components": [
+      "V"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One living creature",
+    "duration": "1 round",
+    "saving_throw": "Will negates",
+    "spell_resistance": "Yes",
+    "description": "One-word command (approach, drop, fall, flee, halt) target obeys for 1 round.",
+    "source": "PHB 211",
+    "tags": [
+      "control",
+      "social",
+      "common"
+    ]
+  },
+  {
+    "name": "Cure Light Wounds",
+    "school": "Conjuration",
+    "subschool": "Healing",
+    "descriptors": [],
+    "level": {
+      "clr": 1,
+      "drd": 1,
+      "pal": 1,
+      "rgr": 2,
+      "brd": 1
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "Instantaneous",
+    "saving_throw": "Will half (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Cures 1d8 + caster level (max +5) hit points.",
+    "source": "PHB 215",
+    "tags": [
+      "healing",
+      "common"
+    ]
+  },
+  {
+    "name": "Detect Undead",
+    "school": "Divination",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 1,
+      "pal": 1,
+      "sor": 1,
+      "wiz": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "60 ft.",
+    "target": "Cone-shaped emanation",
+    "duration": "Concentration, up to 1 min./level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "As detect magic, but for undead.",
+    "source": "PHB 220",
+    "tags": [
+      "detection",
+      "ptolus_necropolis"
+    ]
+  },
+  {
+    "name": "Doom",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "fear",
+      "mind-affecting"
+    ],
+    "level": {
+      "clr": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "One living creature",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates",
+    "spell_resistance": "Yes",
+    "description": "Target becomes shaken (-2 attack, save, check, damage).",
+    "source": "PHB 224",
+    "tags": [
+      "debuff",
+      "fear"
+    ]
+  },
+  {
+    "name": "Inflict Light Wounds",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 1
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "Instantaneous",
+    "saving_throw": "Will half",
+    "spell_resistance": "Yes",
+    "description": "1d8 + caster level (max +5) damage; heals undead.",
+    "source": "PHB 244",
+    "tags": [
+      "damage",
+      "evil-cleric",
+      "common"
+    ]
+  },
+  {
+    "name": "Protection from Evil",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [
+      "good"
+    ],
+    "level": {
+      "clr": 1,
+      "pal": 1,
+      "sor": 1,
+      "wiz": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 min./level (D)",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "No",
+    "description": "+2 deflection AC and +2 resistance save vs. evil creatures; suppresses mind control by evil; prevents mental contact and bodily possession.",
+    "source": "PHB 266",
+    "tags": [
+      "defensive",
+      "anti-evil",
+      "common"
+    ]
+  },
+  {
+    "name": "Sanctuary",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 round/level (D)",
+    "saving_throw": "Will negates",
+    "spell_resistance": "No",
+    "description": "Opponents must succeed Will save to target subject; subject can't attack without ending the spell.",
+    "source": "PHB 273",
+    "tags": [
+      "defensive",
+      "non-combat"
+    ]
+  },
+  {
+    "name": "Shield of Faith",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "+2 deflection bonus to AC, +1 per 6 caster levels (max +5).",
+    "source": "PHB 278",
+    "tags": [
+      "defensive",
+      "buff",
+      "common"
+    ]
+  },
+  {
+    "name": "Entangle",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "drd": 1,
+      "rgr": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Long (400 ft. + 40 ft./level)",
+    "target": "Plants in 40-ft.-radius spread",
+    "duration": "1 min./level (D)",
+    "saving_throw": "Reflex partial",
+    "spell_resistance": "No",
+    "description": "Plants in area entangle creatures: failed save = entangled; success = can move at half speed.",
+    "source": "PHB 227",
+    "tags": [
+      "control",
+      "area"
+    ]
+  },
+  {
+    "name": "Acid Arrow",
+    "school": "Conjuration",
+    "subschool": "Creation",
+    "descriptors": [
+      "acid"
+    ],
+    "level": {
+      "sor": 2,
+      "wiz": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "M",
+      "F"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Long (400 ft. + 40 ft./level)",
+    "target": "One arrow of acid",
+    "duration": "1 round + 1 round/3 levels",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Ranged touch; 2d4 acid initially; 2d4 each subsequent round (no save, no SR).",
+    "source": "PHB 196",
+    "tags": [
+      "damage",
+      "acid",
+      "dot"
+    ]
+  },
+  {
+    "name": "Bull's Strength",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 2,
+      "pal": 2,
+      "sor": 2,
+      "wiz": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "+4 enhancement to Strength.",
+    "source": "PHB 207",
+    "tags": [
+      "buff",
+      "common"
+    ]
+  },
+  {
+    "name": "Cat's Grace",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 2,
+      "wiz": 2,
+      "brd": 2,
+      "rgr": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "+4 enhancement to Dexterity.",
+    "source": "PHB 208",
+    "tags": [
+      "buff",
+      "common"
+    ]
+  },
+  {
+    "name": "Bear's Endurance",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 2,
+      "drd": 2,
+      "sor": 2,
+      "wiz": 2,
+      "rgr": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "+4 enhancement to Constitution (extra HP do not heal damage taken).",
+    "source": "PHB 203",
+    "tags": [
+      "buff",
+      "common"
+    ]
+  },
+  {
+    "name": "Eagle's Splendor",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 2,
+      "sor": 2,
+      "wiz": 2,
+      "brd": 2,
+      "pal": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "+4 enhancement to Charisma.",
+    "source": "PHB 225",
+    "tags": [
+      "buff",
+      "social"
+    ]
+  },
+  {
+    "name": "Fox's Cunning",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 2,
+      "wiz": 2,
+      "brd": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "+4 enhancement to Intelligence.",
+    "source": "PHB 234",
+    "tags": [
+      "buff"
+    ]
+  },
+  {
+    "name": "Owl's Wisdom",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 2,
+      "drd": 2,
+      "rgr": 2,
+      "pal": 2,
+      "sor": 2,
+      "wiz": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "+4 enhancement to Wisdom.",
+    "source": "PHB 260",
+    "tags": [
+      "buff"
+    ]
+  },
+  {
+    "name": "Detect Thoughts",
+    "school": "Divination",
+    "subschool": null,
+    "descriptors": [
+      "mind-affecting"
+    ],
+    "level": {
+      "sor": 2,
+      "wiz": 2,
+      "brd": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "F/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "60 ft.",
+    "target": "Cone-shaped emanation",
+    "duration": "Concentration, up to 1 min./level (D)",
+    "saving_throw": "Will negates (see text)",
+    "spell_resistance": "No",
+    "description": "Detect presence of thoughts; 2nd round count; 3rd round surface thoughts (Will save to block).",
+    "source": "PHB 220",
+    "tags": [
+      "detection",
+      "social"
+    ]
+  },
+  {
+    "name": "Flaming Sphere",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "fire"
+    ],
+    "level": {
+      "drd": 2,
+      "sor": 2,
+      "wiz": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "5-ft.-diameter sphere",
+    "duration": "1 round/level",
+    "saving_throw": "Reflex negates",
+    "spell_resistance": "Yes",
+    "description": "Sphere of fire rolls 30 ft./round; touch deals 3d6 fire (Reflex negates).",
+    "source": "PHB 231",
+    "tags": [
+      "damage",
+      "fire",
+      "control"
+    ]
+  },
+  {
+    "name": "Glitterdust",
+    "school": "Conjuration",
+    "subschool": "Creation",
+    "descriptors": [],
+    "level": {
+      "sor": 2,
+      "wiz": 2,
+      "brd": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "Creatures and objects within 10-ft.-radius spread",
+    "duration": "1 round/level",
+    "saving_throw": "Will negates (blinding only)",
+    "spell_resistance": "No",
+    "description": "Visible glitter outlines invisible creatures; targets blinded (Will negates blindness only).",
+    "source": "PHB 236",
+    "tags": [
+      "control",
+      "anti-invisibility",
+      "area",
+      "common"
+    ]
+  },
+  {
+    "name": "Invisibility",
+    "school": "Illusion",
+    "subschool": "Glamer",
+    "descriptors": [],
+    "level": {
+      "sor": 2,
+      "wiz": 2,
+      "brd": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal or touch",
+    "target": "You or a creature/object weighing no more than 100 lb./level",
+    "duration": "1 min./level (D)",
+    "saving_throw": "Will negates (harmless or object)",
+    "spell_resistance": "Yes (harmless, object)",
+    "description": "Target becomes invisible (+20 Hide if moving, +40 if still). Ends if target attacks.",
+    "source": "PHB 245",
+    "tags": [
+      "stealth",
+      "buff",
+      "common"
+    ]
+  },
+  {
+    "name": "Knock",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 2,
+      "wiz": 2
+    },
+    "components": [
+      "V"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "One door, box, or chest",
+    "duration": "Instantaneous",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Opens stuck, barred, locked, or magically locked doors/containers (DC 20 + 1/2 caster level vs. arcane lock).",
+    "source": "PHB 247",
+    "tags": [
+      "utility",
+      "common"
+    ]
+  },
+  {
+    "name": "Levitate",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 2,
+      "wiz": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "F"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal or close",
+    "target": "You or one willing creature or object (up to 100 lb./level)",
+    "duration": "1 min./level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Move target up or down at 20 ft./round (no horizontal motion).",
+    "source": "PHB 248",
+    "tags": [
+      "mobility",
+      "utility"
+    ]
+  },
+  {
+    "name": "Mirror Image",
+    "school": "Illusion",
+    "subschool": "Figment",
+    "descriptors": [],
+    "level": {
+      "sor": 2,
+      "wiz": 2,
+      "brd": 2
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal",
+    "target": "You",
+    "duration": "1 min./level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "1d4 + 1 image per 3 caster levels (max 8) of you; attackers must randomly target a figment.",
+    "source": "PHB 254",
+    "tags": [
+      "defensive",
+      "illusion",
+      "common"
+    ]
+  },
+  {
+    "name": "Scorching Ray",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "fire"
+    ],
+    "level": {
+      "sor": 2,
+      "wiz": 2
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One or more rays",
+    "duration": "Instantaneous",
+    "saving_throw": "None",
+    "spell_resistance": "Yes",
+    "description": "Ranged touch; 4d6 fire per ray. +1 ray at 7th level, +1 more at 11th (max 3).",
+    "source": "PHB 274",
+    "tags": [
+      "damage",
+      "fire",
+      "common"
+    ]
+  },
+  {
+    "name": "See Invisibility",
+    "school": "Divination",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 2,
+      "wiz": 2,
+      "brd": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal",
+    "target": "You",
+    "duration": "10 min./level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "See invisible creatures and objects normally.",
+    "source": "PHB 275",
+    "tags": [
+      "detection",
+      "anti-invisibility"
+    ]
+  },
+  {
+    "name": "Web",
+    "school": "Conjuration",
+    "subschool": "Creation",
+    "descriptors": [],
+    "level": {
+      "sor": 2,
+      "wiz": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "20-ft.-radius spread",
+    "duration": "10 min./level (D)",
+    "saving_throw": "Reflex negates (entangled)",
+    "spell_resistance": "No",
+    "description": "Sticky webs fill area; entangle creatures (Reflex negates initial; Str/Escape Artist to break free). Burns easily (2d4 fire to anyone caught).",
+    "source": "PHB 301",
+    "tags": [
+      "control",
+      "area",
+      "common"
+    ]
+  },
+  {
+    "name": "Cure Moderate Wounds",
+    "school": "Conjuration",
+    "subschool": "Healing",
+    "descriptors": [],
+    "level": {
+      "clr": 2,
+      "drd": 3,
+      "pal": 3,
+      "rgr": 3,
+      "brd": 2
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "Instantaneous",
+    "saving_throw": "Will half (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Cures 2d8 + caster level (max +10) hit points.",
+    "source": "PHB 216",
+    "tags": [
+      "healing",
+      "common"
+    ]
+  },
+  {
+    "name": "Hold Person",
+    "school": "Enchantment",
+    "subschool": "Compulsion",
+    "descriptors": [
+      "mind-affecting"
+    ],
+    "level": {
+      "clr": 2,
+      "sor": 3,
+      "wiz": 3,
+      "brd": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "F/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "One humanoid",
+    "duration": "1 round/level (D)",
+    "saving_throw": "Will negates (new save each round)",
+    "spell_resistance": "Yes",
+    "description": "Target paralyzed (no actions, helpless).",
+    "source": "PHB 241",
+    "tags": [
+      "control",
+      "common"
+    ]
+  },
+  {
+    "name": "Silence",
+    "school": "Illusion",
+    "subschool": "Glamer",
+    "descriptors": [],
+    "level": {
+      "clr": 2,
+      "brd": 2
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Long (400 ft. + 40 ft./level)",
+    "target": "20-ft.-radius emanation centered on point or creature",
+    "duration": "1 min./level (D)",
+    "saving_throw": "Will negates; see text",
+    "spell_resistance": "Yes",
+    "description": "No sound in area; spells with verbal components fail.",
+    "source": "PHB 279",
+    "tags": [
+      "control",
+      "anti-caster",
+      "common"
+    ]
+  },
+  {
+    "name": "Spiritual Weapon",
+    "school": "Evocation",
+    "subschool": "Force",
+    "descriptors": [
+      "force"
+    ],
+    "level": {
+      "clr": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "Spiritual weapon",
+    "duration": "1 round/level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "Yes",
+    "description": "Magical weapon attacks (1d8 + 1/3 levels force damage) directed by caster (move action).",
+    "source": "PHB 283",
+    "tags": [
+      "damage",
+      "force",
+      "common"
+    ]
+  },
+  {
+    "name": "Sound Burst",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "sonic"
+    ],
+    "level": {
+      "clr": 2,
+      "brd": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "10-ft.-radius spread",
+    "duration": "Instantaneous",
+    "saving_throw": "Fortitude partial",
+    "spell_resistance": "Yes",
+    "description": "1d8 sonic damage and stunned 1 round (Fort negates stun).",
+    "source": "PHB 282",
+    "tags": [
+      "damage",
+      "sonic",
+      "area"
+    ]
+  },
+  {
+    "name": "Dispel Magic",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 3,
+      "wiz": 3,
+      "clr": 3,
+      "drd": 4,
+      "brd": 3,
+      "pal": 3
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "One creature, object, area, or spell",
+    "duration": "Instantaneous",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Targeted or counterspell or area. Caster level check 1d20 + CL (max +10) vs. DC 11 + target's CL.",
+    "source": "PHB 223",
+    "tags": [
+      "counter",
+      "abjuration",
+      "common"
+    ]
+  },
+  {
+    "name": "Fireball",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "fire"
+    ],
+    "level": {
+      "sor": 3,
+      "wiz": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Long (400 ft. + 40 ft./level)",
+    "target": "20-ft.-radius spread",
+    "duration": "Instantaneous",
+    "saving_throw": "Reflex half",
+    "spell_resistance": "Yes",
+    "description": "1d6 fire per caster level (max 10d6) in area.",
+    "source": "PHB 231",
+    "tags": [
+      "damage",
+      "fire",
+      "area",
+      "common"
+    ]
+  },
+  {
+    "name": "Fly",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 3,
+      "wiz": 3,
+      "drd": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "F"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Subject flies at 60 ft. (good maneuverability), 40 ft. in medium load or armor.",
+    "source": "PHB 232",
+    "tags": [
+      "mobility",
+      "common"
+    ]
+  },
+  {
+    "name": "Haste",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 3,
+      "wiz": 3,
+      "brd": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One creature/level, no two more than 30 ft. apart",
+    "duration": "1 round/level",
+    "saving_throw": "Fortitude negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "+1 attack on full attack, +1 dodge AC, +1 reflex, +30 ft. speed.",
+    "source": "PHB 239",
+    "tags": [
+      "buff",
+      "common"
+    ]
+  },
+  {
+    "name": "Lightning Bolt",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "electricity"
+    ],
+    "level": {
+      "sor": 3,
+      "wiz": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "120 ft.",
+    "target": "120-ft. line",
+    "duration": "Instantaneous",
+    "saving_throw": "Reflex half",
+    "spell_resistance": "Yes",
+    "description": "1d6 electricity per caster level (max 10d6) in line.",
+    "source": "PHB 248",
+    "tags": [
+      "damage",
+      "electricity",
+      "line"
+    ]
+  },
+  {
+    "name": "Slow",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 3,
+      "wiz": 3,
+      "brd": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One creature/level, no two more than 30 ft. apart",
+    "duration": "1 round/level",
+    "saving_throw": "Will negates",
+    "spell_resistance": "Yes",
+    "description": "Targets take only one action/round (standard OR move), -1 attack, -1 AC, -1 reflex, speed halved.",
+    "source": "PHB 280",
+    "tags": [
+      "debuff",
+      "control"
+    ]
+  },
+  {
+    "name": "Stinking Cloud",
+    "school": "Conjuration",
+    "subschool": "Creation",
+    "descriptors": [
+      "poison"
+    ],
+    "level": {
+      "sor": 3,
+      "wiz": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "Cloud spreads in 20-ft. radius",
+    "duration": "1 round/level",
+    "saving_throw": "Fortitude negates (nausea)",
+    "spell_resistance": "No",
+    "description": "Creatures in cloud are nauseated (Fortitude negates); fog obscures sight as obscuring mist.",
+    "source": "PHB 284",
+    "tags": [
+      "control",
+      "area"
+    ]
+  },
+  {
+    "name": "Summon Monster III",
+    "school": "Conjuration",
+    "subschool": "Summoning",
+    "descriptors": [
+      "see summoned creature"
+    ],
+    "level": {
+      "sor": 3,
+      "wiz": 3,
+      "clr": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "F/DF"
+    ],
+    "casting_time": "1 round",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One summoned creature",
+    "duration": "1 round/level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Summons one 3rd-level creature (or 1d3 2nd-level or 1d4+1 1st-level) to fight for you.",
+    "source": "PHB 286",
+    "tags": [
+      "summoning"
+    ]
+  },
+  {
+    "name": "Vampiric Touch",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 3,
+      "wiz": 3
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Living creature touched",
+    "duration": "Instantaneous/1 hour",
+    "saving_throw": "None",
+    "spell_resistance": "Yes",
+    "description": "Melee touch; 1d6 damage per two caster levels (max 10d6). Caster gains temp HP equal to damage (max \u00bd target's HP).",
+    "source": "PHB 298",
+    "tags": [
+      "damage",
+      "healing-leech"
+    ]
+  },
+  {
+    "name": "Bestow Curse",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 3,
+      "sor": 4,
+      "wiz": 4
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "Permanent",
+    "saving_throw": "Will negates",
+    "spell_resistance": "Yes",
+    "description": "Curses target: choose -6 to one ability, -4 attack/saves/checks, or 50% chance to lose action each turn.",
+    "source": "PHB 203",
+    "tags": [
+      "debuff",
+      "curse"
+    ]
+  },
+  {
+    "name": "Cure Serious Wounds",
+    "school": "Conjuration",
+    "subschool": "Healing",
+    "descriptors": [],
+    "level": {
+      "clr": 3,
+      "drd": 4,
+      "pal": 3,
+      "rgr": 4,
+      "brd": 3
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "Instantaneous",
+    "saving_throw": "Will half (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Cures 3d8 + caster level (max +15) hit points.",
+    "source": "PHB 216",
+    "tags": [
+      "healing",
+      "common"
+    ]
+  },
+  {
+    "name": "Searing Light",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "light"
+    ],
+    "level": {
+      "clr": 3
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "Ray",
+    "duration": "Instantaneous",
+    "saving_throw": "None",
+    "spell_resistance": "Yes",
+    "description": "Ranged touch; 1d8 per 2 caster levels (max 5d8); +1d6/CL vs. undead (max 10d6); double damage vs. light-vulnerable.",
+    "source": "PHB 274",
+    "tags": [
+      "damage",
+      "light",
+      "anti-undead",
+      "common"
+    ]
+  },
+  {
+    "name": "Magic Circle Against Evil",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [
+      "good"
+    ],
+    "level": {
+      "clr": 3,
+      "pal": 3,
+      "sor": 3,
+      "wiz": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "10-ft.-radius emanation from touched creature",
+    "duration": "10 min./level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "No; see text",
+    "description": "As protection from evil, but in a 10-ft. radius. Can serve as binding circle (with circle drawn).",
+    "source": "PHB 250",
+    "tags": [
+      "defensive",
+      "anti-evil",
+      "summoning"
+    ]
+  },
+  {
+    "name": "Animate Dead",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "evil"
+    ],
+    "level": {
+      "clr": 3,
+      "sor": 4,
+      "wiz": 4
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "One or more corpses (see text)",
+    "duration": "Instantaneous",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Animate skeletons or zombies. HD total limited to 4 \u00d7 caster level. Requires 25 gp of black onyx per HD.",
+    "source": "PHB 198",
+    "tags": [
+      "necromancy",
+      "evil-cleric",
+      "ptolus_necropolis"
+    ]
+  },
+  {
+    "name": "Speak with Dead",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "language-dependent"
+    ],
+    "level": {
+      "clr": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "10 minutes",
+    "range": "10 ft.",
+    "target": "One dead creature",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates; see text",
+    "spell_resistance": "No",
+    "description": "Ask the corpse questions: 1 question/2 levels (max 6). Corpse must have mouth and not be undead.",
+    "source": "PHB 281",
+    "tags": [
+      "divination",
+      "ptolus_necropolis"
+    ]
+  },
+  {
+    "name": "Aid",
+    "school": "Enchantment",
+    "subschool": "Compulsion",
+    "descriptors": [
+      "mind-affecting"
+    ],
+    "level": {
+      "clr": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Living creature touched",
+    "duration": "1 min./level",
+    "saving_throw": "None",
+    "spell_resistance": "Yes (harmless)",
+    "description": "+1 morale bonus on attack rolls and saves vs. fear; +1d8 temporary hit points.",
+    "source": "PHB 196",
+    "tags": [
+      "buff",
+      "morale",
+      "Good domain"
+    ]
+  },
+  {
+    "name": "Blink",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 3,
+      "wiz": 3
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal",
+    "target": "You",
+    "duration": "1 round/level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Caster randomly shifts between Material and Ethereal Plane each round: 50% miss chance on attacks vs. caster; caster's own attacks miss 20% of the time.",
+    "source": "PHB 206",
+    "tags": [
+      "defensive",
+      "mobility",
+      "common"
+    ]
+  },
+  {
+    "name": "Protection from Energy",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 3,
+      "drd": 3,
+      "sor": 3,
+      "wiz": 3,
+      "rgr": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "10 min./level or until discharged",
+    "saving_throw": "Fortitude negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Absorbs up to 12 points/level (max 120) of damage from one chosen energy type (acid, cold, electricity, fire, or sonic).",
+    "source": "PHB 266",
+    "tags": [
+      "defensive",
+      "buff",
+      "Protection domain",
+      "common"
+    ]
+  },
+  {
+    "name": "Water Breathing",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 3,
+      "drd": 3,
+      "sor": 3,
+      "wiz": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Living creatures touched",
+    "duration": "2 hours/level (D); divide freely among touched creatures",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Subjects can breathe water freely; also breathe air normally.",
+    "source": "PHB 300",
+    "tags": [
+      "utility",
+      "exploration"
+    ]
+  },
+  {
+    "name": "Nondetection",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 3,
+      "wiz": 3,
+      "rgr": 4
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature or object touched",
+    "duration": "1 hour/level",
+    "saving_throw": "Will negates (harmless, object)",
+    "spell_resistance": "No",
+    "description": "Hides target from divination magic. Caster level check (DC 11 + caster level of divination attempt) to penetrate.",
+    "source": "PHB 257",
+    "tags": [
+      "stealth",
+      "counter-divination"
+    ]
+  },
+  {
+    "name": "Gaseous Form",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 3,
+      "wiz": 3,
+      "brd": 3
+    },
+    "components": [
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Willing corporeal creature touched",
+    "duration": "2 min./level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Subject becomes insubstantial: DR 10/magic, immune to poison/sneak attack/critical hits; fly 10 ft. (perfect); can slip through small cracks. Cannot attack or cast spells.",
+    "source": "PHB 234",
+    "tags": [
+      "infiltration",
+      "defensive",
+      "exploration"
+    ]
+  },
+  {
+    "name": "Cure Critical Wounds",
+    "school": "Conjuration",
+    "subschool": "Healing",
+    "descriptors": [],
+    "level": {
+      "clr": 4,
+      "drd": 5,
+      "brd": 4
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "Instantaneous",
+    "saving_throw": "Will half (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Cures 4d8 + caster level (max +20) hit points.",
+    "source": "PHB 215",
+    "tags": [
+      "healing",
+      "Healing domain",
+      "common"
+    ]
+  },
+  {
+    "name": "Death Ward",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 4,
+      "drd": 5,
+      "pal": 4
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Living creature touched",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Subject is immune to all death spells, magical death effects, energy drain, and negative energy effects.",
+    "source": "PHB 217",
+    "tags": [
+      "defensive",
+      "anti-undead",
+      "ptolus_necropolis",
+      "common"
+    ]
+  },
+  {
+    "name": "Dimension Door",
+    "school": "Conjuration",
+    "subschool": "Teleportation",
+    "descriptors": [],
+    "level": {
+      "sor": 4,
+      "wiz": 4,
+      "brd": 4
+    },
+    "components": [
+      "V"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Long (400 ft. + 40 ft./level)",
+    "target": "You and touched objects or other touched willing creatures",
+    "duration": "Instantaneous",
+    "saving_throw": "None and Will negates (object)",
+    "spell_resistance": "No and Yes (object)",
+    "description": "Teleport up to Long range (no line of effect needed). Bring up to 800 lb. + willing creatures. Can arrive off-target on 1-in-10.",
+    "source": "PHB 221",
+    "tags": [
+      "mobility",
+      "escape",
+      "common"
+    ]
+  },
+  {
+    "name": "Fear",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "fear",
+      "mind-affecting"
+    ],
+    "level": {
+      "sor": 4,
+      "wiz": 4,
+      "brd": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "30 ft.",
+    "target": "Cone-shaped burst",
+    "duration": "1 round/level",
+    "saving_throw": "Will partial",
+    "spell_resistance": "Yes",
+    "description": "Affected creatures flee at top speed (Will save: shaken 1 round instead).",
+    "source": "PHB 229",
+    "tags": [
+      "control",
+      "fear",
+      "area"
+    ]
+  },
+  {
+    "name": "Freedom of Movement",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 4,
+      "drd": 4,
+      "brd": 4,
+      "rgr": 4
+    },
+    "components": [
+      "V",
+      "S",
+      "M",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal or touch",
+    "target": "You or creature touched",
+    "duration": "10 min./level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Subject moves normally despite magical effects (entangle, web, slow, hold person, etc.).",
+    "source": "PHB 233",
+    "tags": [
+      "defensive",
+      "mobility",
+      "common"
+    ]
+  },
+  {
+    "name": "Holy Smite",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "good",
+      "light"
+    ],
+    "level": {
+      "clr": 4
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "20-ft.-radius burst",
+    "duration": "Instantaneous (or 1 round; see text)",
+    "saving_throw": "Will partial",
+    "spell_resistance": "Yes",
+    "description": "1d8 damage per 2 caster levels (max 5d8) to evil creatures (Will half); neutral creatures take half. Evil creatures blinded 1 round (Will negates).",
+    "source": "PHB 241",
+    "tags": [
+      "damage",
+      "anti-evil",
+      "Good domain",
+      "lothian"
+    ]
+  },
+  {
+    "name": "Restoration",
+    "school": "Conjuration",
+    "subschool": "Healing",
+    "descriptors": [],
+    "level": {
+      "clr": 4,
+      "pal": 4
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "3 rounds",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "Instantaneous",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Removes negative levels (100 gp diamond dust per negative level), restores one drained ability score point, removes fatigue/exhaustion.",
+    "source": "PHB 272",
+    "tags": [
+      "healing",
+      "restoration",
+      "common"
+    ]
+  },
+  {
+    "name": "Order's Wrath",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "lawful"
+    ],
+    "level": {
+      "clr": 4
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "Non-lawful creatures in 30-ft.-radius spread",
+    "duration": "Instantaneous (or 1 round; see text)",
+    "saving_throw": "Will partial",
+    "spell_resistance": "Yes",
+    "description": "1d8 damage per 2 caster levels (max 5d8) vs. chaotic creatures; neutral creatures take half. Chaotic creatures also dazed 1 round (Will negates daze).",
+    "source": "PHB 259",
+    "tags": [
+      "damage",
+      "anti-chaos",
+      "Law domain",
+      "lothian"
+    ]
+  },
+  {
+    "name": "Wall of Fire",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "fire"
+    ],
+    "level": {
+      "drd": 5,
+      "sor": 4,
+      "wiz": 4
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "Opaque sheet of flame up to 20 ft. high + 5 ft./4 levels wide; or ring of fire 5 ft./2 levels diameter",
+    "duration": "Concentration + 1 round/level",
+    "saving_throw": "None",
+    "spell_resistance": "Yes",
+    "description": "Passing through deals 2d6+1 fire damage/CL (max +20); within 10 ft. of far side 2d4 fire/round; within 20 ft. 1d4 fire/round.",
+    "source": "PHB 299",
+    "tags": [
+      "damage",
+      "fire",
+      "control",
+      "area"
+    ]
+  },
+  {
+    "name": "Polymorph",
+    "school": "Transmutation",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "sor": 4,
+      "wiz": 4
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Willing living creature touched",
+    "duration": "1 min./level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Subject assumes any creature form with HD \u2264 caster level (max own HD +5). Gains physical stats of new form; retains own mental stats and abilities.",
+    "source": "PHB 263",
+    "tags": [
+      "transmutation",
+      "utility",
+      "common"
+    ]
+  },
+  {
+    "name": "Scrying",
+    "school": "Divination",
+    "subschool": "Scrying",
+    "descriptors": [],
+    "level": {
+      "clr": 5,
+      "drd": 4,
+      "brd": 3,
+      "sor": 4,
+      "wiz": 4
+    },
+    "components": [
+      "V",
+      "S",
+      "M/DF",
+      "F"
+    ],
+    "casting_time": "1 hour",
+    "range": "See text",
+    "target": "Magical sensor",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates",
+    "spell_resistance": "Yes",
+    "description": "Creates a magical sensor on or near the target creature (Will negates; modified by familiarity). You can see and hear through the sensor.",
+    "source": "PHB 274",
+    "tags": [
+      "divination",
+      "utility"
+    ]
+  },
+  {
+    "name": "Cone of Cold",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "cold"
+    ],
+    "level": {
+      "sor": 5,
+      "wiz": 5
+    },
+    "components": [
+      "V",
+      "S",
+      "M/F"
+    ],
+    "casting_time": "1 standard action",
+    "range": "60 ft.",
+    "target": "Cone-shaped burst",
+    "duration": "Instantaneous",
+    "saving_throw": "Reflex half",
+    "spell_resistance": "Yes",
+    "description": "1d6 cold damage per caster level (max 15d6).",
+    "source": "PHB 212",
+    "tags": [
+      "damage",
+      "cold",
+      "area",
+      "common"
+    ]
+  },
+  {
+    "name": "Flame Strike",
+    "school": "Evocation",
+    "subschool": null,
+    "descriptors": [
+      "fire"
+    ],
+    "level": {
+      "clr": 5,
+      "drd": 4
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "Cylinder (10-ft. radius, 40 ft. high)",
+    "duration": "Instantaneous",
+    "saving_throw": "Reflex half",
+    "spell_resistance": "Yes",
+    "description": "1d6 damage per caster level (max 15d6). Half is fire damage, half is divine (bypasses fire resistance/immunity).",
+    "source": "PHB 231",
+    "tags": [
+      "damage",
+      "fire",
+      "divine",
+      "Sun domain",
+      "lothian",
+      "common"
+    ]
+  },
+  {
+    "name": "Raise Dead",
+    "school": "Conjuration",
+    "subschool": "Healing",
+    "descriptors": [],
+    "level": {
+      "clr": 5
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 minute",
+    "range": "Touch",
+    "target": "Dead creature touched",
+    "duration": "Instantaneous",
+    "saving_throw": "None; see text",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Restores life to creature dead \u2264 1 day/level. Subject loses one level (or 2 Con if 1st-level). Requires 5,000 gp diamond. Cannot restore lost limbs or raise constructs/elementals/undead.",
+    "source": "PHB 268",
+    "tags": [
+      "healing",
+      "Healing domain",
+      "restoration",
+      "lothian",
+      "common"
+    ]
+  },
+  {
+    "name": "True Seeing",
+    "school": "Divination",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 5,
+      "drd": 7,
+      "sor": 6,
+      "wiz": 6
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "1 min./level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Subject sees through illusions, sees invisible creatures/objects, sees into the Ethereal (60 ft.), detects secret doors (Search DC 20), sees true form of polymorphed or disguised creatures.",
+    "source": "PHB 296",
+    "tags": [
+      "detection",
+      "anti-illusion",
+      "anti-invisibility"
+    ]
+  },
+  {
+    "name": "Teleport",
+    "school": "Conjuration",
+    "subschool": "Teleportation",
+    "descriptors": [],
+    "level": {
+      "sor": 5,
+      "wiz": 5
+    },
+    "components": [
+      "V"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal and touch",
+    "target": "You and touched objects or other willing creatures (up to 50 lb./level)",
+    "duration": "Instantaneous",
+    "saving_throw": "None and Will negates (object)",
+    "spell_resistance": "No and Yes (object)",
+    "description": "Transport yourself and companions anywhere on the same plane. Accuracy depends on familiarity: very familiar (on target), studied carefully (similar area/off target/mishap at 94/98/00).",
+    "source": "PHB 293",
+    "tags": [
+      "mobility",
+      "common"
+    ]
+  },
+  {
+    "name": "Dispel Evil",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [
+      "good"
+    ],
+    "level": {
+      "clr": 5,
+      "pal": 4
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "You and a touched evil creature from another plane, or enchantment/evil spell on a touched creature",
+    "duration": "1 round/level or until discharged",
+    "saving_throw": "Will negates",
+    "spell_resistance": "Yes",
+    "description": "Gain +4 deflection to AC vs. evil; touch evil extraplanar creature: CL check vs. DC 11+creature's CL to send it back to its plane. Or: remove enchantment cast by an evil creature.",
+    "source": "PHB 222",
+    "tags": [
+      "anti-evil",
+      "Good domain",
+      "lothian"
+    ]
+  },
+  {
+    "name": "Summon Monster V",
+    "school": "Conjuration",
+    "subschool": "Summoning",
+    "descriptors": [
+      "see summoned creature"
+    ],
+    "level": {
+      "clr": 5,
+      "sor": 5,
+      "wiz": 5
+    },
+    "components": [
+      "V",
+      "S",
+      "F/DF"
+    ],
+    "casting_time": "1 round",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One summoned creature",
+    "duration": "1 round/level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Summons one 5th-level creature (or 1d3 4th-level or 1d4+1 3rd-level) to fight for you.",
+    "source": "PHB 287",
+    "tags": [
+      "summoning"
+    ]
+  },
+  {
+    "name": "Shield Other",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 2,
+      "pal": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "F"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One creature",
+    "duration": "1 hour/level (D)",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "No",
+    "description": "Subject gains +1 deflection to AC and +1 resistance on saves. Caster takes half of all damage dealt to subject.",
+    "source": "PHB 278",
+    "tags": [
+      "defensive",
+      "Protection domain",
+      "lothian"
+    ]
+  },
+  {
+    "name": "Heal",
+    "school": "Conjuration",
+    "subschool": "Healing",
+    "descriptors": [],
+    "level": {
+      "clr": 6,
+      "drd": 7
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Creature touched",
+    "duration": "Instantaneous",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Cures 10 hp/caster level (max 150); removes all diseases, blindness, deafness, ability damage, exhaustion, and negative energy effects. Damages undead for same amount.",
+    "source": "PHB 239",
+    "tags": [
+      "healing",
+      "Healing domain",
+      "lothian",
+      "common"
+    ]
+  },
+  {
+    "name": "Word of Recall",
+    "school": "Conjuration",
+    "subschool": "Teleportation",
+    "descriptors": [],
+    "level": {
+      "clr": 6,
+      "drd": 8
+    },
+    "components": [
+      "V"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Unlimited",
+    "target": "You and willing creatures within 5 ft./2 caster levels",
+    "duration": "Instantaneous",
+    "saving_throw": "None or Will negates (harmless, object)",
+    "spell_resistance": "No",
+    "description": "Teleport yourself and willing companions to your pre-designated sanctuary. Sanctuary must be familiar and must be set when this spell is learned.",
+    "source": "PHB 303",
+    "tags": [
+      "mobility",
+      "escape",
+      "lothian"
+    ]
+  },
+  {
+    "name": "Necrotic Cyst",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "Evil"
+    ],
+    "level": {
+      "clr": 2,
+      "sor": 2,
+      "wiz": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "F"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Living creature touched",
+    "duration": "Instantaneous",
+    "saving_throw": "Fortitude negates",
+    "spell_resistance": "Yes",
+    "description": "Implants a necrotic sac of tissue in the target. Victim takes \u20132 penalty on saves vs. necromancy spells and +1d6 damage from undead natural attacks. Surgical removal requires DC 20 Heal check (failure kills patient). Requires caster to possess a mother cyst (see LM p.28).",
+    "source": "LM p.68",
+    "tags": [
+      "necromancy",
+      "undead",
+      "debuff",
+      "mother_cyst"
+    ]
+  },
+  {
+    "name": "Necrotic Bloat",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "Evil"
+    ],
+    "level": {
+      "clr": 3,
+      "sor": 3,
+      "wiz": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "F"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "Living creature with necrotic cyst",
+    "duration": "Instantaneous",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Agitates an implanted necrotic cyst, dealing 1d6 damage/level (max 10d6); half is vile damage (requires consecrate/hallow area to heal). Requires caster to possess a mother cyst.",
+    "source": "LM p.67",
+    "tags": [
+      "necromancy",
+      "undead",
+      "vile_damage",
+      "mother_cyst",
+      "damage"
+    ]
+  },
+  {
+    "name": "Necrotic Burst",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "Evil"
+    ],
+    "level": {
+      "clr": 5,
+      "sor": 5,
+      "wiz": 5
+    },
+    "components": [
+      "V",
+      "S",
+      "F"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "Living creature with necrotic cyst",
+    "duration": "Instantaneous",
+    "saving_throw": "Fortitude partial",
+    "spell_resistance": "No",
+    "description": "Causes cyst to explode. On successful save: 1d6/level (max 15d6), half vile. On failed save: target dies instantly and cyst exits as a free-willed skulking cyst. Requires mother cyst.",
+    "source": "LM p.67",
+    "tags": [
+      "necromancy",
+      "undead",
+      "vile_damage",
+      "mother_cyst",
+      "death_effect"
+    ]
+  },
+  {
+    "name": "Necrotic Domination",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "Evil"
+    ],
+    "level": {
+      "clr": 4,
+      "sor": 4,
+      "wiz": 4
+    },
+    "components": [
+      "V",
+      "S",
+      "F"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "Living humanoid with necrotic cyst",
+    "duration": "As dominate person",
+    "saving_throw": "Will negates",
+    "spell_resistance": "No",
+    "description": "Functions as dominate person but works on any humanoid harboring a necrotic cyst. Requires mother cyst.",
+    "source": "LM p.68",
+    "tags": [
+      "necromancy",
+      "undead",
+      "mind_control",
+      "mother_cyst",
+      "compulsion"
+    ]
+  },
+  {
+    "name": "Plague of Undead",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "Evil"
+    ],
+    "level": {
+      "clr": 9,
+      "sor": 9,
+      "wiz": 9
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One or more corpses within range",
+    "duration": "Instantaneous",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Mass animate dead\u2014raises up to 4\u00d7 caster level HD of skeletons/zombies from corpses in range (same control cap as animate dead: 4\u00d7 CL HD total). Material component: black sapphire worth 100 gp.",
+    "source": "LM p.70",
+    "tags": [
+      "necromancy",
+      "undead",
+      "animate_dead",
+      "mass"
+    ]
+  },
+  {
+    "name": "Summon Undead I",
+    "school": "Conjuration",
+    "subschool": "Summoning",
+    "descriptors": [
+      "Evil"
+    ],
+    "level": {
+      "clr": 1,
+      "sor": 1,
+      "wiz": 1
+    },
+    "components": [
+      "V",
+      "S",
+      "F"
+    ],
+    "casting_time": "1 round",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One summoned undead creature",
+    "duration": "1 round/level",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Summons one undead from the 1st-level list (Medium skeleton or Small zombie). Summoned undead don't count against HD control limit. Focus: tiny bag, small candle, carved humanoid bone.",
+    "source": "LM p.71",
+    "tags": [
+      "necromancy",
+      "undead",
+      "summoning",
+      "conjuration"
+    ]
+  },
+  {
+    "name": "Summon Undead III",
+    "school": "Conjuration",
+    "subschool": "Summoning",
+    "descriptors": [
+      "Evil"
+    ],
+    "level": {
+      "clr": 3,
+      "sor": 3,
+      "wiz": 3
+    },
+    "components": [
+      "V",
+      "S",
+      "F"
+    ],
+    "casting_time": "1 round",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One or more summoned undead",
+    "duration": "1 round/level",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Summons one undead from the 3rd-level list (Ghoul, Huge skeleton, or Large zombie), two from the 2nd-level list, or four from the 1st-level list.",
+    "source": "LM p.71",
+    "tags": [
+      "necromancy",
+      "undead",
+      "summoning",
+      "conjuration"
+    ]
+  },
+  {
+    "name": "Summon Undead V",
+    "school": "Conjuration",
+    "subschool": "Summoning",
+    "descriptors": [
+      "Evil"
+    ],
+    "level": {
+      "clr": 5,
+      "sor": 5,
+      "wiz": 5
+    },
+    "components": [
+      "V",
+      "S",
+      "F"
+    ],
+    "casting_time": "1 round",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "One or more summoned undead",
+    "duration": "1 round/level",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Summons one undead from the 5th-level list (Mummy, Shadow, Vampire spawn, or Wight), two from 4th-level, or four from lower-level lists.",
+    "source": "LM p.72",
+    "tags": [
+      "necromancy",
+      "undead",
+      "summoning",
+      "conjuration"
+    ]
+  },
+  {
+    "name": "Veil of Undeath",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "Evil"
+    ],
+    "level": {
+      "clr": 8,
+      "sor": 8,
+      "wiz": 8
+    },
+    "components": [
+      "V",
+      "S",
+      "M"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal",
+    "target": "You",
+    "duration": "10 min./level",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Caster gains all undead immunities (mind-affecting, poison, sleep, paralysis, stunning, disease, death effects, crits, nonlethal, ability/energy drain, fatigue, exhaustion, Fortitude-targeting effects). Con becomes \u2014; cure spells damage, inflict spells heal. Caster is not actually undead type. Material: black sapphire 1,000 gp.",
+    "source": "LM p.72",
+    "tags": [
+      "necromancy",
+      "undead",
+      "buff",
+      "self"
+    ]
+  },
+  {
+    "name": "Avasculate",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "Death",
+      "Evil"
+    ],
+    "level": {
+      "sor": 7,
+      "wiz": 7
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "Ray; one living creature",
+    "duration": "Instantaneous",
+    "saving_throw": "Fortitude partial",
+    "spell_resistance": "Yes",
+    "description": "Ray reduces target to half current HP (rounded down) and stuns for 1 round. Successful Fort save negates stun but not HP loss.",
+    "source": "LM p.62",
+    "tags": [
+      "necromancy",
+      "death",
+      "damage",
+      "ray"
+    ]
+  },
+  {
+    "name": "Energy Ebb",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "Evil"
+    ],
+    "level": {
+      "clr": 7,
+      "sor": 7,
+      "wiz": 7
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Close (25 ft. + 5 ft./2 levels)",
+    "target": "Ray; one living creature",
+    "duration": "1 round/level",
+    "saving_throw": "Fortitude negates",
+    "spell_resistance": "Yes",
+    "description": "Target gains 1 negative level initially, then another negative level each round for duration unless Fort save made. A Heal check (DC 23) or restoration/greater restoration stops the drain. Undead touched gain 4d4\u00d75 temp hp for 1 hour.",
+    "source": "LM p.64",
+    "tags": [
+      "necromancy",
+      "energy_drain",
+      "ray"
+    ]
+  },
+  {
+    "name": "Consumptive Field",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "Death",
+      "Evil"
+    ],
+    "level": {
+      "clr": 4
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal",
+    "target": "30-ft.-radius spherical emanation",
+    "duration": "1 round/level",
+    "saving_throw": "Will negates",
+    "spell_resistance": "Yes",
+    "description": "All creatures in area with fewer than 0 HP that fail Will save die; caster gains 1d8 temp hp per death and +2 Str until duration ends. Caster level increases by 1 per death (max +\u00bd original CL) for determining spell effects.",
+    "source": "LM p.63",
+    "tags": [
+      "necromancy",
+      "death",
+      "aoe",
+      "buff_on_kill"
+    ]
+  },
+  {
+    "name": "Ghost Trap",
+    "school": "Abjuration",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 6,
+      "sor": 7,
+      "wiz": 7
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Personal",
+    "target": "5-ft.-per-level radius field around you",
+    "duration": "1 min./level (D)",
+    "saving_throw": "None",
+    "spell_resistance": "No",
+    "description": "Creates field of energy that turns all incorporeal creatures within it corporeal. Creatures cannot turn ethereal or become nonethereal within the field.",
+    "source": "LM p.65",
+    "tags": [
+      "abjuration",
+      "incorporeal",
+      "anti_undead",
+      "field"
+    ]
+  },
+  {
+    "name": "Incorporeal Nova",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [
+      "Death"
+    ],
+    "level": {
+      "clr": 5,
+      "sor": 6,
+      "wiz": 6
+    },
+    "components": [
+      "V",
+      "S"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Medium (100 ft. + 10 ft./level)",
+    "target": "50-ft.-radius burst",
+    "duration": "Instantaneous",
+    "saving_throw": "Will negates",
+    "spell_resistance": "Yes",
+    "description": "Destroys incorporeal and gaseous creatures: 1d4 HD/level (max 20d4). Affects shadows, wraiths, spectres, ghosts, gaseous vampires. Creatures with fewest HD affected first; no creature with 9+ HD affected.",
+    "source": "LM p.67",
+    "tags": [
+      "necromancy",
+      "incorporeal",
+      "anti_undead",
+      "aoe",
+      "destruction"
+    ]
+  },
+  {
+    "name": "Spawn Screen",
+    "school": "Necromancy",
+    "subschool": null,
+    "descriptors": [],
+    "level": {
+      "clr": 2,
+      "sor": 2,
+      "wiz": 2
+    },
+    "components": [
+      "V",
+      "S",
+      "DF"
+    ],
+    "casting_time": "1 standard action",
+    "range": "Touch",
+    "target": "Living creature touched",
+    "duration": "1 hour/level",
+    "saving_throw": "Will negates (harmless)",
+    "spell_resistance": "Yes (harmless)",
+    "description": "Subject cannot rise as undead spawn if killed by a spawn-creating undead (such as ghoul fever or wight energy drain) while the spell's duration is active.",
+    "source": "LM p.71",
+    "tags": [
+      "necromancy",
+      "protection",
+      "anti_spawn",
+      "buff"
+    ]
+  }
+]

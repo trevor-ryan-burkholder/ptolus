@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Street Scenes — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+</head>
+<body>
+<div class="runner-main">
+  <div class="panel">
+    <h2>Street Scene</h2>
+    <label for="district">District</label>
+    <select id="district">
+      <option>Midtown</option><option>Oldtown</option><option>Warrens</option>
+      <option selected>Docks</option><option>Nobles' Quarter</option>
+      <option>Guildsman's District</option><option>Temple District</option>
+      <option>Dungeon entrance</option><option value="random">Random</option>
+    </select>
+    <label for="tod">Time of Day</label>
+    <select id="tod"><option>Dawn</option><option>Morning</option><option>Midday</option><option>Afternoon</option><option>Dusk</option><option selected>Evening</option><option>Night</option><option>Deep Night</option></select>
+    <label for="arc">Campaign Arc</label>
+    <select id="arc"><option value="1" selected>Arc I</option><option value="2">Arc II</option><option value="3">Arc III</option><option value="4">Arc IV</option><option value="5">Arc V</option></select>
+    <button class="primary" id="gen">Generate Scene</button>
+    <button id="quick" style="width:100%;margin-top:8px;">Quick Scene</button>
+    <div id="seed"></div>
+  </div>
+
+  <div>
+    <div class="log-head"><h2>Scene Log</h2><button id="broadcast">📺 Player View</button><button id="clear">Clear Log</button></div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/state.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Street Scene Generator', 'The texture of a city corner, right now');
+UI.contextBar();
+UI.diceTray();
+UI.seedControl('seed');
+const log = UI.logger('log', 'clear');
+UI.broadcastButton('broadcast', log);
+const D = Dice;
+
+const DAY = ['Dawn','Morning','Midday','Afternoon'];
+const EVE = ['Dusk','Evening'];
+const NIGHT = ['Night','Deep Night'];
+const DISTRICTS = ['Midtown','Oldtown','Warrens','Docks','Nobles\' Quarter','Guildsman\'s District','Temple District','Dungeon entrance'];
+
+// type definitions: weight conditions
+const TYPES = [
+  { key: 'ordinary', label: 'Ordinary Street Life', w: (d, t, a) => DAY.indexOf(t) !== -1 ? 4 : 2 },
+  { key: 'crime_minor', label: 'Criminal Activity (minor)', w: (d, t, a) => (['Docks','Warrens'].indexOf(d) !== -1 && (EVE.concat(NIGHT)).indexOf(t) !== -1) ? 4 : 1 },
+  { key: 'crime_major', label: 'Criminal Activity (major)', w: (d, t, a) => (a >= 2 && ['Warrens','Docks'].indexOf(d) !== -1 && NIGHT.indexOf(t) !== -1) ? 3 : 0 },
+  { key: 'monster', label: 'Monster Incident', w: () => 2 },
+  { key: 'commissariat', label: 'City Watch Action', w: () => 2 },
+  { key: 'delver', label: 'Delver Activity', w: (d) => (d === 'Dungeon entrance' || d === 'Midtown') ? 3 : 1 },
+  { key: 'religious', label: 'Religious Activity', w: (d, t) => (d === 'Temple District' && DAY.concat(EVE).indexOf(t) !== -1) ? 3 : 0 },
+  { key: 'noble', label: 'Noble Drama', w: (d, t, a) => (a >= 2 && d === 'Nobles\' Quarter') ? 3 : 0 },
+  { key: 'strange', label: 'Strange / Ptolus-specific', w: (d, t) => NIGHT.indexOf(t) !== -1 ? 3 : 1 },
+];
+const SCENES = {
+  ordinary: [
+    'A street vendor and a customer are locked in an argument over price. Neither will back down.',
+    'A funeral procession is passing — small, quiet. Which temple? Who died?',
+    'Children play in an alley; one of them is watching the party very carefully.',
+    'An overturned cart has spilled produce across the street. The owner is furious; the driver is gone.',
+    'A street preacher proclaims the Spire is speaking. Nobody is listening.',
+    'Two Guild members walk together, deep in urgent, low conversation.',
+    'A Grade 4 monster is doing an ordinary job — carrying goods, sweeping, delivering.',
+  ],
+  crime_minor: [
+    'A pickpocket is at work in the crowd (Perception DC 15 to notice).',
+    'Goods are being moved between buildings at an hour when they shouldn\'t be.',
+    'A bribe is being paid to a guard who clearly doesn\'t want to take it.',
+    'Two people exchange a package and walk away fast in opposite directions.',
+    'Someone has been watching a building from across the street for a long while.',
+  ],
+  crime_major: [
+    'A robbery is in progress in an alley just off the main street.',
+    'Enforcers are collecting on a debt. The person can\'t pay. It\'s escalating.',
+    'A body is being moved. Quietly. The people moving it are unnervingly calm.',
+    'Contraband is being unloaded — a Grade 2 creature provides "security."',
+  ],
+  monster: [
+    'A Grade 4 monster is being harassed by a crowd. The situation is escalating.',
+    'A Grade 3 monster is outside its permitted zone — doesn\'t know, or doesn\'t care.',
+    'A Grade 2 monster stands perfectly still in the middle of the street. Everyone walks around it.',
+    'Two Grade 4 monsters are in a fistfight. The crowd is either watching or fleeing.',
+  ],
+  commissariat: [
+    'A patrol stops someone for a document check. The person is panicking.',
+    'A patrol responds to a call — moving fast, not stopping for anyone.',
+    'A guard post has appeared where there wasn\'t one yesterday, checking permits.',
+    'Two City Watch officers argue with each other about jurisdiction.',
+  ],
+  delver: [
+    'A delver team returns from the Dungeon — shaken, gear damaged, won\'t talk.',
+    'A delver team gears up outside an entrance, overly cheerful. It\'s their first run.',
+    'A delver is being treated in public; the healer works fast, the wound is unusual.',
+    'A Delver\'s Guild rep posts a job notice; a small crowd forms.',
+  ],
+  religious: [
+    'A procession of Lothian clergy moves through, censers swinging.',
+    'A street shrine is being tended — fresh offerings, a nervous attendant.',
+    'A preacher and a heckler have drawn a small, tense audience.',
+  ],
+  noble: [
+    'A closed noble carriage waits where it shouldn\'t; liveried guards watch the street.',
+    'Two well-dressed servants of rival houses trade insults that mean more than they seem.',
+    'A noble is slumming — badly disguised, accompanied by very good "friends."',
+  ],
+  strange: [
+    'A section of street has a chalk circle around it. Nobody crosses it. Nobody knows who drew it.',
+    'A chaositech device is going off in someone\'s pocket — they can\'t turn it off and don\'t know why.',
+    'A sealed Dungeon entrance has a fresh torch burning next to it.',
+    'An elderly woman is feeding birds that are not, on closer look, birds.',
+    'Someone swears they know what the Spire\'s sound meant. They\'ll tell you for 5 sp. It\'s wrong; they believe it.',
+  ],
+};
+const WHATS = [
+  'It\'s exactly what it looks like.',
+  'The loud part is a distraction from the quiet part.',
+  'One person here is being paid to make sure this happens.',
+  'This will be over in 1d6×5 minutes, one way or another.',
+  'Someone is watching to see how the party reacts.',
+];
+const PEOPLE = [
+  'a City Watch patrol at a distance, not yet paying attention',
+  'a merchant hurrying with a cart',
+  '1d4 laborers, watching or pointedly not watching',
+  'an elf — rare in this district, and noticed',
+  'a Grade 4 monster going about its business',
+  'a delver team passing through',
+  'someone who clearly recognizes the party',
+  'a beggar who is listening very carefully',
+  'children, running, always',
+  'a noble\'s closed carriage moving too fast for this street',
+];
+const HOOKS = [
+  'Someone present will make eye contact with the party — they know more than they should.',
+  'Intervening puts the party on a faction\'s radar.',
+  'A detail here connects to a thread the party is already pulling.',
+  'Walking away is also a choice someone will remember.',
+];
+const QUICK = [
+  'A Watch sergeant is apologizing to a gnoll about something. The gnoll is not accepting the apology.',
+  'Two women argue from opposite windows about a shared wall.',
+  'A delver sits in a doorway, eating calmly. His arm is gone below the elbow. He seems fine.',
+  'A child sprints past at full speed clutching a hat that is not theirs.',
+  'A street-sweeper pauses to stare at the Spire, then keeps sweeping.',
+  'A drunk is explaining the Dungeon to a lamppost in great, accurate detail.',
+  'Someone has chalked a warning on a wall in a script no one recognizes.',
+  'A merchant quietly pays a beggar to move twenty feet down the street.',
+];
+
+function resolveDistrict() { const d = UI.el('district').value; return d === 'random' ? D.pick(DISTRICTS) : d; }
+function pickType(d, t, a) {
+  const weighted = TYPES.map(ty => ({ value: ty, weight: ty.w(d, t, a) })).filter(x => x.weight > 0);
+  return D.weightedPick(weighted);
+}
+
+function generate() {
+  const d = resolveDistrict();
+  const t = UI.el('tod').value;
+  const a = parseInt(UI.el('arc').value, 10);
+  const ty = pickType(d, t, a);
+  const scene = D.pick(SCENES[ty.key]);
+  const people = D.pickN(PEOPLE, D.range(2, 3));
+  let out = '<span class="head">[STREET SCENE — ' + d + ' — ' + t + ' — Arc ' + roman(a) + ']</span>\n\n';
+  out += 'TYPE: ' + ty.label + '\n\n';
+  out += 'SCENE: ' + scene + '\n\n';
+  out += '<span class="muted">WHAT\'S ACTUALLY HAPPENING: ' + D.pick(WHATS) + '</span>\n\n';
+  out += 'PEOPLE PRESENT:\n' + people.map(p => '  • ' + p).join('\n') + '\n\n';
+  out += '<span class="muted">HOOK: ' + D.pick(HOOKS) + '</span>';
+  log.append(out);
+}
+function quick() { log.append('→ ' + D.pick(QUICK)); }
+function roman(a) { return ['','I','II','III','IV','V'][a] || a; }
+
+UI.el('gen').addEventListener('click', generate);
+UI.el('quick').addEventListener('click', quick);
+</script>
+</body>
+</html>

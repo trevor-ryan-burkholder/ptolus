@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corruption Tracker — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .toolbar { display:flex; gap:8px; align-items:flex-end; padding:12px 20px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .toolbar .f { display:flex; flex-direction:column; } .toolbar label { margin:0 0 3px; } .toolbar input { width:auto; }
+  .toolbar .right { margin-left:auto; display:flex; gap:8px; }
+  .wrap { padding:16px 20px 60px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:12px; }
+  .ccard { background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:14px; }
+  .ccard h3 { color:var(--gold); margin:0 0 2px; font-size:18px; }
+  .ccard .ab { color:var(--muted); font-size:12px; margin-bottom:8px; }
+  .track { margin:8px 0; }
+  .track .row1 { display:flex; align-items:baseline; gap:8px; }
+  .track .nm { font-weight:bold; } .track .score { font-size:20px; color:var(--gold); }
+  .sev { display:inline-block; border-radius:4px; padding:1px 8px; font-size:12px; font-weight:bold; }
+  .sev.None { color:var(--muted); border:1px solid var(--line); }
+  .sev.Mild { color:#e8dca0; border:1px solid var(--gold-dim); }
+  .sev.Moderate { color:#e8b878; border:1px solid #7a5520; }
+  .sev.Severe { color:#f0a0a0; border:1px solid #7a3030; }
+  .sev.Dead { color:#fff; background:#7a2020; }
+  .track .eff { color:var(--muted); font-size:12px; margin-top:3px; }
+  .btns { display:flex; gap:4px; flex-wrap:wrap; margin-top:6px; }
+  .btns button { font-size:12px; padding:4px 7px; }
+  .sources { margin-top:10px; border-top:1px dashed var(--line); padding-top:8px; }
+  .sources button { font-size:12px; padding:4px 7px; margin:0 4px 4px 0; }
+  .clog { font-size:12px; color:var(--muted); max-height:80px; overflow-y:auto; margin-top:6px; border-top:1px dashed var(--line); padding-top:5px; }
+  details summary { cursor:pointer; color:var(--gold); font-size:13px; margin-top:6px; }
+  .hint2 { color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <div class="f"><label>Add character</label><input id="cname" placeholder="name"></div>
+  <div class="f"><label>Con</label><input id="ccon" type="number" value="12" style="width:56px"></div>
+  <div class="f"><label>Wis</label><input id="cwis" type="number" value="12" style="width:56px"></div>
+  <button id="add">Add</button>
+  <div class="right"><button id="export">Copy State</button><button id="import">Load State</button><button id="reset">Reset</button></div>
+</div>
+<div class="wrap"><div id="cards"></div>
+  <p class="hint2" style="margin-top:14px;">Corruption (physical, vs Con) and Depravity (mental, vs Wis) — Heroes of Horror taint, keyed to Ptolus chaositech &amp; the Pits of Insanity. Thresholds: Table 4-1. Crossing a threshold locks in unless reduced within 24 hrs (heal/restoration) or by miracle/wish. Saved in this browser.</p>
+  <details style="margin-top:8px;"><summary>State JSON</summary><textarea id="json" style="min-height:100px;width:100%"></textarea><button id="doimport" style="margin-top:6px;">Import from box</button></details>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Corruption / Taint Tracker', 'Chaositech, the Pits, and the Galchutt\'s mark');
+UI.diceTray();
+const D = Dice;
+const KEY = 'ptolus-corruption-v1';
+let state = load();
+function load() { try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.chars) return s; } catch (e) {} return { chars: {} }; }
+function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+
+function band(ability) { return Math.ceil(Math.max(1, ability) / 4); }
+function severity(score, ability) {
+  if (score <= 0) return 'None';
+  const b = band(ability);
+  if (score <= 2 * b - 1) return 'Mild';
+  if (score <= 6 * b - 1) return 'Moderate';
+  if (score <= 14 * b - 1) return 'Severe';
+  return 'Dead';
+}
+function nextThreshold(ability, sev) {
+  const b = band(ability);
+  if (sev === 'None') return '1 = Mild';
+  if (sev === 'Mild') return (2 * b) + ' = Moderate';
+  if (sev === 'Moderate') return (6 * b) + ' = Severe';
+  if (sev === 'Severe') return (14 * b) + ' = Dead/Insane';
+  return '—';
+}
+const EFFECT = {
+  None: 'No taint.',
+  Mild: '1 permanent symptom.',
+  Moderate: '+1 symptom; a bonus feat; good clerics/paladins lose powers until reduced. Removal: miracle/wish (or heal within 24 hrs).',
+  Severe: '+1 severe symptom; another bonus feat. Exceed the cap → death (Corruption) or madness (Depravity).',
+  Dead: 'Dead and rising as a Tainted Minion (Corruption), or irretrievably mad — Tainted Raver, DM control (Depravity).',
+};
+
+function track(c, key, ability, label) {
+  const score = c[key], sev = severity(score, ability);
+  return '<div class="track" data-k="' + key + '">' +
+    '<div class="row1"><span class="nm">' + label + '</span> <span class="score">' + score + '</span> ' +
+    '<span class="sev ' + sev + '">' + (sev === 'Dead' ? 'DEAD/INSANE' : sev) + '</span>' +
+    '<span class="hint2" style="margin-left:auto">next: ' + nextThreshold(ability, sev) + '</span></div>' +
+    '<div class="eff">' + EFFECT[sev] + '</div>' +
+    '<div class="btns"><button data-act="m1">−1</button><button data-act="p1">+1</button>' +
+    '<button data-act="p3">+1d3</button></div></div>';
+}
+function card(name) {
+  const c = state.chars[name];
+  const srcCorr = '<div class="sources"><span class="hint2">add Corruption:</span><br>' +
+    '<button data-act="src" data-k="corr" data-n="1" data-why="chaositech use (Fort DC 12+item lvl negates)">Chaositech use</button>' +
+    '<button data-act="src" data-k="corr" data-n="1" data-why="Pit of Insanity proximity">Pit (minor)</button>' +
+    '<button data-act="src" data-k="corr" data-n="d3" data-why="direct Pit contact">Pit (direct, 1d3)</button></div>';
+  const srcDep = '<div class="sources"><span class="hint2">add Depravity:</span><br>' +
+    '<button data-act="src" data-k="dep" data-n="1" data-why="witnessed a Galchutt rite (Will DC 15)">Galchutt rite (observe)</button>' +
+    '<button data-act="src" data-k="dep" data-n="1" data-why="participated in a Galchutt rite (Will DC 18)">Galchutt rite (take part)</button>' +
+    '<button data-act="src" data-k="dep" data-n="1" data-why="cast an [evil] spell">[Evil] spell</button></div>';
+  return '<div class="ccard" data-c="' + UI.esc(name) + '">' +
+    '<h3>' + UI.esc(name) + ' <button data-act="del" style="float:right;font-size:12px">✕</button></h3>' +
+    '<div class="ab">Con ' + c.con + ' · Wis ' + c.wis + '</div>' +
+    track(c, 'corr', c.con, 'Corruption') + srcCorr +
+    track(c, 'dep', c.wis, 'Depravity') + srcDep +
+    '<details><summary>Notes &amp; log</summary>' +
+    '<textarea data-act="notes" placeholder="symptoms, afflictions…" style="min-height:38px;margin-top:5px">' + UI.esc(c.notes || '') + '</textarea>' +
+    '<div class="clog">' + (c.log.length ? c.log.map(l => '<div>' + UI.esc(l) + '</div>').join('') : '<div>(no changes)</div>') + '</div></details></div>';
+}
+function render() {
+  const names = Object.keys(state.chars);
+  UI.el('cards').innerHTML = names.length
+    ? '<div class="grid">' + names.map(card).join('') + '</div>'
+    : '<p class="hint2">No characters yet. Add one above.</p>';
+}
+function logChange(c, key, delta, why) {
+  const lbl = key === 'corr' ? 'Corruption' : 'Depravity';
+  c.log.unshift((delta >= 0 ? '+' + delta : delta) + ' ' + lbl + ' → ' + c[key] + (why ? ' (' + why + ')' : ''));
+}
+function applyDelta(name, key, amount, why) {
+  const c = state.chars[name]; if (!c) return;
+  const ability = key === 'corr' ? c.con : c.wis;
+  const before = severity(c[key], ability);
+  c[key] = Math.max(0, c[key] + amount);
+  const after = severity(c[key], ability);
+  logChange(c, key, amount, why + (before !== after ? ' [' + before + '→' + after + ']' : ''));
+  save(); render();
+}
+
+UI.el('cards').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const cardEl = b.closest('.ccard'); const name = cardEl.getAttribute('data-c');
+  const act = b.getAttribute('data-act');
+  if (act === 'del') { if (confirm('Remove ' + name + '?')) { delete state.chars[name]; save(); render(); } return; }
+  const trackEl = b.closest('.track');
+  const key = act === 'src' ? b.getAttribute('data-k') : (trackEl ? trackEl.getAttribute('data-k') : null);
+  if (!key) return;
+  if (act === 'm1') applyDelta(name, key, -1, 'manual');
+  else if (act === 'p1') applyDelta(name, key, 1, 'manual');
+  else if (act === 'p3') applyDelta(name, key, D.roll(3), 'manual 1d3');
+  else if (act === 'src') { const n = b.getAttribute('data-n'); applyDelta(name, key, n === 'd3' ? D.roll(3) : parseInt(n, 10), b.getAttribute('data-why')); }
+});
+UI.el('cards').addEventListener('change', e => {
+  const b = e.target.closest('[data-act="notes"]'); if (!b) return;
+  state.chars[b.closest('.ccard').getAttribute('data-c')].notes = b.value; save();
+});
+UI.el('add').addEventListener('click', () => {
+  const name = UI.el('cname').value.trim(); if (!name || state.chars[name]) return;
+  state.chars[name] = { con: parseInt(UI.el('ccon').value, 10) || 10, wis: parseInt(UI.el('cwis').value, 10) || 10, corr: 0, dep: 0, log: [], notes: '' };
+  UI.el('cname').value = ''; save(); render();
+});
+UI.el('export').addEventListener('click', () => { const t = JSON.stringify(state); UI.el('json').value = t; if (navigator.clipboard) navigator.clipboard.writeText(t).catch(() => {}); });
+UI.el('import').addEventListener('click', () => UI.el('json').scrollIntoView());
+UI.el('doimport').addEventListener('click', () => { try { const s = JSON.parse(UI.el('json').value); if (s && s.chars) { state = s; save(); render(); } } catch (e) { alert('Invalid JSON.'); } });
+UI.el('reset').addEventListener('click', () => { if (confirm('Clear all characters?')) { state = { chars: {} }; save(); render(); } });
+
+render();
+</script>
+</body>
+</html>

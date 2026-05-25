@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Handout Generator — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .parch { background:#efe6cf; color:#241c10; border:1px solid #b8a86a; border-radius:6px; padding:18px 22px;
+           font-family:Georgia, 'Times New Roman', serif; line-height:1.6; white-space:pre-wrap; margin-bottom:10px; }
+  .parch .title { font-size:20px; font-weight:bold; text-align:center; letter-spacing:1px; }
+  .parch .seal { text-align:center; color:#6a5a2a; font-size:13px; font-style:italic; }
+  .copyrow { display:flex; gap:8px; margin-bottom:18px; }
+</style>
+</head>
+<body>
+<div class="runner-main">
+  <div class="panel">
+    <h2>Handout</h2>
+    <label for="type">Type</label>
+    <select id="type">
+      <option value="proclamation">City Proclamation</option>
+      <option value="wanted">Wanted Poster</option>
+      <option value="letter">Letter / Missive</option>
+      <option value="broadsheet">Broadsheet (rumor column)</option>
+      <option value="job">Job Notice (Delver board)</option>
+      <option value="journal">Found Journal Page</option>
+    </select>
+    <button class="primary" id="gen">Generate Handout</button>
+    <div id="seed"></div>
+    <p class="hint">Player-facing artifacts in period voice, dated to the Imperial Calendar. Copy the markdown into <code>handouts/</code>.</p>
+  </div>
+
+  <div>
+    <div class="log-head"><h2>Handout Log</h2><button id="broadcast">📺 Player View</button><button id="clear">Clear Log</button></div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/state.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Handout Generator', 'In-world documents for the table');
+UI.contextBar();
+UI.diceTray();
+UI.seedControl('seed');
+const log = UI.logger('log', 'clear');
+UI.broadcastButton('broadcast', log);
+const D = Dice;
+
+const MONTHS = ['Newyear','Birth','Wind','Rain','Bloom','Sun','Growth','Blessing','Toil','Harvest','Moons','Yearsend'];
+function ord(n){const s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
+function icDate(){
+  // use the calendar's saved date if present, else a random plausible one in 721 IA
+  try { const c=JSON.parse(localStorage.getItem('ptolus-calendar-v1')); if(c&&c.cur) return ord(c.cur.d)+' of '+MONTHS[c.cur.m-1]+', '+c.cur.y+' IA'; } catch(e){}
+  return ord(D.range(1,28))+' of '+D.pick(MONTHS)+', 721 IA';
+}
+const FIRST=['Vorin','Sella','Galt','Mira','Kervis','Junia','Dorn','Wynn','Aldric','Vessa','Tavrek','Cora'];
+const LAST=['Voss','Marek','Thann','Caine','Drey','Orvain','Holt','Brack','Cassan','Rhyl'];
+const HOUSES=['Abanar','Dallimothan','Erthuo','Kath','Khatru','Nagel','Rau','Sadar','Shever','Vladaam'];
+const CRIMES=['unlicensed spellcasting resulting in property damage','trafficking in chaositech','the murder of a guild factor','desecration of a Necropolis tomb','smuggling prohibited goods through the Docks','impersonating an Imperial official','consorting with the Forsaken'];
+const DISTRICTS=['the Docks','the Warrens','Midtown','Oldtown','the Temple District','the Guildsman District','North Market','South Market','Rivergate'];
+function name(){return D.pick(FIRST)+' '+D.pick(LAST);}
+function copyBlock(text){return '<button class="copybtn" data-copy="'+UI.esc(text).replace(/"/g,'&quot;')+'">Copy markdown</button>';}
+
+function out(titleLine, sealLine, body, md){
+  const html='<div class="parch"><div class="title">'+UI.esc(titleLine)+'</div>'+
+    (sealLine?'<div class="seal">'+UI.esc(sealLine)+'</div>':'')+'\n'+UI.esc(body)+'</div>'+
+    '<div class="copyrow"><button data-md="1">Copy as Markdown</button></div>';
+  const entry=log.append(html);
+  entry._md = md;
+}
+
+function gen(){
+  const t=UI.el('type').value, date=icDate();
+  if(t==='proclamation'){
+    const dist=D.pick(DISTRICTS), act=D.pick(['a curfew from dusk to dawn','a ban on unlicensed weapons','mandatory registration of all spellcasters','a quarantine','increased toll on goods']);
+    const body='By order of the Commissar, Igor Urnst, and the City Council:\n\nLet it be known that, effective this day, '+act+' is imposed upon '+dist+'. This measure shall stand until rescinded. Violators will be detained by the City Watch and answer before the courts at Dalenguard.\n\nThe Watch thanks the loyal citizens of Ptolus for their cooperation.\n\n— Posted '+date;
+    out('PROCLAMATION','Office of the Commissar · Dalenguard, Oldtown',body,'**PROCLAMATION** — _Office of the Commissar_\n\n'+body);
+  } else if(t==='wanted'){
+    const who=name(), reward=D.range(1,10)*50, dist=D.pick(DISTRICTS);
+    const body='WANTED for '+D.pick(CRIMES)+':\n\n'+who+', last seen in '+dist+'.\n\nReward: '+reward+' gp, paid by the City Watch upon delivery — alive. Approach with caution; do not engage if armed.\n\nReport sightings to the nearest Watchhouse.\n\n— '+date;
+    out('— WANTED —','By authority of the City Watch',body,'**WANTED**\n\n'+body);
+  } else if(t==='letter'){
+    const from=name(), to=D.pick(['a trusted friend','my dear cousin','the bearer of this letter','Master of the company']);
+    const ask=D.pick(['Come at once; I cannot put what I know in writing.','The shipment must not reach the Docks. You know what to do.','They are watching the house. Burn this when you have read it.','Meet me at the Ghostly Minstrel, third bell after dusk. Come alone.','The debt is called. We have until Brightfather’s Day.']);
+    const body='To '+to+',\n\n'+ask+' I would not ask if there were any other way. Trust no one who wears the open Eye.\n\nYours in haste,\n'+from+'\n'+date;
+    out('A SEALED LETTER','folded twice, sealed with grey wax',body,'**Letter** (sealed with grey wax)\n\n'+body);
+  } else if(t==='broadsheet'){
+    const items=[
+      'The Spire was heard to SING in the night — so say three sober witnesses of Rivergate.',
+      'House '+D.pick(HOUSES)+' and House '+D.pick(HOUSES)+' trade lawyers and, it is whispered, worse.',
+      'A delving company returned from below the Square with a LEAD BOX and no words for it.',
+      'The Watch denies all rumor of a beast loose in Midtown. The Watch denies much.',
+      'Prices at the fish market climb again; the boats, they say, dare not go far.',
+    ];
+    const body=D.pickN(items,3).map((s,i)=>'❧ '+s).join('\n\n')+'\n\n— The Ptolus Crier, '+date;
+    out('THE PTOLUS CRIER','a penny broadsheet, ink still damp',body,'**THE PTOLUS CRIER** — '+date+'\n\n'+D.pickN(items,3).map(s=>'- '+s).join('\n'));
+  } else if(t==='job'){
+    const pay=D.range(2,16)*100, who=D.pick(['the Delver’s Guild','a private patron','House '+D.pick(HOUSES),'a discreet party']);
+    const body='SEEKING capable delvers.\n\nObjective: '+D.pick(['recover an item from the Ossuary Corridor (Level 3)','clear a reopened passage of its new tenants','escort a scholar below and back','find out what became of the team that did not return'])+'.\n\nPay: '+pay+' gp on delivery. Inquire with '+who+' — ask at the Undercity Market.\n\nThe Guild is not liable for what you meet below.\n\n— Posted '+date;
+    out('— NOTICE —','Delver’s Guild board, Undercity Market',body,'**JOB NOTICE** — Delver’s Guild\n\n'+body);
+  } else {
+    const n=D.range(1,9);
+    const body='Day '+n+'. \n\n'+D.pick(['It follows the old routes — I am sure of it now.','The others do not believe me about the door.','I should not have touched the grey fluid. My hand is wrong.','We are close. Tomorrow we open the last seal.','If you are reading this, I did not come back. Go no deeper.'])+'\n\nThe air down here tastes of copper and something with no name. I keep writing so I do not stop thinking.\n\n— (the hand grows unsteady)';
+    out('A TORN JOURNAL PAGE','water-stained, found below',body,'**Found Journal Page**\n\n'+body);
+  }
+}
+UI.el('gen').addEventListener('click', gen);
+UI.el('log').addEventListener('click', e=>{
+  const b=e.target.closest('[data-md]'); if(!b) return;
+  const entry=b.closest('.entry'); if(entry && entry._md && navigator.clipboard){ navigator.clipboard.writeText(entry._md).catch(()=>{}); b.textContent='Copied!'; setTimeout(()=>b.textContent='Copy as Markdown',1500); }
+});
+</script>
+</body>
+</html>

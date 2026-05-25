@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XP Calculator — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .encrow { display:flex; gap:8px; align-items:center; margin:6px 0; }
+  .encrow input { width:70px; }
+  .encrow .lbl { color:var(--muted); font-size:14px; }
+  #thresholds td, #thresholds th { font-size:13px; padding:4px 8px; }
+</style>
+</head>
+<body>
+<div class="runner-main">
+  <div class="panel">
+    <h2>Party</h2>
+    <label for="size">Party size</label>
+    <input type="number" id="size" min="1" max="8" value="4">
+    <label for="apl">Average Party Level (APL)</label>
+    <input type="number" id="apl" min="1" max="20" value="4">
+
+    <h2 style="margin-top:18px;">Encounters</h2>
+    <div id="encs"></div>
+    <button id="addenc" style="width:100%;margin-top:8px;">+ Add Encounter</button>
+    <button id="fromcombat" style="width:100%;margin-top:8px;">⚔ Import from Combat</button>
+
+    <h2 style="margin-top:18px;">Extras</h2>
+    <label for="story">Story award (flat XP each)</label>
+    <input type="number" id="story" value="0">
+    <label for="rp">Role-play bonus (flat XP each)</label>
+    <input type="number" id="rp" value="0">
+
+    <button class="primary" id="calc">Calculate</button>
+  </div>
+
+  <div>
+    <div class="log-head"><h2>XP Log</h2><button id="clear">Clear Log</button></div>
+    <div class="log" id="log"></div>
+    <details style="margin-top:14px;">
+      <summary style="color:var(--gold);cursor:pointer;">Level Thresholds (PHB 3-2)</summary>
+      <table class="ref" id="thresholds"></table>
+    </details>
+  </div>
+</div>
+
+<script src="../shared/tables.js"></script>
+<script src="../shared/state.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('XP Calculator', 'Per-character XP from ELs defeated');
+UI.contextBar();
+UI.diceTray();
+const log = UI.logger('log', 'clear');
+
+// XP by (EL - APL) difference
+function xpForDiff(diff) {
+  const T = { '-4':75, '-3':150, '-2':300, '-1':600, '0':1200, '1':1800, '2':2700, '3':3600, '4':5400 };
+  if (diff <= -5) return 0;
+  if (diff >= 5) return 7200;
+  return T[String(diff)];
+}
+const DIFFLABEL = d => d <= -3 ? 'trivial' : d === -2 ? 'easy' : d === -1 ? 'easy' : d === 0 ? 'standard' : d === 1 ? 'challenging' : 'dangerous';
+
+let encSeq = 0;
+function addEncRow(el, mult) {
+  const id = ++encSeq;
+  const div = document.createElement('div');
+  div.className = 'encrow'; div.setAttribute('data-id', id);
+  div.innerHTML = '<span class="lbl">EL</span><input type="number" class="el" value="' + (el || 4) + '" min="1" max="25">' +
+    '<span class="lbl">×</span><input type="number" class="mult" value="' + (mult || 1) + '" min="1" max="20">' +
+    '<button data-del="' + id + '">✕</button>';
+  UI.el('encs').appendChild(div);
+}
+UI.el('encs').addEventListener('click', e => {
+  const b = e.target.closest('[data-del]'); if (!b) return;
+  const row = b.closest('.encrow'); row.remove();
+});
+UI.el('addenc').addEventListener('click', () => addEncRow());
+
+// Import defeated-monster ELs handed off by the Combat tracker
+function importFromCombat(announce) {
+  let p = null;
+  try { p = JSON.parse(localStorage.getItem('ptolus-pending-xp')); } catch (e) {}
+  if (!p || !p.encounters || !p.encounters.length) {
+    if (announce) log.append('<span class="bad">Nothing pending. In the Combat tracker, defeat some monsters and click "Award XP".</span>');
+    return false;
+  }
+  if (p.size) UI.el('size').value = p.size;
+  if (p.apl != null) UI.el('apl').value = p.apl;
+  p.encounters.forEach(e => addEncRow(e.el, e.mult || 1));
+  localStorage.removeItem('ptolus-pending-xp');
+  refreshCombatBtn();
+  if (announce) calc(); else log.append('<span class="good">Imported ' + p.encounters.length + ' encounter(s) from Combat — press Calculate.</span>');
+  return true;
+}
+function refreshCombatBtn() {
+  let p = null; try { p = JSON.parse(localStorage.getItem('ptolus-pending-xp')); } catch (e) {}
+  const n = p && p.encounters ? p.encounters.length : 0;
+  const b = UI.el('fromcombat');
+  b.textContent = n ? '⚔ Import from Combat (' + n + ')' : '⚔ Import from Combat';
+  b.classList.toggle('primary', n > 0);
+}
+UI.el('fromcombat').addEventListener('click', () => importFromCombat(true));
+
+// On load: auto-import if combat left something, else start with one blank row
+if (!importFromCombat(false)) addEncRow();
+refreshCombatBtn();
+
+function calc() {
+  const size = Math.max(1, parseInt(UI.el('size').value, 10) || 4);
+  const apl = Math.max(1, parseInt(UI.el('apl').value, 10) || 1);
+  const rows = UI.el('encs').querySelectorAll('.encrow');
+  let sessionPerChar = 0;
+  let out = '<span class="head">[ENCOUNTER XP — APL ' + apl + ', Party of ' + size + ']</span>\n';
+  if (size !== 4) out += '<span class="muted">Encounter XP divided among ' + size + ' characters (standard party = 4).</span>\n';
+  out += '\n';
+  let any = false;
+  rows.forEach(r => {
+    const el = parseInt(r.querySelector('.el').value, 10) || 0;
+    const mult = parseInt(r.querySelector('.mult').value, 10) || 1;
+    if (!el) return;
+    any = true;
+    const diff = el - apl;
+    const total = xpForDiff(diff) * mult;
+    const each = Math.round(total / size);
+    sessionPerChar += each;
+    const warn = diff > 1 ? '  ⚠ Above APL+1' : '';
+    const lbl = 'EL ' + el + (mult > 1 ? ' ×' + mult : '') + ' (' + DIFFLABEL(diff) + ')';
+    out += pad(lbl, 26) + '→ ' + comma(total) + ' XP total → ' + comma(each) + ' XP each' + warn + '\n';
+  });
+  if (!any) { log.append('<span class="bad">Add at least one encounter with an EL.</span>'); return; }
+
+  const story = parseInt(UI.el('story').value, 10) || 0;
+  const rp = parseInt(UI.el('rp').value, 10) || 0;
+  if (story) { out += pad('Story award', 26) + '→ ' + comma(story) + ' XP each\n'; sessionPerChar += story; }
+  if (rp) { out += pad('Role-play bonus', 26) + '→ ' + comma(rp) + ' XP each\n'; sessionPerChar += rp; }
+
+  out += '\n<span class="good">SESSION TOTAL: ' + comma(sessionPerChar) + ' XP each → ' + comma(sessionPerChar * size) + ' XP across the party</span>';
+  log.append(out);
+}
+function comma(n) { return Math.round(n).toLocaleString('en-US'); }
+function pad(s, n) { return (s + ' '.repeat(n)).slice(0, Math.max(n, s.length + 1)); }
+UI.el('calc').addEventListener('click', calc);
+
+// level thresholds: cumulative XP to reach level L = 1000 * L*(L-1)/2
+const tbl = UI.el('thresholds');
+let html = '<tr><th>Level</th><th>XP</th><th>Level</th><th>XP</th></tr>';
+const xpForLevel = L => 1000 * (L * (L - 1) / 2);
+for (let L = 2; L <= 11; L++) {
+  html += '<tr><td>' + L + '</td><td>' + comma(xpForLevel(L)) + '</td><td>' + (L + 9) + '</td><td>' + comma(xpForLevel(L + 9)) + '</td></tr>';
+}
+tbl.innerHTML = html;

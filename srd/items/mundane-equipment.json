@@ -1,0 +1,1185 @@
+[
+  {
+    "name": "Dagger",
+    "category": "Simple Weapon",
+    "subcategory": "light melee",
+    "price_gp": 2,
+    "weight_lb": 1,
+    "damage": {
+      "small": "1d3",
+      "medium": "1d4"
+    },
+    "critical": "19-20/\u00d72",
+    "damage_type": "piercing or slashing",
+    "range_ft": 10,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Club",
+    "category": "Simple Weapon",
+    "subcategory": "one-handed melee",
+    "price_gp": 0,
+    "weight_lb": 3,
+    "damage": {
+      "small": "1d4",
+      "medium": "1d6"
+    },
+    "critical": "\u00d72",
+    "damage_type": "bludgeoning",
+    "range_ft": 10,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Quarterstaff",
+    "category": "Simple Weapon",
+    "subcategory": "two-handed melee (double)",
+    "price_gp": 0,
+    "weight_lb": 4,
+    "damage": {
+      "small": "1d4/1d4",
+      "medium": "1d6/1d6"
+    },
+    "critical": "\u00d72",
+    "damage_type": "bludgeoning",
+    "range_ft": null,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Mace, Light",
+    "category": "Simple Weapon",
+    "subcategory": "one-handed melee",
+    "price_gp": 5,
+    "weight_lb": 4,
+    "damage": {
+      "small": "1d4",
+      "medium": "1d6"
+    },
+    "critical": "\u00d72",
+    "damage_type": "bludgeoning",
+    "range_ft": null,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Mace, Heavy",
+    "category": "Simple Weapon",
+    "subcategory": "one-handed melee",
+    "price_gp": 12,
+    "weight_lb": 8,
+    "damage": {
+      "small": "1d6",
+      "medium": "1d8"
+    },
+    "critical": "\u00d72",
+    "damage_type": "bludgeoning",
+    "range_ft": null,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Crossbow, Light",
+    "category": "Simple Weapon",
+    "subcategory": "ranged",
+    "price_gp": 35,
+    "weight_lb": 4,
+    "damage": {
+      "small": "1d6",
+      "medium": "1d8"
+    },
+    "critical": "19-20/\u00d72",
+    "damage_type": "piercing",
+    "range_ft": 80,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Crossbow, Heavy",
+    "category": "Simple Weapon",
+    "subcategory": "ranged",
+    "price_gp": 50,
+    "weight_lb": 8,
+    "damage": {
+      "small": "1d8",
+      "medium": "1d10"
+    },
+    "critical": "19-20/\u00d72",
+    "damage_type": "piercing",
+    "range_ft": 120,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Sling",
+    "category": "Simple Weapon",
+    "subcategory": "ranged",
+    "price_gp": 0,
+    "weight_lb": 0,
+    "damage": {
+      "small": "1d3",
+      "medium": "1d4"
+    },
+    "critical": "\u00d72",
+    "damage_type": "bludgeoning",
+    "range_ft": 50,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Longsword",
+    "category": "Martial Weapon",
+    "subcategory": "one-handed melee",
+    "price_gp": 15,
+    "weight_lb": 4,
+    "damage": {
+      "small": "1d6",
+      "medium": "1d8"
+    },
+    "critical": "19-20/\u00d72",
+    "damage_type": "slashing",
+    "range_ft": null,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Shortsword",
+    "category": "Martial Weapon",
+    "subcategory": "light melee",
+    "price_gp": 10,
+    "weight_lb": 2,
+    "damage": {
+      "small": "1d4",
+      "medium": "1d6"
+    },
+    "critical": "19-20/\u00d72",
+    "damage_type": "piercing",
+    "range_ft": null,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Rapier",
+    "category": "Martial Weapon",
+    "subcategory": "one-handed melee (finesse)",
+    "price_gp": 20,
+    "weight_lb": 2,
+    "damage": {
+      "small": "1d4",
+      "medium": "1d6"
+    },
+    "critical": "18-20/\u00d72",
+    "damage_type": "piercing",
+    "range_ft": null,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Battleaxe",
+    "category": "Martial Weapon",
+    "subcategory": "one-handed melee",
+    "price_gp": 10,
+    "weight_lb": 6,
+    "damage": {
+      "small": "1d6",
+      "medium": "1d8"
+    },
+    "critical": "\u00d73",
+    "damage_type": "slashing",
+    "range_ft": null,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Greataxe",
+    "category": "Martial Weapon",
+    "subcategory": "two-handed melee",
+    "price_gp": 20,
+    "weight_lb": 12,
+    "damage": {
+      "small": "1d10",
+      "medium": "1d12"
+    },
+    "critical": "\u00d73",
+    "damage_type": "slashing",
+    "range_ft": null,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Greatsword",
+    "category": "Martial Weapon",
+    "subcategory": "two-handed melee",
+    "price_gp": 50,
+    "weight_lb": 8,
+    "damage": {
+      "small": "1d10",
+      "medium": "2d6"
+    },
+    "critical": "19-20/\u00d72",
+    "damage_type": "slashing",
+    "range_ft": null,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Composite Longbow",
+    "category": "Martial Weapon",
+    "subcategory": "ranged",
+    "price_gp": 100,
+    "weight_lb": 3,
+    "damage": {
+      "small": "1d6",
+      "medium": "1d8"
+    },
+    "critical": "\u00d73",
+    "damage_type": "piercing",
+    "range_ft": 110,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Shortbow",
+    "category": "Martial Weapon",
+    "subcategory": "ranged",
+    "price_gp": 30,
+    "weight_lb": 2,
+    "damage": {
+      "small": "1d4",
+      "medium": "1d6"
+    },
+    "critical": "\u00d73",
+    "damage_type": "piercing",
+    "range_ft": 60,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Padded Armor",
+    "category": "Light Armor",
+    "subcategory": "armor",
+    "price_gp": 5,
+    "weight_lb": 10,
+    "damage": null,
+    "critical": null,
+    "damage_type": null,
+    "range_ft": null,
+    "ac_bonus": 1,
+    "max_dex": 8,
+    "armor_check": 0,
+    "spell_failure": 5,
+    "speed_30": 30,
+    "speed_20": 20,
+    "source": "PHB 123"
+  },
+  {
+    "name": "Leather Armor",
+    "category": "Light Armor",
+    "subcategory": "armor",
+    "price_gp": 10,
+    "weight_lb": 15,
+    "ac_bonus": 2,
+    "max_dex": 6,
+    "armor_check": 0,
+    "spell_failure": 10,
+    "speed_30": 30,
+    "speed_20": 20,
+    "source": "PHB 123"
+  },
+  {
+    "name": "Studded Leather",
+    "category": "Light Armor",
+    "subcategory": "armor",
+    "price_gp": 25,
+    "weight_lb": 20,
+    "ac_bonus": 3,
+    "max_dex": 5,
+    "armor_check": -1,
+    "spell_failure": 15,
+    "speed_30": 30,
+    "speed_20": 20,
+    "source": "PHB 123"
+  },
+  {
+    "name": "Chain Shirt",
+    "category": "Light Armor",
+    "subcategory": "armor",
+    "price_gp": 100,
+    "weight_lb": 25,
+    "ac_bonus": 4,
+    "max_dex": 4,
+    "armor_check": -2,
+    "spell_failure": 20,
+    "speed_30": 30,
+    "speed_20": 20,
+    "source": "PHB 123"
+  },
+  {
+    "name": "Breastplate",
+    "category": "Medium Armor",
+    "subcategory": "armor",
+    "price_gp": 200,
+    "weight_lb": 30,
+    "ac_bonus": 5,
+    "max_dex": 3,
+    "armor_check": -4,
+    "spell_failure": 25,
+    "speed_30": 20,
+    "speed_20": 15,
+    "source": "PHB 123"
+  },
+  {
+    "name": "Chainmail",
+    "category": "Medium Armor",
+    "subcategory": "armor",
+    "price_gp": 150,
+    "weight_lb": 40,
+    "ac_bonus": 5,
+    "max_dex": 2,
+    "armor_check": -5,
+    "spell_failure": 30,
+    "speed_30": 20,
+    "speed_20": 15,
+    "source": "PHB 123"
+  },
+  {
+    "name": "Half-Plate",
+    "category": "Heavy Armor",
+    "subcategory": "armor",
+    "price_gp": 600,
+    "weight_lb": 50,
+    "ac_bonus": 7,
+    "max_dex": 0,
+    "armor_check": -7,
+    "spell_failure": 40,
+    "speed_30": 20,
+    "speed_20": 15,
+    "source": "PHB 123"
+  },
+  {
+    "name": "Full Plate",
+    "category": "Heavy Armor",
+    "subcategory": "armor",
+    "price_gp": 1500,
+    "weight_lb": 50,
+    "ac_bonus": 8,
+    "max_dex": 1,
+    "armor_check": -6,
+    "spell_failure": 35,
+    "speed_30": 20,
+    "speed_20": 15,
+    "source": "PHB 123"
+  },
+  {
+    "name": "Light Steel Shield",
+    "category": "Shield",
+    "subcategory": "shield",
+    "price_gp": 9,
+    "weight_lb": 6,
+    "ac_bonus": 1,
+    "max_dex": null,
+    "armor_check": -1,
+    "spell_failure": 5,
+    "source": "PHB 123"
+  },
+  {
+    "name": "Heavy Steel Shield",
+    "category": "Shield",
+    "subcategory": "shield",
+    "price_gp": 20,
+    "weight_lb": 15,
+    "ac_bonus": 2,
+    "max_dex": null,
+    "armor_check": -2,
+    "spell_failure": 15,
+    "source": "PHB 123"
+  },
+  {
+    "name": "Tower Shield",
+    "category": "Shield",
+    "subcategory": "shield",
+    "price_gp": 30,
+    "weight_lb": 45,
+    "ac_bonus": 4,
+    "max_dex": 2,
+    "armor_check": -10,
+    "spell_failure": 50,
+    "source": "PHB 123"
+  },
+  {
+    "name": "Backpack",
+    "category": "Gear",
+    "subcategory": "container",
+    "price_gp": 2,
+    "weight_lb": 2,
+    "source": "PHB 130"
+  },
+  {
+    "name": "Bedroll",
+    "category": "Gear",
+    "subcategory": "camping",
+    "price_gp": 0.1,
+    "weight_lb": 5,
+    "source": "PHB 130"
+  },
+  {
+    "name": "Torch",
+    "category": "Gear",
+    "subcategory": "light",
+    "price_gp": 0.01,
+    "weight_lb": 1,
+    "source": "PHB 130"
+  },
+  {
+    "name": "Lantern, Hooded",
+    "category": "Gear",
+    "subcategory": "light",
+    "price_gp": 7,
+    "weight_lb": 2,
+    "source": "PHB 130"
+  },
+  {
+    "name": "Rope, Hempen (50 ft)",
+    "category": "Gear",
+    "subcategory": "rope",
+    "price_gp": 1,
+    "weight_lb": 10,
+    "source": "PHB 130"
+  },
+  {
+    "name": "Rope, Silk (50 ft)",
+    "category": "Gear",
+    "subcategory": "rope",
+    "price_gp": 10,
+    "weight_lb": 5,
+    "source": "PHB 130"
+  },
+  {
+    "name": "Grappling Hook",
+    "category": "Gear",
+    "subcategory": "climbing",
+    "price_gp": 1,
+    "weight_lb": 4,
+    "source": "PHB 130"
+  },
+  {
+    "name": "Thieves' Tools",
+    "category": "Gear",
+    "subcategory": "kit",
+    "price_gp": 30,
+    "weight_lb": 1,
+    "source": "PHB 130",
+    "notes": "Required for Disable Device and Open Lock without -2 penalty."
+  },
+  {
+    "name": "Thieves' Tools, Masterwork",
+    "category": "Gear",
+    "subcategory": "kit",
+    "price_gp": 100,
+    "weight_lb": 2,
+    "source": "PHB 130",
+    "notes": "+2 circumstance bonus to Disable Device and Open Lock."
+  },
+  {
+    "name": "Holy Symbol, Wooden",
+    "category": "Gear",
+    "subcategory": "religious",
+    "price_gp": 1,
+    "weight_lb": 0,
+    "source": "PHB 130"
+  },
+  {
+    "name": "Spellbook (blank, 100 pages)",
+    "category": "Gear",
+    "subcategory": "arcane",
+    "price_gp": 15,
+    "weight_lb": 3,
+    "source": "PHB 130"
+  },
+  {
+    "name": "Spell Component Pouch",
+    "category": "Gear",
+    "subcategory": "arcane",
+    "price_gp": 5,
+    "weight_lb": 2,
+    "source": "PHB 130"
+  },
+  {
+    "name": "Healer's Kit",
+    "category": "Gear",
+    "subcategory": "kit",
+    "price_gp": 50,
+    "weight_lb": 1,
+    "source": "PHB 130",
+    "notes": "+2 circumstance bonus on Heal checks. 10 uses."
+  },
+  {
+    "name": "Acid (flask)",
+    "category": "Alchemical",
+    "subcategory": "thrown splash weapon",
+    "price_gp": 10,
+    "weight_lb": 1,
+    "damage": {
+      "small": "1d6",
+      "medium": "1d6"
+    },
+    "critical": "\u00d72",
+    "damage_type": "acid",
+    "range_ft": 10,
+    "source": "PHB 128",
+    "notes": "Splash 1 acid to adjacent squares on direct hit."
+  },
+  {
+    "name": "Alchemist's Fire (flask)",
+    "category": "Alchemical",
+    "subcategory": "thrown splash weapon",
+    "price_gp": 20,
+    "weight_lb": 1,
+    "damage": {
+      "small": "1d6",
+      "medium": "1d6"
+    },
+    "critical": "\u00d72",
+    "damage_type": "fire",
+    "range_ft": 10,
+    "source": "PHB 128",
+    "notes": "Burns for 1d6 fire/round; Reflex DC 15 to extinguish."
+  },
+  {
+    "name": "Antitoxin (vial)",
+    "category": "Alchemical",
+    "subcategory": "consumable",
+    "price_gp": 50,
+    "weight_lb": 0,
+    "source": "PHB 128",
+    "notes": "+5 alchemical bonus on Fort saves against poison for 1 hour."
+  },
+  {
+    "name": "Tanglefoot Bag",
+    "category": "Alchemical",
+    "subcategory": "thrown splash weapon",
+    "price_gp": 50,
+    "weight_lb": 4,
+    "damage": {
+      "small": "\u2014",
+      "medium": "\u2014"
+    },
+    "critical": "\u2014",
+    "damage_type": "none",
+    "range_ft": 10,
+    "source": "PHB 128",
+    "notes": "Reflex DC 15 or stuck to floor; entangled regardless. Burn off (fire) or Str DC 27 or 3d4 minutes."
+  },
+  {
+    "name": "Thunderstone",
+    "category": "Alchemical",
+    "subcategory": "thrown splash weapon",
+    "price_gp": 30,
+    "weight_lb": 1,
+    "damage": {
+      "small": "\u2014",
+      "medium": "\u2014"
+    },
+    "critical": "\u2014",
+    "damage_type": "sonic",
+    "range_ft": 20,
+    "source": "PHB 128",
+    "notes": "Fort DC 15 or deafened 1 hour on direct hit; all within 10 ft."
+  },
+  {
+    "name": "Smokestick",
+    "category": "Alchemical",
+    "subcategory": "consumable",
+    "price_gp": 20,
+    "weight_lb": 0.5,
+    "source": "PHB 128",
+    "notes": "Creates 10-ft. cube of opaque smoke for 1 round when snapped."
+  },
+  {
+    "name": "Sunrod",
+    "category": "Alchemical",
+    "subcategory": "light source",
+    "price_gp": 2,
+    "weight_lb": 1,
+    "source": "PHB 128",
+    "notes": "Bright light 30 ft., shadowy 60 ft. for 6 hours. No fire hazard."
+  },
+  {
+    "name": "Tindertwig",
+    "category": "Alchemical",
+    "subcategory": "consumable",
+    "price_gp": 1,
+    "weight_lb": 0,
+    "source": "PHB 128",
+    "notes": "Light a torch or lamp as a standard action (instead of 1 full round)."
+  },
+  {
+    "name": "Antiplague (vial)",
+    "category": "Alchemical",
+    "subcategory": "consumable",
+    "price_gp": 50,
+    "weight_lb": 0,
+    "source": "PHB 128",
+    "notes": "+5 alchemical bonus on Fort saves against disease for 1 hour."
+  },
+  {
+    "name": "Holy Water (flask)",
+    "category": "Alchemical",
+    "subcategory": "thrown splash weapon",
+    "price_gp": 25,
+    "weight_lb": 1,
+    "damage": {
+      "small": "2d4",
+      "medium": "2d4"
+    },
+    "critical": "\u00d72",
+    "damage_type": "positive energy",
+    "range_ft": 10,
+    "source": "PHB 128",
+    "notes": "2d4 damage to undead and evil outsiders on direct hit; 1 splash."
+  },
+  {
+    "name": "Piton",
+    "category": "Gear",
+    "subcategory": "dungeoneering",
+    "price_gp": 0.1,
+    "weight_lb": 0.5,
+    "source": "PHB 130",
+    "notes": "Iron spike driven into stone for rope anchor. 10 per lb."
+  },
+  {
+    "name": "Crowbar",
+    "category": "Gear",
+    "subcategory": "dungeoneering",
+    "price_gp": 2,
+    "weight_lb": 5,
+    "source": "PHB 130",
+    "notes": "+2 circumstance bonus on Str checks to force doors; can also function as improvised club."
+  },
+  {
+    "name": "10-Foot Pole",
+    "category": "Gear",
+    "subcategory": "dungeoneering",
+    "price_gp": 0.2,
+    "weight_lb": 8,
+    "source": "PHB 130",
+    "notes": "Essential for poking suspicious floors and pressure plates."
+  },
+  {
+    "name": "Climber's Kit",
+    "category": "Gear",
+    "subcategory": "dungeoneering",
+    "price_gp": 80,
+    "weight_lb": 5,
+    "source": "PHB 130",
+    "notes": "+2 circumstance bonus on Climb checks. Contains pitons, hammer, hooks, and such."
+  },
+  {
+    "name": "Manacles",
+    "category": "Gear",
+    "subcategory": "restraint",
+    "price_gp": 15,
+    "weight_lb": 2,
+    "source": "PHB 130",
+    "notes": "Escape Artist DC 30 to slip; Str DC 26 to break. Hardness 10, hp 10."
+  },
+  {
+    "name": "Manacles, Masterwork",
+    "category": "Gear",
+    "subcategory": "restraint",
+    "price_gp": 50,
+    "weight_lb": 2,
+    "source": "PHB 130",
+    "notes": "Escape Artist DC 35 to slip; Str DC 28 to break."
+  },
+  {
+    "name": "Mirror, Small Steel",
+    "category": "Gear",
+    "subcategory": "dungeoneering",
+    "price_gp": 10,
+    "weight_lb": 0.5,
+    "source": "PHB 130",
+    "notes": "View around corners; check for basilisk without direct eye contact."
+  },
+  {
+    "name": "Flint and Steel",
+    "category": "Gear",
+    "subcategory": "dungeoneering",
+    "price_gp": 1,
+    "weight_lb": 0,
+    "source": "PHB 130",
+    "notes": "Light a fire in 1 full round."
+  },
+  {
+    "name": "Oil (1-pint flask)",
+    "category": "Gear",
+    "subcategory": "light source / thrown",
+    "price_gp": 0.1,
+    "weight_lb": 1,
+    "source": "PHB 130",
+    "notes": "Fuels lantern 6 hours. Thrown: 2d3 fire on direct hit plus splash; burns for 2 rounds."
+  },
+  {
+    "name": "Chalk (1 piece)",
+    "category": "Gear",
+    "subcategory": "dungeoneering",
+    "price_gp": 0.01,
+    "weight_lb": 0,
+    "source": "PHB 130",
+    "notes": "Mark dungeon walls and floors for navigation."
+  },
+  {
+    "name": "Rations, Trail (1 day)",
+    "category": "Gear",
+    "subcategory": "food",
+    "price_gp": 0.5,
+    "weight_lb": 1,
+    "source": "PHB 130",
+    "notes": "Preserved food for 1 person/day."
+  },
+  {
+    "name": "Waterskin",
+    "category": "Gear",
+    "subcategory": "food",
+    "price_gp": 1,
+    "weight_lb": 4,
+    "source": "PHB 130",
+    "notes": "4 lb. when full; holds ~1 day supply of water."
+  },
+  {
+    "name": "Sack",
+    "category": "Gear",
+    "subcategory": "container",
+    "price_gp": 0.1,
+    "weight_lb": 0.5,
+    "source": "PHB 130",
+    "notes": "Holds up to 30 lb."
+  },
+  {
+    "name": "Vial (glass)",
+    "category": "Gear",
+    "subcategory": "container",
+    "price_gp": 1,
+    "weight_lb": 0,
+    "source": "PHB 130",
+    "notes": "Holds 1 oz. liquid (potion, poison, etc.)."
+  },
+  {
+    "name": "Caltrops (1 lb bag)",
+    "category": "Gear",
+    "subcategory": "combat",
+    "price_gp": 1,
+    "weight_lb": 2,
+    "source": "PHB 130",
+    "notes": "Cover 5-ft. sq. Creatures moving through: Reflex DC 15 or 1 hp and 1/2 speed for 24 hours."
+  },
+  {
+    "name": "Disguise Kit",
+    "category": "Gear",
+    "subcategory": "skill kit",
+    "price_gp": 50,
+    "weight_lb": 8,
+    "source": "PHB 130",
+    "notes": "+2 circumstance bonus on Disguise checks. 10 uses."
+  },
+  {
+    "name": "Merchant's Scale",
+    "category": "Gear",
+    "subcategory": "utility",
+    "price_gp": 2,
+    "weight_lb": 1,
+    "source": "PHB 130",
+    "notes": "+2 circumstance bonus on Appraise checks for items valued by weight."
+  },
+  {
+    "name": "Spiked Chain",
+    "category": "Exotic Weapon",
+    "subcategory": "two-handed melee",
+    "price_gp": 25,
+    "weight_lb": 10,
+    "damage": {
+      "small": "1d6",
+      "medium": "2d4"
+    },
+    "critical": "\u00d72",
+    "damage_type": "piercing",
+    "range_ft": null,
+    "source": "PHB 117",
+    "notes": "Reach weapon (10 ft.); can also attack adjacent squares; trip weapon; requires Exotic Weapon Proficiency."
+  },
+  {
+    "name": "Whip",
+    "category": "Exotic Weapon",
+    "subcategory": "one-handed melee",
+    "price_gp": 1,
+    "weight_lb": 2,
+    "damage": {
+      "small": "1d2",
+      "medium": "1d3"
+    },
+    "critical": "\u00d72",
+    "damage_type": "slashing",
+    "range_ft": null,
+    "source": "PHB 117",
+    "notes": "Reach 15 ft.; no damage to armored targets (AC 11+ from armor/natural); no AoO with Improved Whip Attack. Trip weapon. Deals nonlethal."
+  },
+  {
+    "name": "Hand Crossbow",
+    "category": "Exotic Weapon",
+    "subcategory": "ranged",
+    "price_gp": 100,
+    "weight_lb": 2,
+    "damage": {
+      "small": "1d3",
+      "medium": "1d4"
+    },
+    "critical": "19-20/\u00d72",
+    "damage_type": "piercing",
+    "range_ft": 30,
+    "source": "PHB 116",
+    "notes": "Can use one-handed; can load and fire in same round with Rapid Reload. Commonly used with drow poison."
+  },
+  {
+    "name": "Repeating Crossbow, Light",
+    "category": "Exotic Weapon",
+    "subcategory": "ranged",
+    "price_gp": 250,
+    "weight_lb": 6,
+    "damage": {
+      "small": "1d6",
+      "medium": "1d8"
+    },
+    "critical": "19-20/\u00d72",
+    "damage_type": "piercing",
+    "range_ft": 80,
+    "source": "PHB 117",
+    "notes": "5-bolt magazine; free action to fire; no need to reload between shots. Requires Exotic Weapon Proficiency."
+  },
+  {
+    "name": "Gnome Hooked Hammer",
+    "category": "Exotic Weapon",
+    "subcategory": "two-handed melee (double)",
+    "price_gp": 20,
+    "weight_lb": 6,
+    "damage": {
+      "small": "1d4/1d4",
+      "medium": "1d6/1d4"
+    },
+    "critical": "\u00d73/\u00d74",
+    "damage_type": "bludgeoning/piercing",
+    "range_ft": null,
+    "source": "PHB 117",
+    "notes": "Double weapon. Hook (\u00d73 crit) and hammer head (\u00d74 crit on spike end). Trip weapon."
+  },
+  {
+    "name": "Orc Double Axe",
+    "category": "Exotic Weapon",
+    "subcategory": "two-handed melee (double)",
+    "price_gp": 60,
+    "weight_lb": 15,
+    "damage": {
+      "small": "1d6/1d6",
+      "medium": "1d8/1d8"
+    },
+    "critical": "\u00d73",
+    "damage_type": "slashing",
+    "range_ft": null,
+    "source": "PHB 117",
+    "notes": "Double weapon; requires Exotic Weapon Proficiency to use two-weapon."
+  },
+  {
+    "name": "Sai",
+    "category": "Exotic Weapon",
+    "subcategory": "light melee",
+    "price_gp": 1,
+    "weight_lb": 1,
+    "damage": {
+      "small": "1d4",
+      "medium": "1d6"
+    },
+    "critical": "\u00d72",
+    "damage_type": "bludgeoning",
+    "range_ft": null,
+    "source": "PHB 117",
+    "notes": "Can be used to make disarm attempts +4 bonus; can be thrown (range 10 ft.)."
+  },
+  {
+    "name": "Kama",
+    "category": "Exotic Weapon",
+    "subcategory": "light melee",
+    "price_gp": 2,
+    "weight_lb": 2,
+    "damage": {
+      "small": "1d4",
+      "medium": "1d6"
+    },
+    "critical": "\u00d72",
+    "damage_type": "slashing",
+    "range_ft": null,
+    "source": "PHB 117",
+    "notes": "Trip weapon; exotic weapon proficiency required."
+  },
+  {
+    "name": "Falchion",
+    "category": "Martial Weapon",
+    "subcategory": "two-handed melee",
+    "price_gp": 75,
+    "weight_lb": 8,
+    "damage": {
+      "small": "1d6",
+      "medium": "2d4"
+    },
+    "critical": "18-20/\u00d72",
+    "damage_type": "slashing",
+    "range_ft": null,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Halberd",
+    "category": "Martial Weapon",
+    "subcategory": "two-handed melee",
+    "price_gp": 10,
+    "weight_lb": 12,
+    "damage": {
+      "small": "1d8",
+      "medium": "1d10"
+    },
+    "critical": "\u00d73",
+    "damage_type": "piercing and slashing",
+    "range_ft": null,
+    "source": "PHB 116",
+    "notes": "Brace weapon; trip weapon; can dismount riders."
+  },
+  {
+    "name": "Lance",
+    "category": "Martial Weapon",
+    "subcategory": "two-handed melee",
+    "price_gp": 10,
+    "weight_lb": 10,
+    "damage": {
+      "small": "1d6",
+      "medium": "1d8"
+    },
+    "critical": "\u00d73",
+    "damage_type": "piercing",
+    "range_ft": null,
+    "source": "PHB 116",
+    "notes": "Deals double damage on mounted charge. Reach (10 ft.); -4 to attack adjacent without feat."
+  },
+  {
+    "name": "Morningstar",
+    "category": "Martial Weapon",
+    "subcategory": "one-handed melee",
+    "price_gp": 8,
+    "weight_lb": 6,
+    "damage": {
+      "small": "1d6",
+      "medium": "1d8"
+    },
+    "critical": "\u00d72",
+    "damage_type": "bludgeoning and piercing",
+    "range_ft": null,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Flail, Heavy",
+    "category": "Martial Weapon",
+    "subcategory": "two-handed melee",
+    "price_gp": 15,
+    "weight_lb": 10,
+    "damage": {
+      "small": "1d8",
+      "medium": "1d10"
+    },
+    "critical": "19-20/\u00d72",
+    "damage_type": "bludgeoning",
+    "range_ft": null,
+    "source": "PHB 116",
+    "notes": "Disarm weapon; trip weapon."
+  },
+  {
+    "name": "Scythe",
+    "category": "Martial Weapon",
+    "subcategory": "two-handed melee",
+    "price_gp": 18,
+    "weight_lb": 10,
+    "damage": {
+      "small": "1d6",
+      "medium": "2d4"
+    },
+    "critical": "\u00d74",
+    "damage_type": "piercing and slashing",
+    "range_ft": null,
+    "source": "PHB 116",
+    "notes": "Trip weapon."
+  },
+  {
+    "name": "Spear",
+    "category": "Simple Weapon",
+    "subcategory": "two-handed melee",
+    "price_gp": 2,
+    "weight_lb": 6,
+    "damage": {
+      "small": "1d6",
+      "medium": "1d8"
+    },
+    "critical": "\u00d73",
+    "damage_type": "piercing",
+    "range_ft": 20,
+    "source": "PHB 116",
+    "notes": "Brace weapon. Can also be thrown."
+  },
+  {
+    "name": "Javelin",
+    "category": "Simple Weapon",
+    "subcategory": "thrown ranged",
+    "price_gp": 1,
+    "weight_lb": 2,
+    "damage": {
+      "small": "1d4",
+      "medium": "1d6"
+    },
+    "critical": "\u00d72",
+    "damage_type": "piercing",
+    "range_ft": 30,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Handaxe",
+    "category": "Martial Weapon",
+    "subcategory": "light melee",
+    "price_gp": 6,
+    "weight_lb": 3,
+    "damage": {
+      "small": "1d4",
+      "medium": "1d6"
+    },
+    "critical": "\u00d73",
+    "damage_type": "slashing",
+    "range_ft": null,
+    "source": "PHB 116"
+  },
+  {
+    "name": "Shield, Buckler",
+    "category": "Shield",
+    "subcategory": "light shield",
+    "price_gp": 15,
+    "weight_lb": 5,
+    "source": "PHB 123",
+    "notes": "+1 shield bonus to AC. Can use weapon in same hand but at -1 penalty. No off-hand attack with buckler hand."
+  },
+  {
+    "name": "Mithral Chain Shirt",
+    "category": "Special Material Armor",
+    "subcategory": "light armor",
+    "price_gp": 1100,
+    "weight_lb": 12.5,
+    "source": "DMG 284",
+    "notes": "Mithral: treated as light armor; ACP 0; max Dex +6; arcane spell failure 10%; weight halved."
+  },
+  {
+    "name": "Masterwork Longsword",
+    "category": "Masterwork Weapon",
+    "subcategory": "one-handed melee",
+    "price_gp": 315,
+    "weight_lb": 4,
+    "damage": {
+      "small": "1d6",
+      "medium": "1d8"
+    },
+    "critical": "19-20/\u00d72",
+    "damage_type": "slashing",
+    "range_ft": null,
+    "source": "PHB 122",
+    "notes": "+1 enhancement bonus to attack rolls only (not damage). Prerequisite for enchantment."
+  },
+  {
+    "name": "Masterwork Full Plate",
+    "category": "Masterwork Armor",
+    "subcategory": "heavy armor",
+    "price_gp": 1650,
+    "weight_lb": 50,
+    "source": "PHB 122",
+    "notes": "Reduces ACP by 1 (to -5). Prerequisite for enchantment."
+  },
+  {
+    "name": "Ink (1 oz. vial)",
+    "category": "Gear",
+    "subcategory": "arcane",
+    "price_gp": 8,
+    "weight_lb": 0,
+    "source": "PHB 130"
+  },
+  {
+    "name": "Parchment (1 sheet)",
+    "category": "Gear",
+    "subcategory": "arcane",
+    "price_gp": 0.2,
+    "weight_lb": 0,
+    "source": "PHB 130"
+  },
+  {
+    "name": "Map Case",
+    "category": "Gear",
+    "subcategory": "container",
+    "price_gp": 1,
+    "weight_lb": 0.5,
+    "source": "PHB 130",
+    "notes": "Protects maps and scrolls from moisture."
+  },
+  {
+    "name": "Lantern, Bullseye",
+    "category": "Gear",
+    "subcategory": "light source",
+    "price_gp": 12,
+    "weight_lb": 3,
+    "source": "PHB 130",
+    "notes": "Bright 60-ft. cone; shadowy 120 ft. Burns 1 pint of oil per 6 hours."
+  },
+  {
+    "name": "Candle",
+    "category": "Gear",
+    "subcategory": "light source",
+    "price_gp": 0.01,
+    "weight_lb": 0,
+    "source": "PHB 130",
+    "notes": "Bright light 5 ft., shadowy 10 ft. Burns 1 hour."
+  },
+  {
+    "name": "Artisan's Tools, Masterwork",
+    "category": "Gear",
+    "subcategory": "skill kit",
+    "price_gp": 55,
+    "weight_lb": 5,
+    "source": "PHB 130",
+    "notes": "+2 circumstance bonus on Craft checks for the associated trade."
+  },
+  {
+    "name": "Portable Ram",
+    "category": "Gear",
+    "subcategory": "dungeoneering",
+    "price_gp": 10,
+    "weight_lb": 20,
+    "source": "PHB 130",
+    "notes": "+2 bonus on Str checks to break down doors. Two-person: additional +2."
+  },
+  {
+    "name": "Net",
+    "category": "Exotic Weapon",
+    "subcategory": "ranged",
+    "price_gp": 20,
+    "weight_lb": 6,
+    "damage": {
+      "small": "\u2014",
+      "medium": "\u2014"
+    },
+    "critical": "\u2014",
+    "damage_type": "none",
+    "range_ft": 10,
+    "source": "PHB 117",
+    "notes": "Entangles target (Str DC 25 to break, Escape Artist DC 20). Ranged touch to hit. Cannot attack after throwing without picking up or having another. Exotic weapon."
+  },
+  {
+    "name": "Silver, Alchemical (per weapon)",
+    "category": "Special Material",
+    "subcategory": "weapon coating",
+    "price_gp": 90,
+    "weight_lb": 0,
+    "source": "PHB 322 / DMG",
+    "notes": "+90 gp per weapon; -1 damage. Bypasses DR/silver for lycanthropes, devils, and some fey."
+  },
+  {
+    "name": "Cold Iron (per weapon, masterwork quality)",
+    "category": "Special Material",
+    "subcategory": "weapon material",
+    "price_gp": 350,
+    "weight_lb": 0,
+    "source": "DMG 284",
+    "notes": "Cold iron weapons bypass DR/cold iron for demons, fey, and some outsiders. Double the normal masterwork price."
+  }
+]

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GM Dashboard — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; padding:16px 20px 60px; }
+  .card { background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:14px 16px; }
+  .card h2 { color:var(--gold); font-size:14px; text-transform:uppercase; letter-spacing:1.5px; border-bottom:1px solid var(--line); padding-bottom:6px; margin:0 0 10px; display:flex; }
+  .card h2 a { margin-left:auto; font-size:12px; }
+  .big { font-size:22px; color:var(--gold); }
+  .row { padding:3px 0; font-size:15px; }
+  .muted2 { color:var(--muted); font-size:13px; }
+  .clock { font-family:'Courier New',monospace; color:var(--gold); }
+  .pill { display:inline-block; border:1px solid var(--gold-dim); border-radius:5px; padding:1px 8px; font-size:13px; margin:2px 4px 2px 0; }
+</style>
+</head>
+<body>
+<div class="grid" id="grid"></div>
+<script src="../shared/state.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('GM Dashboard', 'Everything at a glance');
+UI.diceTray();
+const MONTHS=['Newyear','Birth','Wind','Rain','Bloom','Sun','Growth','Blessing','Toil','Harvest','Moons','Yearsend'];
+function ord(n){const s=['th','st','nd','rd'],v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
+function rj(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }
+const DISP={'-5':'HOSTILE','-4':'ANTAGONISTIC','-3':'UNFRIENDLY','-2':'WARY','-1':'COOL','0':'NEUTRAL','1':'NOTICED','2':'CAUTIOUS ALLY','3':'FRIENDLY','4':'ALLIED','5':'TRUSTED'};
+
+function render() {
+  const ctx = Ctx.all();
+  const cal = rj('ptolus-calendar-v1');
+  const date = (cal&&cal.cur) ? (ord(cal.cur.d)+' of '+MONTHS[cal.cur.m-1]+', '+cal.cur.y+' IA') : (ctx.date||'—');
+  const cb = rj('ptolus-combat-v1');
+  const ct = rj('ptolus-cityturn-v1');
+  const party = ctx.party || [];
+
+  let cards = '';
+  // Campaign context
+  cards += '<div class="card"><h2>Campaign <a href="../party/index.html">edit party →</a></h2>' +
+    '<div class="big">APL ' + ctx.partyLevel + ' · Arc ' + ['','I','II','III','IV','V'][ctx.arc] + '</div>' +
+    '<div class="row">Party of ' + ctx.partySize + ' · District: ' + UI.esc(ctx.district) + '</div>' +
+    '<div class="row muted2">' + date + '</div></div>';
+
+  // Party
+  cards += '<div class="card"><h2>Party</h2>' +
+    (party.length ? party.map(p => '<div class="row">' + UI.esc(p.name||'PC') + ' — L' + (p.level||'?') + ' ' + UI.esc(p.cls||'') + ' · AC ' + (p.ac||'?') + ' · HP ' + (p.hp||'?') + '</div>').join('')
+      : '<div class="muted2">No roster yet. <a href="../party/index.html">Add PCs →</a></div>') + '</div>';
+
+  // Combat
+  let combatHtml = '<div class="muted2">No combat in progress. <a href="../combat/index.html">Open tracker →</a></div>';
+  if (cb && cb.combatants && cb.combatants.length) {
+    const list = cb.combatants.slice().sort((a,b)=>b.init-a.init||a.id-b.id);
+    const act = list.find(c=>c.id===cb.activeId);
+    combatHtml = '<div class="big">Round ' + (cb.round||1) + ' · ' + list.length + ' combatants</div>' +
+      '<div class="row">Turn: ' + (act?UI.esc(act.name):'—') + '</div>' +
+      '<div class="row muted2">' + list.slice(0,8).map(c=>UI.esc(c.name)+' ('+c.init+')').join(', ') + '</div>';
+  }
+  cards += '<div class="card"><h2>Combat <a href="../combat/index.html">tracker →</a></h2>' + combatHtml + '</div>';
+
+  // Faction clocks
+  let clockHtml = '<div class="muted2">No clocks. <a href="../city-turn/index.html">Open City Turn →</a></div>';
+  if (ct && ct.projects && ct.projects.length) {
+    clockHtml = '<div class="muted2">Week ' + (ct.week||0) + '</div>' +
+      ct.projects.slice().sort((a,b)=>(b.filled/b.total)-(a.filled/a.total)).slice(0,6).map(p =>
+        '<div class="row"><span class="clock">' + '●'.repeat(p.filled) + '○'.repeat(Math.max(0,p.total-p.filled)) + '</span> ' +
+        UI.esc(p.fac) + (p.filled>=p.total?' ✓':'') + '</div>').join('');
+  }
+  cards += '<div class="card"><h2>Faction Clocks <a href="../city-turn/index.html">advance →</a></h2>' + clockHtml + '</div>';
+
+  // Delve in progress (only shown when active)
+  const dv = rj('ptolus-delve-v1');
+  if (dv && (dv.elapsed > 0 || (dv.lights && dv.lights.length) || dv.depth > 1)) {
+    const h = Math.floor((dv.elapsed||0)/60), m = (dv.elapsed||0)%60;
+    const tstr = (h?h+'h ':'') + m + 'm';
+    let lightStr;
+    if (!dv.lights || !dv.lights.length) lightStr = '<span style="color:var(--bad)">no light — darkness</span>';
+    else { const rem = dv.lights.filter(l=>l.remaining!=null).map(l=>l.remaining); lightStr = dv.lights.length + ' lit' + (rem.length ? ' · ' + Math.min.apply(null,rem) + ' min to next burnout' : ''); }
+    cards += '<div class="card"><h2>Delve <a href="../delve/index.html">tracker →</a></h2>' +
+      '<div class="big">Level ' + (dv.depth||1) + ' · ' + tstr + ' under</div>' +
+      '<div class="row">' + lightStr + '</div>' +
+      '<div class="row muted2">Next wandering check in ' + Math.max(0, dv.toCheck||0) + ' min</div></div>';
+  }
+
+  // Faction dispositions (only the ones moved off neutral)
+  const fx = rj('ptolus-factions-v1');
+  if (fx && fx.factions) {
+    const live = Object.keys(fx.factions).map(k=>fx.factions[k])
+      .filter(f => !f.hidden && f.disp !== 0)
+      .sort((a,b)=>Math.abs(b.disp)-Math.abs(a.disp)).slice(0,8);
+    if (live.length) {
+      cards += '<div class="card"><h2>Factions <a href="../factions/index.html">track →</a></h2>' +
+        live.map(f => '<div class="row"><span style="color:' + (f.disp<0?'var(--bad)':'var(--gold)') + '">' +
+          (DISP[String(f.disp)]||f.disp) + '</span> · ' + UI.esc(f.name) + '</div>').join('') + '</div>';
+    }
+  }
+
+  // Quick links
+  cards += '<div class="card"><h2>Jump to</h2>' +
+    ['encounters','loot','npcs','dungeons','delve','districts','city-events','jobs','rumors','quests','display'].map(t =>
+      '<a class="pill" href="../' + t + '/index.html">' + t.replace('-',' ') + '</a>').join('') + '</div>';
+
+  UI.el('grid').innerHTML = cards;
+}
+window.addEventListener('storage', render);
+setInterval(render, 2000);
+render();
+</script>
+</body>
+</html>

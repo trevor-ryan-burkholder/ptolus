@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Permits &amp; Licensing — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .wrap { padding:16px 20px 60px; max-width:920px; }
+  h2.sec { color:var(--gold); font-size:15px; text-transform:uppercase; letter-spacing:2px; border-bottom:1px solid var(--line); margin:24px 0 10px; padding-bottom:5px; }
+  .lookup { background:var(--bg-panel); border:1px solid var(--gold-dim); border-radius:8px; padding:14px; display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; }
+  .lookup input { width:120px; }
+  #lookresult { margin-top:12px; white-space:pre-wrap; font-family:'Courier New',monospace; font-size:15px; }
+  details { background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; margin-bottom:10px; padding:0 14px; }
+  details summary { cursor:pointer; color:var(--gold); font-weight:bold; padding:11px 0; }
+  details[open] summary { border-bottom:1px solid var(--line); margin-bottom:8px; }
+  details p, details ul { font-size:14px; line-height:1.45; }
+  footer { color:var(--muted); font-size:13px; padding:10px 20px 30px; max-width:920px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sec">CR → Grade Quick Lookup</h2>
+  <div class="lookup">
+    <div><div class="hint">Monster name (optional)</div><input id="mname" placeholder="e.g. Troll"></div>
+    <div><div class="hint">CR</div><input id="cr" type="number" step="0.25" value="3"></div>
+    <button class="primary" id="look" style="width:auto;margin:0;padding:10px 18px;">Look Up</button>
+  </div>
+  <div id="lookresult"></div>
+
+  <h2 class="sec">Canonical City Licenses (Ptolus p. 553–559)</h2>
+  <table class="ref">
+    <tr><th>License</th><th>For</th><th>Cost</th><th>Without it</th></tr>
+    <tr><td>Firearms Permit</td><td>Owning/carrying firearms in the city</td><td>10 gp + 5 gp/yr</td><td>Seized; 100 gp fine (rising to 500 gp + 30 days)</td></tr>
+    <tr><td>Business License</td><td>Any fixed commercial enterprise</td><td>25–100 gp/yr</td><td>Shuttered, goods seized; 200 gp + back fees</td></tr>
+    <tr><td>Publishing License</td><td>Public broadsheets, books, pamphlets</td><td>15 gp/title or 50 gp/yr</td><td>Print run seized; 150 gp (sedition: up to 1 yr)</td></tr>
+    <tr><td>Spell Use Permit</td><td>Mass-effect/destructive spells in the city</td><td>500 gp/use; 1,000 gp/yr standing</td><td>500–800 gp; Watch list (repeat: up to 5 yr)</td></tr>
+  </table>
+  <p class="hint">Issued at the Administration Building, Oldtown (dawn–dusk, closed Sixday). Adventuring spells in active combat are generally not prosecuted absent serious collateral damage.</p>
+
+  <h2 class="sec">Trafficking & Violation Penalties (Ptolus p. 555)</h2>
+  <table class="ref">
+    <tr><th>Offense</th><th>Fine</th><th>Imprisonment</th></tr>
+    <tr><td>Failure to produce a required permit</td><td>100–500 gp</td><td>None (first)</td></tr>
+    <tr><td>Unlicensed business</td><td>200 gp + back fees</td><td>None (first)</td></tr>
+    <tr><td>Trafficking illegal goods (mundane)</td><td>500 gp</td><td>1 year</td></tr>
+    <tr><td>Trafficking illegal goods (magic)</td><td>800 gp</td><td>5 years</td></tr>
+    <tr><td>Chaositech possession/sale</td><td>Confiscation + 1,000 gp</td><td>2–10 years</td></tr>
+    <tr><td>Unlicensed mass spellcasting</td><td>500–800 gp</td><td>Up to 5 years</td></tr>
+  </table>
+
+  <h2 class="sec">Monster Grade Permits <span class="hint">[homebrew]</span></h2>
+  <details open><summary>Grade 4 — Movement Permit (CR 1/4–1)</summary>
+    <p>Daytime travel on designated routes, no overnight stay. <b>5 gp/month</b>, clerk-level, low scrutiny. Must use Undercity Market routes; barred from Nobles' Quarter, Temple District, Oldtown unescorted. Without it: detained & escorted out, 25 gp fine; aggressive/repeat → lethal response authorized.</p></details>
+  <details><summary>Grade 3 — Residency Permit (CR 2–5)</summary>
+    <p>Registered residence, free daylight movement in most districts. <b>50 gp/year</b> + 2 letters of reference (Delver's Guild membership counts). Curfew midnight–dawn unless +20 gp/yr Night Travel Endorsement. Without it: treated as Grade 2 threat; Commissar's Men; 100 gp + forced registration or expulsion.</p></details>
+  <details><summary>Grade 2 — Special Dispensation (CR 6–10)</summary>
+    <p>Presence with a sponsor (noble house, major guild, or church) who assumes liability. <b>500 gp one-time</b> (250 gp/yr renewal). Must register address with the district captain; no independent commercial/violent operation. Without it: Commissar's Men (1d4+2) respond; creature detained or killed; known sponsor fined 1,000 gp.</p></details>
+  <details><summary>Grade 1 — Council Exception (CR 11–15)</summary>
+    <p>Case-by-case, requires a <b>City Council vote</b>. Political capital + ~2,000–5,000 gp in fees/bribes. Permanent probation; any incident triggers review. Without it: Commissar's Men + Watch; Imperial Eyes notified; maximum-force authorization.</p></details>
+  <details><summary>Special Grade — No Permit (CR 16+)</summary>
+    <p>No system applies; presence is treated as an active emergency. All forces respond; Inverted Pyramid notified; Knights of the Pale if undead/chaos. Rare exception: ancient dragons with house ties, by direct Commissar arrangement (not a permit).</p></details>
+
+  <h2 class="sec">City Watch Response by Violation</h2>
+  <table class="ref">
+    <tr><th>Situation</th><th>First Responder</th><th>Escalation</th></tr>
+    <tr><td>Grade 4, no Movement Permit</td><td>1–2 Watch officers</td><td>Only if it resists</td></tr>
+    <tr><td>Grade 3, no Residency Permit</td><td>1d4 Watch</td><td>Commissar's Men if it flees</td></tr>
+    <tr><td>Grade 2, no Dispensation</td><td>1d4+2 Watch + sergeant</td><td>Commissar's Men simultaneously</td></tr>
+    <tr><td>Grade 1, no Exception</td><td>Commissar's Men (full unit)</td><td>Imperial Eyes notified</td></tr>
+    <tr><td>Special Grade (any)</td><td>All available forces</td><td>Emergency; Inverted Pyramid notified</td></tr>
+    <tr><td>Unlicensed firearm</td><td>1 Watch officer</td><td>Escalates if owner resists</td></tr>
+    <tr><td>Illegal spell use</td><td>1d4 Watch + Watch mage</td><td>Inverted Pyramid liaison consulted</td></tr>
+  </table>
+
+  <h2 class="sec">GM Notes</h2>
+  <ul>
+    <li>Uneven enforcement: Nobles' Quarter & Temple District are strict; the Warrens & Docks are lax. A quiet Grade 3 in the Warrens may never be questioned; the same creature in Midtown draws Watch within hours.</li>
+    <li>Delver's Guild membership isn't a permit, but Watch officers give "working delvers" latitude.</li>
+    <li>Bribes: a Watch officer overlooks a minor violation for 10–20 gp. Commissar's Men: 100–200 gp — and offering is itself a crime if refused.</li>
+    <li>The Balacazars run a shadow permit system for creatures they employ — no legal weight, but they'll intervene (for a price) if the Watch moves on their assets.</li>
+  </ul>
+</div>
+<footer>City permits: Ptolus p. 553–559. Monster grades: homebrew (see runner/docs/08-monster-grades.md). Administration Building, Oldtown.</footer>
+
+<script src="../shared/grades.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Ptolus Permits & Licensing', 'Costs, issuers, consequences, grades');
+UI.diceTray();
+UI.el('look').addEventListener('click', () => {
+  const name = UI.el('mname').value.trim();
+  const cr = parseFloat(UI.el('cr').value);
+  const g = GRADES.classify(name || null, isNaN(cr) ? null : cr) || (isNaN(cr) ? null : GRADES.byCR(cr));
+  if (!g) { UI.el('lookresult').textContent = 'Enter a CR (and optionally a known monster name).'; return; }
+  const permit = GRADES.permits[g.grade] || '';
+  UI.el('lookresult').innerHTML =
+    '<span class="head">' + (name ? UI.esc(name) + ' — ' : '') + g.grade + ' (' + g.crLabel + ')</span>\n' +
+    'Legal status: ' + g.status + '\n' +
+    'Permit: ' + permit + '\n' +
+    'Watch response: ' + g.response + ' (' + g.responseDice + ')\n' +
+    'On the street: ' + g.social;
+});
+</script>
+</body>
+</html>

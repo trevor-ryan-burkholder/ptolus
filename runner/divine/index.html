@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deities &amp; Domains — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .controls { display:flex; gap:10px; flex-wrap:wrap; align-items:end; padding:14px 20px 0; }
+  .controls > div { display:flex; flex-direction:column; }
+  .controls label { margin:0 0 3px; }
+  .controls input, .controls select { width:auto; }
+  #q { min-width:240px; }
+  .out { padding:14px 20px 50px; max-width:1000px; }
+  .dcard, .domcard { background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:12px 16px; margin-bottom:12px; }
+  .dcard .nm { color:var(--gold); font-weight:bold; font-size:18px; }
+  .dcard .ti { color:var(--muted); font-style:italic; }
+  .domcard h3 { margin:0 0 4px; color:var(--gold); font-size:17px; }
+  .chip { display:inline-block; background:var(--bg-input); border:1px solid var(--gold-dim); border-radius:5px; padding:1px 9px; margin:3px 5px 3px 0; font-size:14px; color:var(--gold); cursor:pointer; }
+  .chip:hover { background:#3a3320; }
+  .src { font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); border:1px solid var(--line); border-radius:4px; padding:0 6px; margin-left:6px; }
+  .src.prestige { color:var(--warn); border-color:var(--warn); }
+  .granted { margin:6px 0; }
+  table.spells { border-collapse:collapse; margin:6px 0; }
+  table.spells td { border:1px solid var(--line); padding:3px 10px; font-size:14px; }
+  table.spells td.lv { color:var(--gold); text-align:center; width:36px; }
+  .ptol { color:var(--muted); font-size:14px; margin-top:6px; border-left:3px solid var(--gold-dim); padding-left:8px; }
+  .count { color:var(--muted); font-size:13px; padding:0 20px; }
+</style>
+</head>
+<body>
+<div class="controls">
+  <div><label for="view">View</label>
+    <select id="view"><option value="deities" selected>Deities</option><option value="domains">Domains</option><option value="bydeity">By deity (cleric helper)</option></select>
+  </div>
+  <div id="searchwrap"><label for="q">Search (name, portfolio, spell…)</label><input id="q" placeholder="e.g. Lothian, fire, healing"></div>
+  <div id="srcwrap" style="display:none;"><label for="src">Source</label>
+    <select id="src"><option value="all" selected>All</option><option value="PHB">PHB core</option><option value="CD">Complete Divine</option><option value="DotF">Prestige (DotF)</option><option value="Ptolus PT6">Ptolus</option></select>
+  </div>
+  <div id="deitywrap" style="display:none;"><label for="deity">Deity</label><select id="deity"></select></div>
+</div>
+<p class="count" id="count"></p>
+<div class="out" id="out"></div>
+
+<script src="../shared/dice.js"></script>
+<script src="../data/divine.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Deities & Domains', 'Ptolus pantheon + 3.5e cleric domains');
+UI.diceTray();
+const esc = UI.esc;
+const DEI = (window.DIVINE && DIVINE.deities) || [];
+const DOM = (window.DIVINE && DIVINE.domains) || [];
+const DOMMAP = {}; DOM.forEach(d => DOMMAP[d.name.toLowerCase()] = d);
+
+function domByName(n) { return DOMMAP[String(n).toLowerCase()] || null; }
+
+function spellTable(d) {
+  if (!d.spells || !d.spells.length) return '<div class="ptol">Spell list defined in ' + esc(d.source) + ' — see the core book.</div>';
+  let rows = '';
+  d.spells.forEach(s => { const m = String(s).match(/^\s*(\d+)\s*[:.\-]\s*(.*)$/); const lv = m ? m[1] : '?'; const nm = m ? m[2] : s; rows += '<tr><td class="lv">' + esc(lv) + '</td><td><i>' + esc(nm) + '</i></td></tr>'; });
+  return '<table class="spells">' + rows + '</table>';
+}
+function domCard(d) {
+  return '<div class="domcard"><h3>' + esc(d.name) + '<span class="src' + (d.prestige ? ' prestige' : '') + '">' + esc(d.source) + (d.prestige ? ' · prestige' : '') + '</span></h3>' +
+    (d.granted ? '<div class="granted"><b>Granted Power:</b> ' + esc(d.granted) + '</div>' : '') +
+    spellTable(d) +
+    (d.ptolus ? '<div class="ptol">' + esc(d.ptolus) + '</div>' : '') + '</div>';
+}
+function deityCard(de) {
+  const chips = (de.domains || []).map(n => '<span class="chip" data-dom="' + esc(n) + '">' + esc(n) + '</span>').join('');
+  return '<div class="dcard"><div class="nm">' + esc(de.name) + (de.title ? ' <span class="ti">— ' + esc(de.title) + '</span>' : '') +
+    (de.alignment ? ' <span class="src">' + esc(de.alignment) + '</span>' : '') + '</div>' +
+    (de.portfolio ? '<div>' + esc(de.portfolio) + '</div>' : '') +
+    (chips ? '<div style="margin-top:6px;">' + chips + '</div>' : '') +
+    (de.notes ? '<div class="ptol">' + esc(de.notes) + '</div>' : '') + '</div>';
+}
+
+function render() {
+  const view = UI.el('view').value;
+  const q = UI.el('q').value.toLowerCase().trim();
+  UI.el('searchwrap').style.display = view === 'bydeity' ? 'none' : 'flex';
+  UI.el('srcwrap').style.display = view === 'domains' ? 'flex' : 'none';
+  UI.el('deitywrap').style.display = view === 'bydeity' ? 'flex' : 'none';
+  const out = UI.el('out');
+
+  if (view === 'deities') {
+    let list = DEI.filter(d => !q || (d.name + ' ' + d.title + ' ' + d.portfolio + ' ' + (d.domains || []).join(' ') + ' ' + d.notes).toLowerCase().indexOf(q) !== -1);
+    out.innerHTML = list.map(deityCard).join('') || '<p class="count">No deities match.</p>';
+    UI.el('count').textContent = list.length + ' deities';
+  } else if (view === 'domains') {
+    const src = UI.el('src').value;
+    let list = DOM.filter(d => src === 'all' || d.source === src);
+    if (q) list = list.filter(d => (d.name + ' ' + d.granted + ' ' + (d.spells || []).join(' ') + ' ' + d.ptolus).toLowerCase().indexOf(q) !== -1);
+    out.innerHTML = list.map(domCard).join('') || '<p class="count">No domains match.</p>';
+    UI.el('count').textContent = list.length + ' domains';
+  } else {
+    const name = UI.el('deity').value;
+    const de = DEI.find(d => d.name === name);
+    if (!de) { out.innerHTML = ''; return; }
+    let html = deityCard(de);
+    const doms = (de.domains || []);
+    if (!doms.length) html += '<p class="count">No domains listed for this deity in the source.</p>';
+    doms.forEach(n => { const d = domByName(n); html += d ? domCard(d) : '<div class="domcard"><h3>' + esc(n) + '<span class="src">core</span></h3><div class="ptol">See PHB domain list.</div></div>'; });
+    out.innerHTML = html;
+    UI.el('count').textContent = de.name + ' — ' + doms.length + ' domain(s)';
+  }
+}
+
+// deity dropdown
+DEI.slice().sort((a, b) => a.name.localeCompare(b.name)).forEach(d => { const o = document.createElement('option'); o.value = d.name; o.textContent = d.name + (d.title ? ' — ' + d.title : ''); UI.el('deity').appendChild(o); });
+
+// chip click → jump to that domain in Domains view
+UI.el('out').addEventListener('click', e => {
+  const c = e.target.closest('[data-dom]'); if (!c) return;
+  UI.el('view').value = 'domains'; UI.el('src').value = 'all'; UI.el('q').value = c.getAttribute('data-dom');
+  render();
+});
+UI.el('view').addEventListener('change', render);
+UI.el('q').addEventListener('input', render);
+UI.el('src').addEventListener('change', render);
+UI.el('deity').addEventListener('change', render);
+
+// deep-link from the launcher palette: #view=domains&q=Fire
+(function () {
+  const h = location.hash.slice(1); if (!h) return; const p = {};
+  h.split('&').forEach(kv => { const i = kv.indexOf('='); if (i > 0) p[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1)); });
+  if (p.view) UI.el('view').value = p.view;
+  if (p.q) UI.el('q').value = p.q;
+})();
+render();
+</script>
+</body>
+</html>

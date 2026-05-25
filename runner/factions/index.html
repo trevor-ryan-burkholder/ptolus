@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Faction Tracker — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .toolbar { display:flex; gap:8px; align-items:center; padding:12px 20px; flex-wrap:wrap; border-bottom:1px solid var(--line); }
+  .toolbar select, .toolbar input { width:auto; }
+  .wrap { padding:16px 20px 60px; }
+  .catgroup h2 { color:var(--gold); font-size:14px; text-transform:uppercase; letter-spacing:2px; border-bottom:1px solid var(--line); margin:22px 0 12px; padding-bottom:5px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px; }
+  .fcard { background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:14px; }
+  .fcard.hidden-f { opacity:0.5; }
+  .fcard .fname { color:var(--gold); font-weight:bold; font-size:17px; }
+  .fcard .fcat { color:var(--muted); font-size:12px; }
+  .fcard .frel { color:var(--muted); font-size:12px; font-style:italic; margin-top:4px; }
+  .dispbar { height:18px; background:#141414; border:1px solid var(--line); border-radius:5px; margin:10px 0 4px; position:relative; overflow:hidden; }
+  .dispbar .seg { position:absolute; top:0; bottom:0; }
+  .dispval { text-align:center; font-weight:bold; font-size:15px; }
+  .fcard .dispctl { display:flex; gap:6px; margin:8px 0; }
+  .fcard .dispctl button { flex:1; padding:6px; }
+  .status { text-align:center; font-weight:bold; letter-spacing:1px; margin:6px 0; }
+  .reason { width:100%; margin:4px 0; }
+  .flog { font-size:12px; color:var(--muted); max-height:90px; overflow-y:auto; margin-top:6px; border-top:1px dashed var(--line); padding-top:6px; }
+  .flog div { padding:1px 0; }
+  textarea.notes { font-size:13px; min-height:40px; margin-top:6px; }
+  details summary { cursor:pointer; color:var(--gold); font-size:13px; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <label style="margin:0;">View:</label>
+  <select id="filter"><option value="all">Show all</option><option value="neg">Negative (≤ −3)</option><option value="pos">Positive (≥ +3)</option></select>
+  <label style="margin:0;"><input type="checkbox" id="showhidden" style="width:auto;margin-right:6px;">Reveal hidden factions</label>
+  <input id="customname" placeholder="Add custom faction…" style="margin-left:auto;">
+  <button id="addcustom">Add</button>
+  <button id="export">Copy State</button>
+  <button id="import">Load State</button>
+  <button id="reset">Reset All</button>
+</div>
+<div class="wrap"><div id="cards"></div>
+  <details style="margin-top:20px;">
+    <summary>State JSON (for save/load between sessions)</summary>
+    <textarea id="statejson" style="min-height:120px;" placeholder="Paste a saved state here and click Load State."></textarea>
+  </details>
+</div>
+
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Faction Disposition Tracker', 'Saved in this browser via localStorage');
+UI.diceTray();
+
+const STATUS = {
+  '-5':'HOSTILE','-4':'ANTAGONISTIC','-3':'UNFRIENDLY','-2':'WARY','-1':'COOL',
+  '0':'NEUTRAL','1':'NOTICED','2':'CAUTIOUS ALLY','3':'FRIENDLY','4':'ALLIED','5':'TRUSTED',
+};
+const DEFAULTS = [
+  ['The Balacazars','Criminal / Power', false, 'Enemy of the Killravens.'],
+  ['The Killravens','Criminal / Power', false, 'Rivals of the Balacazars.'],
+  ['The City Watch','Civic / Law', false, 'Uneasy with the City Council. Led by Commissar Igor Urnst.'],
+  ['The Delver\'s Guild','Civic / Law', false, 'Neutral broker; ~800 members.'],
+  ['The City Council','Civic / Law', false, 'Ten noble houses, in tension.'],
+  ['The Inverted Pyramid','Arcane / Scholarly', false, 'Secretive mage cabal.'],
+  ['The Dreaming Apothecary','Arcane / Scholarly', false, 'Anonymous magic-item makers.'],
+  ['Church of Lothian','Religious', false, 'Dominant church; pressures the Necropolis.'],
+  ['Church of Asche','Religious', false, 'Fire-faith, militant.'],
+  ['Other Ptolus Temples','Religious', false, 'Grouped minor temples.'],
+  ['The Knights of the Pale','Special', false, 'Hunt evil; allied (uneasy) with Lothian.'],
+  ['The Forsaken','Special', false, 'Chaos cult of the Galchutt.'],
+  ['The Chaos Cults','Special', false, 'Grouped — the Cults of Chaos.'],
+  ['Covenant of Blood','Hidden', true, 'Vampires of the Dark Reliquary. Reveal when known.'],
+  ['House Abanar','Noble Houses', false, 'Mercantile.'],
+  ['House Sadar','Noble Houses', false, 'Shadows.'],
+  ['House Vladaam','Noble Houses', false, 'Evil; the most dangerous house.'],
+  ['Integrated Monster Community','Monster / Non-Human', false, 'Grade-4 majority.'],
+  ['Illithid Network','Monster / Non-Human', true, 'Hidden — reveal when relevant.'],
+];
+const CAT_ORDER = ['Criminal / Power','Civic / Law','Arcane / Scholarly','Religious','Special','Noble Houses','Monster / Non-Human','Custom'];
+const KEY = 'ptolus-factions-v1';
+
+let state = load();
+function load() {
+  try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.factions) return s; } catch (e) {}
+  const f = {};
+  DEFAULTS.forEach(([name, cat, hidden, rel]) => f[name] = { name, cat, hidden, rel, disp: 0, lastChange: '', notes: '', log: [] });
+  return { factions: f };
+}
+function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+
+function barColor(v) { return v < 0 ? '#c46a6a' : v > 0 ? '#c8a84b' : '#666'; }
+function render() {
+  const filter = UI.el('filter').value;
+  const showHidden = UI.el('showhidden').checked;
+  const groups = {};
+  Object.values(state.factions).forEach(f => {
+    if (f.hidden && !showHidden) return;
+    if (filter === 'neg' && f.disp > -3) return;
+    if (filter === 'pos' && f.disp < 3) return;
+    (groups[f.cat] = groups[f.cat] || []).push(f);
+  });
+  const cats = CAT_ORDER.filter(c => groups[c]);
+  UI.el('cards').innerHTML = cats.map(cat =>
+    '<div class="catgroup"><h2>' + UI.esc(cat) + '</h2><div class="grid">' +
+    groups[cat].map(card).join('') + '</div></div>'
+  ).join('') || '<p class="hint">No factions match this filter.</p>';
+}
+function card(f) {
+  const segLeft = f.disp >= 0 ? 50 : 50 + (f.disp / 5) * 50;
+  const segW = Math.abs(f.disp / 5) * 50;
+  return '<div class="fcard' + (f.hidden ? ' hidden-f' : '') + '" data-f="' + UI.esc(f.name) + '">' +
+    '<div class="fname">' + UI.esc(f.name) + '</div>' +
+    '<div class="fcat">' + UI.esc(f.cat) + '</div>' +
+    (f.rel ? '<div class="frel">' + UI.esc(f.rel) + '</div>' : '') +
+    '<div class="dispbar"><div class="seg" style="left:50%;width:1px;background:#888"></div>' +
+      '<div class="seg" style="left:' + segLeft + '%;width:' + segW + '%;background:' + barColor(f.disp) + '"></div></div>' +
+    '<div class="dispval" style="color:' + barColor(f.disp) + '">' + (f.disp > 0 ? '+' : '') + f.disp + '</div>' +
+    '<div class="status" style="color:' + barColor(f.disp) + '">' + STATUS[String(f.disp)] + '</div>' +
+    '<input class="reason" data-act="reason" placeholder="reason for change (required)" value="' + UI.esc(f._reason || '') + '">' +
+    '<div class="dispctl"><button data-act="minus">−</button><button data-act="neutral">Neutral</button><button data-act="plus">+</button></div>' +
+    (f.lastChange ? '<div class="fcat">Last: ' + UI.esc(f.lastChange) + '</div>' : '') +
+    '<details><summary>Notes &amp; log</summary>' +
+    '<textarea class="notes" data-act="notes" placeholder="faction notes…">' + UI.esc(f.notes || '') + '</textarea>' +
+    '<div class="flog">' + (f.log.length ? f.log.map(l => '<div>' + UI.esc(l) + '</div>').join('') : '<div>(no changes logged)</div>') + '</div>' +
+    '</details></div>';
+}
+
+UI.el('cards').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const act = b.getAttribute('data-act');
+  const cardEl = b.closest('.fcard'); const name = cardEl.getAttribute('data-f');
+  const f = state.factions[name]; if (!f) return;
+  if (act === 'minus' || act === 'plus' || act === 'neutral') {
+    const reasonEl = cardEl.querySelector('[data-act="reason"]');
+    const reason = reasonEl.value.trim();
+    if (!reason) { reasonEl.style.borderColor = 'var(--bad)'; reasonEl.placeholder = 'Reason required before changing.'; return; }
+    let delta = 0, target = null;
+    if (act === 'plus') target = Math.min(5, f.disp + 1);
+    else if (act === 'minus') target = Math.max(-5, f.disp - 1);
+    else target = 0;
+    delta = target - f.disp; f.disp = target;
+    const sign = delta > 0 ? '+' + delta : (delta < 0 ? '' + delta : '±0');
+    f.lastChange = reason;
+    f.log.unshift(sign + ' → ' + (f.disp > 0 ? '+' : '') + f.disp + ' — ' + reason);
+    f._reason = '';
+    save(); render();
+  }
+});
+UI.el('cards').addEventListener('change', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const cardEl = b.closest('.fcard'); const f = state.factions[cardEl.getAttribute('data-f')]; if (!f) return;
+  if (b.getAttribute('data-act') === 'notes') { f.notes = b.value; save(); }
+  if (b.getAttribute('data-act') === 'reason') { f._reason = b.value; }
+});
+
+UI.el('filter').addEventListener('change', render);
+UI.el('showhidden').addEventListener('change', render);
+UI.el('addcustom').addEventListener('click', () => {
+  const name = UI.el('customname').value.trim(); if (!name || state.factions[name]) return;
+  state.factions[name] = { name, cat: 'Custom', hidden: false, rel: '', disp: 0, lastChange: '', notes: '', log: [] };
+  UI.el('customname').value = ''; save(); render();
+});
+UI.el('export').addEventListener('click', () => {
+  const clean = JSON.parse(JSON.stringify(state));
+  Object.values(clean.factions).forEach(f => delete f._reason);
+  const txt = JSON.stringify(clean);
+  UI.el('statejson').value = txt;
+  if (navigator.clipboard) navigator.clipboard.writeText(txt).catch(() => {});
+});
+UI.el('import').addEventListener('click', () => {
+  try { const s = JSON.parse(UI.el('statejson').value); if (s && s.factions) { state = s; save(); render(); } }
+  catch (e) { alert('Invalid state JSON.'); }
+});
+UI.el('reset').addEventListener('click', () => {
+  if (confirm('Reset all factions to Neutral and clear logs?')) { localStorage.removeItem(KEY); state = load(); render(); }
+});
+
+render();
+</script>
+</body>
+</html>

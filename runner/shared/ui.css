@@ -1,0 +1,196 @@
+/* ui.css — shared dark theme for every Adventure Runner page.
+ * Linked via <link rel="stylesheet" href="../shared/ui.css"> (works under file://).
+ * Palette: bg #1a1a1a, text #e8e0d0, gold accent #c8a84b.
+ */
+:root {
+  --bg: #1a1a1a;
+  --bg-panel: #232323;
+  --bg-input: #2c2c2c;
+  --text: #e8e0d0;
+  --muted: #9a9384;
+  --gold: #c8a84b;
+  --gold-dim: #8a7530;
+  --line: #3a3a3a;
+  --good: #6fae6f;
+  --bad: #c46a6a;
+  --warn: #d8a64b;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+a { color: var(--gold); }
+
+header.runner-head {
+  border-bottom: 2px solid var(--gold-dim);
+  padding: 14px 20px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+header.runner-head h1 {
+  margin: 0;
+  font-size: 24px;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+}
+header.runner-head .sub { color: var(--muted); font-size: 15px; }
+header.runner-head .home { margin-left: auto; font-size: 15px; }
+
+/* Two-column layout: controls left, log right */
+.runner-main {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+  padding: 18px 20px;
+  align-items: start;
+}
+@media (max-width: 760px) {
+  .runner-main { grid-template-columns: 1fr; }
+}
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+}
+.panel h2 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gold);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 6px;
+}
+
+label { display: block; margin: 10px 0 4px; font-size: 14px; color: var(--muted); }
+
+input, select, textarea, button {
+  font-family: inherit;
+  font-size: 16px;
+  color: var(--text);
+  background: var(--bg-input);
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 8px 10px;
+}
+input, select, textarea { width: 100%; }
+textarea { resize: vertical; }
+
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold); }
+
+button {
+  cursor: pointer;
+  background: var(--bg-input);
+  transition: background 0.12s, border-color 0.12s;
+}
+button:hover { border-color: var(--gold); }
+
+button.primary {
+  background: var(--gold);
+  color: #1a1a1a;
+  font-weight: bold;
+  border-color: var(--gold);
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  margin-top: 12px;
+}
+button.primary:hover { background: #d8b85b; }
+
+.btn-row { display: flex; gap: 8px; margin-top: 8px; }
+.btn-row button { flex: 1; }
+
+/* Seed control */
+.seed-box { margin-top: 14px; border-top: 1px dashed var(--line); padding-top: 12px; }
+.seed-box .seed-input-row { display: flex; gap: 8px; }
+.seed-box input { flex: 1; }
+.seed-box .seed-now { color: var(--muted); font-size: 12px; margin-top: 6px; }
+
+/* Output log */
+.log {
+  background: #141414;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  min-height: 60vh;
+  max-height: 82vh;
+  overflow-y: auto;
+}
+.log .entry {
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: 'Courier New', monospace;
+  font-size: 16px;
+  line-height: 1.5;
+  border-bottom: 1px solid var(--line);
+  padding: 12px 0;
+}
+.log .entry:last-child { border-bottom: none; }
+.log .entry .head { color: var(--gold); font-weight: bold; }
+.log .entry .muted { color: var(--muted); }
+.log .entry .good { color: var(--good); }
+.log .entry .bad { color: var(--bad); }
+.log .empty { color: var(--muted); font-style: italic; }
+
+.log-head { display: flex; align-items: center; margin-bottom: 8px; }
+.log-head h2 { margin: 0; font-size: 16px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+.log-head button { margin-left: auto; font-size: 13px; padding: 5px 10px; }
+
+/* Tables (reference pages) */
+table.ref { border-collapse: collapse; width: 100%; margin: 8px 0; }
+table.ref th, table.ref td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; font-size: 15px; }
+table.ref th { background: #2a2a2a; color: var(--gold); }
+table.ref tr:nth-child(even) td { background: #1f1f1f; }
+
+.tag { display: inline-block; background: var(--bg-input); border: 1px solid var(--line); border-radius: 4px; padding: 1px 7px; font-size: 13px; color: var(--muted); margin: 0 4px 4px 0; }
+.tag.true { color: var(--good); border-color: var(--gold-dim); }
+.tag.false { color: var(--bad); }
+.tag.partial { color: var(--warn); }
+
+.hint { color: var(--muted); font-size: 13px; margin-top: 6px; }
+
+/* Shared campaign-context bar */
+.ctx-bar {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 7px 20px; background: #15140f; border-bottom: 1px solid var(--gold-dim);
+  font-size: 13px; color: var(--muted);
+}
+.ctx-bar .ctx-label { color: var(--gold); font-weight: bold; letter-spacing: 1px; text-transform: uppercase; font-size: 12px; }
+.ctx-bar label { display: inline-flex; align-items: center; gap: 5px; margin: 0; color: var(--text); }
+.ctx-bar input, .ctx-bar select { width: auto; padding: 3px 6px; font-size: 13px; }
+.ctx-bar .ctx-date { color: var(--gold); }
+.ctx-bar .ctx-hint { margin-left: auto; font-style: italic; opacity: 0.7; }
+
+/* Floating dice tray */
+.dice-fab {
+  position: fixed; right: 16px; bottom: 16px; z-index: 50;
+  width: 48px; height: 48px; border-radius: 50%; font-size: 22px;
+  background: var(--gold); color: #1a1a1a; border: none; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+.dice-fab:hover { background: #d8b85b; }
+.dice-panel {
+  position: fixed; right: 16px; bottom: 72px; z-index: 50; width: 250px;
+  background: var(--bg-panel); border: 1px solid var(--gold-dim); border-radius: 8px; padding: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+}
+.dice-panel .dice-quick { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+.dice-panel .dice-quick button { font-size: 12px; padding: 4px 7px; }
+.dice-panel .dice-in { display: flex; gap: 6px; }
+.dice-panel .dice-in input { flex: 1; }
+.dice-panel .dice-log { margin-top: 8px; max-height: 180px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 13px; }
+.dice-panel .dice-log div { padding: 3px 0; border-bottom: 1px solid var(--line); }
+.dice-panel .dice-tot { color: var(--gold); font-weight: bold; font-size: 15px; }
+.dice-panel .dice-rolls { color: var(--muted); }

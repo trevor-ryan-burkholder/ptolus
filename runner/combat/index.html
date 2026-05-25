@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Combat Tracker — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .topbar { display:flex; align-items:center; gap:12px; padding:12px 20px; background:var(--bg-panel); border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .round { font-size:30px; color:var(--gold); font-weight:bold; }
+  .topbar button { font-size:15px; padding:7px 12px; }
+  .topbar .aoe { display:flex; gap:4px; align-items:center; margin-left:auto; }
+  .topbar .aoe input { width:80px; }
+  .wrap { padding:14px 20px 60px; }
+  table.cbt { border-collapse:collapse; width:100%; }
+  table.cbt th { text-align:left; color:var(--gold); font-size:13px; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--line); padding:6px 8px; }
+  table.cbt td { border-bottom:1px solid var(--line); padding:6px 8px; vertical-align:top; }
+  tr.active td { background:#2b2616; }
+  tr.dead td { opacity:0.5; }
+  tr.pc td:nth-child(2) { border-left:3px solid #4a7aa0; }
+  input.name { width:150px; } input.hp,input.init { text-align:center; }
+  input.dmg { width:54px; text-align:center; margin-left:6px; }
+  .conds .tag { cursor:default; }
+  .tag b { cursor:pointer; margin-left:5px; color:var(--bad); }
+  .tag input.dur { width:34px; padding:0 2px; font-size:12px; margin-left:4px; }
+  .cond-red{color:#f0a0a0;border-color:#7a3030;} .cond-orange{color:#e8b878;border-color:#7a5520;}
+  .cond-yellow{color:#e8dca0;border-color:#7a7020;} .cond-purple{color:#c8a8e8;border-color:#553070;}
+  .cond-blue{color:#a0c0e8;border-color:#305570;}
+  tr.statrow td { background:#15140f; font-size:14px; line-height:1.5; }
+  tr.statrow b { color:var(--gold); }
+  .rollbar { margin-top:6px; } .rollbar button { font-size:12px; padding:3px 8px; margin-right:4px; }
+  .rollbar a { font-size:12px; margin-left:6px; }
+  .addrow { display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end; margin-top:14px; padding:12px; background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; }
+  .addrow .f { display:flex; flex-direction:column; }
+  .addrow label { margin:0 0 3px; }
+  .addrow input, .addrow select { width:auto; }
+  details.effects { margin-top:18px; border:1px solid var(--line); border-radius:8px; background:var(--bg-panel); padding:0 14px 14px; }
+  details.effects summary { cursor:pointer; color:var(--gold); font-size:15px; text-transform:uppercase; letter-spacing:1px; padding:12px 0; }
+  .eff { border-bottom:1px solid var(--line); padding:7px 0; }
+  .eff.expiring { color:#f0a0a0; font-weight:bold; }
+  .eff.soon { color:#e8b878; }
+  .eff.conc { border-left:3px solid #a060c8; padding-left:8px; }
+  .eff.conc.flashing { animation: concflash 0.5s ease-in-out 4; }
+  @keyframes concflash { 0%,100% { background:transparent; } 50% { background:#5a2a6a; } }
+  #turninfo.warn { color:#f0a0a0; font-weight:bold; }
+  .quickbuffs button { font-size:13px; padding:5px 9px; margin:0 4px 4px 0; }
+  .muted2 { color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="round">Round <span id="roundnum">1</span></span>
+  <button class="primary" id="nextround" style="width:auto;margin:0;">Next Round ▶</button>
+  <button id="prevturn">◀ Prev Turn</button>
+  <button id="nextturn">Next Turn ▶</button>
+  <button id="toxp">✦ Award XP</button>
+  <button id="reset">Reset</button>
+  <span class="aoe"><label class="muted2" style="margin:0">AoE</label><input id="aoe" placeholder="dmg / 6d6"><button id="aoeall">→ all</button></span>
+  <span class="muted2" id="turninfo" style="flex-basis:100%;"></span>
+</div>
+
+<div class="wrap">
+  <table class="cbt">
+    <thead><tr><th></th><th>Name</th><th>Init</th><th>HP</th><th>Conditions</th><th></th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="muted2" id="empty">No combatants. Add the party, add monsters, or import an encounter.</p>
+
+  <div class="addrow">
+    <div class="f"><label>Name</label><input id="an" placeholder="Combatant"></div>
+    <div class="f"><label>Init</label><input id="ai" type="number" style="width:64px" placeholder="d20"></div>
+    <div class="f"><label>HP max</label><input id="ah" type="number" style="width:72px" placeholder="HP"></div>
+    <button id="add">Add</button>
+    <button class="primary" id="addparty" style="margin:0">+ Party</button>
+    <span style="width:10px"></span>
+    <div class="f"><label>Add Monster</label>
+      <select id="monster" style="max-width:240px"></select></div>
+    <div class="f"><label>×</label><input id="mcount" type="number" value="1" min="1" max="20" style="width:54px"></div>
+    <button id="addmonster">Add Monster(s)</button>
+    <button id="importenc">Import Encounter</button>
+    <div id="seed" style="margin-left:auto;border:none;"></div>
+  </div>
+
+  <details class="effects" open>
+    <summary>Active Spells &amp; Effects</summary>
+    <div class="quickbuffs" id="quickbuffs"></div>
+    <div class="addrow" style="margin-top:6px;">
+      <div class="f"><label>Effect</label><input id="en" placeholder="Haste" list="spelllist"></div>
+      <datalist id="spelllist"></datalist>
+      <div class="f"><label>Target</label><input id="et" placeholder="who" style="width:110px"></div>
+      <div class="f"><label>Dur</label><input id="ed" type="number" style="width:60px" value="5"></div>
+      <div class="f"><label>Unit</label><select id="eu"><option>rounds</option><option>minutes</option><option>hours</option><option value="dispel">until dispelled</option><option value="perm">permanent</option></select></div>
+      <div class="f"><label>CL</label><input id="ecl" type="number" style="width:54px" value="5"></div>
+      <div class="f"><label>Conc</label><input id="econc" type="checkbox" style="width:auto"></div>
+      <button id="addeffect">Add Effect</button>
+      <button id="fromspell">Fill from Spell</button>
+    </div>
+    <div id="efflist"></div>
+  </details>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/tables.js"></script>
+<script src="../shared/data.js"></script>
+<script src="../shared/state.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Combat Tracker', 'Initiative · HP · conditions · effects · run the monster');
+UI.diceTray();
+UI.seedControl('seed');
+const D = Dice;
+const SAVE_KEY = 'ptolus-combat-v1';
+
+const CONDITIONS = [
+  ['Blinded','red','−2 AC, loses Dex bonus, −4 attack, 50% miss'],
+  ['Confused','purple','Roll d% each round for action'],
+  ['Cowering','red','−2 AC, loses Dex, can\'t act'],
+  ['Dazed','orange','Can\'t act, no AC loss'],
+  ['Dazzled','yellow','−1 attack & sight Perception'],
+  ['Dead','red','Dead'],
+  ['Disabled','orange','0 HP; one move OR standard; strenuous = dying'],
+  ['Dying','red','−1 HP/round, unconscious'],
+  ['Entangled','yellow','−2 attack, −4 Dex, half speed'],
+  ['Exhausted','orange','Half speed, −6 Str/Dex'],
+  ['Fascinated','purple','−4 Perception vs other threats'],
+  ['Fatigued','yellow','−2 Str/Dex, no run/charge'],
+  ['Flat-footed','blue','Loses Dex to AC, no AoO'],
+  ['Frightened','orange','−2 attack/saves/checks, must flee'],
+  ['Grappled','blue','−4 Dex, −2 attack, no move'],
+  ['Helpless','red','Dex 0, coup de grace possible'],
+  ['Invisible','blue','+2 attack, foes lose Dex to AC'],
+  ['Nauseated','orange','Move only, no attacks/spells'],
+  ['Panicked','red','−2 attack/saves, drops items, flees'],
+  ['Paralyzed','red','Dex/Str 0, helpless'],
+  ['Pinned','red','Helpless, can\'t move'],
+  ['Prone','yellow','−4 melee, +4 AC vs ranged, −4 vs melee'],
+  ['Shaken','yellow','−2 attack/saves/checks'],
+  ['Sickened','yellow','−2 attack/damage/saves/checks'],
+  ['Stable','orange','0 HP, not losing HP, unconscious'],
+  ['Staggered','orange','Standard OR move only'],
+  ['Stunned','red','Loses Dex, drops items, can\'t act'],
+  ['Unconscious','red','Helpless, unaware'],
+];
+const CONDMAP = {}; CONDITIONS.forEach(c => CONDMAP[c[0]] = { color: c[1], rem: c[2] });
+
+let combatants = [];
+let effects = [];
+let round = 1;
+let activeId = null;
+let seq = 0;
+const uid = () => ++seq;
+
+function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify({ combatants: combatants, effects: effects, round: round, activeId: activeId, seq: seq })); } catch (e) {} }
+(function restore() {
+  try { const s = JSON.parse(localStorage.getItem(SAVE_KEY)); if (s && s.combatants) { combatants = s.combatants; effects = s.effects || []; round = s.round || 1; activeId = s.activeId || null; seq = s.seq || 0; } } catch (e) {}
+})();
+
+function sgn(n) { return n == null || n === '' ? '?' : (n >= 0 ? '+' + n : '' + n); }
+function sorted() { return combatants.slice().sort((a, b) => b.init - a.init || a.id - b.id); }
+function parseAtk(str) { const m = String(str || '').match(/([+-]\d+)/); return m ? parseInt(m[1], 10) : null; }
+function statOf(c) { return c.srcName ? DATA.monsters.find(x => x.name === c.srcName) : null; }
+
+/* ---- combat render ---- */
+function renderCombat() {
+  const rows = UI.el('rows');
+  const list = sorted();
+  UI.el('empty').style.display = list.length ? 'none' : 'block';
+  rows.innerHTML = list.map(c => {
+    const dead = c.conditions.some(x => x.name === 'Dead');
+    const tags = c.conditions.map(x =>
+      '<span class="tag cond-' + (CONDMAP[x.name] ? CONDMAP[x.name].color : 'yellow') + '" title="' + (CONDMAP[x.name] ? UI.esc(CONDMAP[x.name].rem) : '') + '">' +
+      UI.esc(x.name) +
+      '<input class="dur" type="number" data-action="conddur" data-id="' + c.id + '" data-cond="' + UI.esc(x.name) + '" value="' + (x.dur == null ? '' : x.dur) + '" title="rounds">' +
+      '<b data-action="delcond" data-id="' + c.id + '" data-cond="' + UI.esc(x.name) + '">×</b></span>').join(' ');
+    const opts = '<option value="">+ condition</option>' + CONDITIONS.map(cc => '<option>' + cc[0] + '</option>').join('');
+    const canStat = c.srcName || c.ac || c.saves;
+    let html = '<tr class="cbt' + (c.id === activeId ? ' active' : '') + (dead ? ' dead' : '') + (c.isPC ? ' pc' : '') + '" data-id="' + c.id + '">' +
+      '<td><button data-action="up" data-id="' + c.id + '">▲</button><button data-action="down" data-id="' + c.id + '">▼</button></td>' +
+      '<td><input class="name" data-action="name" data-id="' + c.id + '" value="' + UI.esc(c.name) + '"></td>' +
+      '<td><input class="init" type="number" data-action="init" data-id="' + c.id + '" value="' + c.init + '"></td>' +
+      '<td>HP <input class="hp" type="number" data-action="hpcur" data-id="' + c.id + '" value="' + c.hpCur + '">/' + c.hpMax +
+        ' <button data-action="hpminus" data-id="' + c.id + '">−</button><button data-action="hpplus" data-id="' + c.id + '">+</button>' +
+        '<input class="dmg" data-action="dmg" data-id="' + c.id + '" placeholder="dmg" title="apply damage (number or 2d6); negative heals"></td>' +
+      '<td class="conds">' + tags + ' <select data-action="addcond" data-id="' + c.id + '">' + opts + '</select>' +
+        '<input class="custom" data-action="custom" data-id="' + c.id + '" placeholder="custom…" value="' + UI.esc(c.custom || '') + '"></td>' +
+      '<td>' + (canStat ? '<button data-action="togglestat" data-id="' + c.id + '" title="stat block & rolls">ⓘ</button>' : '') +
+        '<button data-action="remove" data-id="' + c.id + '">✕</button></td>' +
+      '</tr>';
+    if (c.expanded && canStat) html += statRow(c);
+    return html;
+  }).join('');
+  UI.el('roundnum').textContent = round;
+  const act = list.find(c => c.id === activeId);
+  if (!UI.el('turninfo').classList.contains('warn')) UI.el('turninfo').textContent = act ? ('Current turn: ' + act.name) : '';
+  persist();
+}
+
+function statRow(c) {
+  const m = statOf(c);
+  const ac = m ? m.ac : c.ac;
+  const sv = m ? m.saves : c.saves;
+  let h = '<tr class="statrow" data-id="' + c.id + '"><td></td><td colspan="5">';
+  const bits = [];
+  if (ac) bits.push('<b>AC</b> ' + (ac.total != null ? ac.total + ' (touch ' + ac.touch + ', flat-footed ' + ac.flat_footed + ')' : ac));
+  if (sv) bits.push('<b>Saves</b> Fort ' + sgn(sv.fort) + ', Ref ' + sgn(sv.ref) + ', Will ' + sgn(sv.will));
+  if (m && m.speed) bits.push('<b>Speed</b> ' + UI.esc(m.speed));
+  h += bits.join(' &nbsp;·&nbsp; ');
+  if (m && m.attacks) {
+    if (m.attacks.full_attack) h += '<br><b>Full Attack</b> ' + UI.esc(m.attacks.full_attack);
+    else if (m.attacks.melee) h += '<br><b>Melee</b> ' + UI.esc(m.attacks.melee);
+  }
+  if (m && m.special_attacks && m.special_attacks.length) h += '<br><b>SA</b> ' + UI.esc(m.special_attacks.join(', '));
+  if (m && m.special_qualities && m.special_qualities.length) h += '<br><b>SQ</b> ' + UI.esc(m.special_qualities.join(', '));
+  // roll buttons
+  const atk = (m && m.attacks) ? parseAtk(m.attacks.full_attack || m.attacks.melee) : parseAtk(c.attack);
+  h += '<div class="rollbar"><button data-action="roll" data-id="' + c.id + '" data-roll="d20">d20</button>';
+  if (sv) h += '<button data-action="roll" data-id="' + c.id + '" data-roll="fort">Fort ' + sgn(sv.fort) + '</button>' +
+    '<button data-action="roll" data-id="' + c.id + '" data-roll="ref">Ref ' + sgn(sv.ref) + '</button>' +
+    '<button data-action="roll" data-id="' + c.id + '" data-roll="will">Will ' + sgn(sv.will) + '</button>';
+  if (atk != null) h += '<button data-action="roll" data-id="' + c.id + '" data-roll="atk" data-mod="' + atk + '">Atk ' + sgn(atk) + '</button>';
+  if (c.srcName) h += '<a href="../codex/index.html#monsters:' + encodeURIComponent(c.srcName) + '" target="_blank">full codex →</a>';
+  h += '</div></td></tr>';
+  return h;
+}
+
+function find(id) { return combatants.find(c => c.id === +id); }
+
+function adjustHP(c) {
+  const has = n => c.conditions.some(x => x.name === n);
+  const addOnce = (n) => { if (!has(n)) c.conditions.push({ name: n, dur: null }); };
+  const rm = (n) => { c.conditions = c.conditions.filter(x => x.name !== n); };
+  if (c.hpCur <= -10) { addOnce('Dead'); }
+  else if (c.hpCur < 0) { rm('Dead'); addOnce('Dying'); }
+  else if (c.hpCur === 0) { rm('Dying'); rm('Dead'); addOnce('Disabled'); }
+  else { rm('Dying'); rm('Dead'); rm('Disabled'); }
+}
+function parseAmt(v) { v = String(v).trim(); if (!v) return null; if (/^-?\d+$/.test(v)) return parseInt(v, 10); try { return D.d(v); } catch (e) { return null; } }
+
+function rollFor(c, kind, mod) {
+  const r = D.roll(20);
+  let label, total = r;
+  if (kind === 'd20') label = 'd20';
+  else if (kind === 'atk') { total = r + (+mod || 0); label = 'Attack ' + sgn(+mod) + (r === 20 ? ' (nat 20!)' : r === 1 ? ' (nat 1)' : ''); }
+  else { const sv = (statOf(c) || c).saves || {}; const m = sv[kind] || 0; total = r + m; label = kind.charAt(0).toUpperCase() + kind.slice(1) + ' save ' + sgn(m); }
+  const info = UI.el('turninfo'); info.classList.remove('warn');
+  info.textContent = c.name + ' — ' + label + ': d20(' + r + ')' + (total !== r ? ' = ' + total : '');
+}
+
+/* ---- event delegation on rows ---- */
+UI.el('rows').addEventListener('click', e => {
+  const b = e.target.closest('[data-action]'); if (!b) return;
+  const a = b.getAttribute('data-action'); const c = find(b.getAttribute('data-id'));
+  if (!c && a !== 'addcond') return;
+  if (a === 'remove') { combatants = combatants.filter(x => x.id !== c.id); if (activeId === c.id) activeId = null; renderCombat(); }
+  else if (a === 'hpplus') { c.hpCur++; adjustHP(c); renderCombat(); }
+  else if (a === 'hpminus') { c.hpCur--; adjustHP(c); renderCombat(); flashConc(c, 1); }
+  else if (a === 'togglestat') { c.expanded = !c.expanded; renderCombat(); }
+  else if (a === 'roll') { rollFor(c, b.getAttribute('data-roll'), b.getAttribute('data-mod')); }
+  else if (a === 'delcond') { c.conditions = c.conditions.filter(x => x.name !== b.getAttribute('data-cond')); renderCombat(); }
+  else if (a === 'up' || a === 'down') { c.init += (a === 'up' ? 1 : -1); renderCombat(); }
+});
+UI.el('rows').addEventListener('change', e => {
+  const b = e.target.closest('[data-action]'); if (!b) return;
+  const a = b.getAttribute('data-action'); const c = find(b.getAttribute('data-id')); if (!c) return;
+  if (a === 'name') { c.name = b.value; persist(); }
+  else if (a === 'init') { c.init = parseInt(b.value, 10) || 0; renderCombat(); }
+  else if (a === 'hpcur') { const old = c.hpCur; c.hpCur = parseInt(b.value, 10) || 0; adjustHP(c); renderCombat(); if (c.hpCur < old) flashConc(c, old - c.hpCur); }
+  else if (a === 'dmg') { const amt = parseAmt(b.value); if (amt != null) { c.hpCur -= amt; adjustHP(c); renderCombat(); if (amt > 0) flashConc(c, amt); } }
+  else if (a === 'custom') { c.custom = b.value; persist(); }
+  else if (a === 'conddur') { const cond = c.conditions.find(x => x.name === b.getAttribute('data-cond')); if (cond) cond.dur = b.value === '' ? null : (parseInt(b.value, 10) || 0); persist(); }
+  else if (a === 'addcond' && b.value) { if (!c.conditions.some(x => x.name === b.value)) c.conditions.push({ name: b.value, dur: null }); renderCombat(); }
+});
+
+/* ---- add combatants ---- */
+function addCombatant(name, init, hpMax, opts) {
+  combatants.push(Object.assign({ id: uid(), name: name || 'Combatant', init: init, hpCur: hpMax, hpMax: hpMax, conditions: [], custom: '' }, opts || {}));
+}
+UI.el('add').addEventListener('click', () => {
+  const name = UI.el('an').value.trim() || 'Combatant';
+  const init = UI.el('ai').value === '' ? D.roll(20) : (parseInt(UI.el('ai').value, 10) || 0);
+  const hp = parseInt(UI.el('ah').value, 10) || 1;
+  addCombatant(name, init, hp);
+  UI.el('an').value = ''; UI.el('ai').value = ''; UI.el('ah').value = '';
+  renderCombat();
+});
+
+// Add the party from the shared roster
+UI.el('addparty').addEventListener('click', () => {
+  const party = (typeof Ctx !== 'undefined') ? Ctx.party() : [];
+  if (!party.length) { UI.el('turninfo').textContent = 'No party roster yet — add PCs in the Party tool.'; return; }
+  let added = 0;
+  party.forEach(pc => {
+    if (combatants.some(c => c.isPC && c.name === pc.name)) return; // no dupes
+    const init = D.roll(20) + (pc.init || 0);
+    addCombatant(pc.name || 'PC', init, Math.max(1, pc.hp || 1), {
+      isPC: true, ac: pc.ac ? { total: pc.ac } : null,
+      saves: { fort: pc.fort || 0, ref: pc.ref || 0, will: pc.will || 0 },
+    });
+    added++;
+  });
+  renderCombat();
+  UI.el('turninfo').textContent = added ? 'Added ' + added + ' PC(s) from the roster.' : 'Party already in the tracker.';
+});
+
+// monster dropdown
+DATA.monsters.slice().sort((a, b) => a.name.localeCompare(b.name)).forEach(m => {
+  const o = document.createElement('option');
+  o.value = m.name; o.textContent = m.name + ' (CR ' + m.cr + ', ' + m.hp + ' hp)';
+  UI.el('monster').appendChild(o);
+});
+UI.el('addmonster').addEventListener('click', () => {
+  const name = UI.el('monster').value;
+  const m = DATA.monsters.find(x => x.name === name); if (!m) return;
+  const count = Math.max(1, Math.min(20, parseInt(UI.el('mcount').value, 10) || 1));
+  for (let i = 0; i < count; i++) {
+    let hp = m.hp;
+    try { if (m.hd) hp = Dice.d(m.hd.replace(/\s/g, '')); } catch (e) {}
+    const init = D.roll(20) + (m.initiative || 0);
+    addCombatant(count > 1 ? m.name + ' ' + (i + 1) : m.name, init, Math.max(1, hp), { srcName: m.name, custom: 'CR ' + m.cr });
+  }
+  renderCombat();
+});
+
+// AoE damage to all living combatants
+UI.el('aoeall').addEventListener('click', () => {
+  const amt = parseAmt(UI.el('aoe').value);
+  if (amt == null) { UI.el('turninfo').textContent = 'Enter AoE damage (a number or dice like 6d6).'; return; }
+  let n = 0;
+  combatants.forEach(c => { if (c.hpCur > -10) { c.hpCur -= amt; adjustHP(c); n++; } });
+  UI.el('aoe').value = '';
+  renderCombat();
+  const conc = effects.filter(e => e.conc).length;
+  UI.el('turninfo').textContent = 'AoE: ' + amt + ' damage to ' + n + ' combatant(s)' + (conc ? ' — check concentration on ' + conc + ' effect(s)' : '') + '.';
+});
+
+/* ---- round / turn ---- */
+UI.el('nextround').addEventListener('click', () => {
+  round++;
+  const expiring = [];
+  combatants.forEach(c => {
+    c.conditions = c.conditions.filter(x => x.name !== 'Flat-footed');
+    c.conditions.forEach(x => { if (typeof x.dur === 'number') { x.dur--; } });
+    c.conditions = c.conditions.filter(x => !(typeof x.dur === 'number' && x.dur <= 0));
+    if (c.hpCur < 0 && c.hpCur > -10) { c.hpCur--; adjustHP(c); }
+  });
+  effects.forEach(ef => { if (ef.unit === 'rounds' && typeof ef.dur === 'number') { ef.dur--; if (ef.dur === 0) expiring.push(ef.name + ' on ' + ef.target); } });
+  effects = effects.filter(ef => !(ef.unit === 'rounds' && ef.dur <= 0));
+  renderCombat(); renderEffects();
+  if (expiring.length) { UI.el('turninfo').classList.remove('warn'); UI.el('turninfo').textContent = 'Expired: ' + expiring.join(', '); }
+});
+UI.el('nextturn').addEventListener('click', () => stepTurn(1));
+UI.el('prevturn').addEventListener('click', () => stepTurn(-1));
+function stepTurn(dir) {
+  const list = sorted(); if (!list.length) return;
+  let i = list.findIndex(c => c.id === activeId);
+  if (i < 0) i = dir > 0 ? -1 : list.length;
+  i = (i + dir + list.length) % list.length;
+  activeId = list[i].id; UI.el('turninfo').classList.remove('warn'); renderCombat();
+}
+UI.el('reset').addEventListener('click', () => {
+  if (!combatants.length || confirm('Clear all combatants and effects?')) {
+    combatants = []; effects = []; round = 1; activeId = null;
+    try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
+    UI.el('turninfo').classList.remove('warn'); UI.el('turninfo').textContent = '';
+    renderCombat(); renderEffects();
+  }
+});
+
+/* ---- effects ---- */
+const QUICK = [
+  ['Bless', 'minutes', cl => cl], ['Haste', 'rounds', cl => cl], ['Blur', 'minutes', cl => cl],
+  ['Mirror Image', 'minutes', cl => cl], ['Hold Person', 'rounds', cl => cl], ['Invisibility', 'minutes', cl => cl],
+  ['Heroism', 'minutes', cl => 10 * cl], ['Fly', 'minutes', cl => cl], ['Rage', 'rounds', cl => 6],
+];
+const qb = UI.el('quickbuffs');
+QUICK.forEach(([n, unit, fn]) => {
+  const b = document.createElement('button');
+  b.textContent = '+ ' + n;
+  b.addEventListener('click', () => {
+    const cl = parseInt(UI.el('ecl').value, 10) || 5;
+    addEffect(n, UI.el('et').value.trim() || 'party', fn(cl), unit, false);
+  });
+  qb.appendChild(b);
+});
+DATA.spells.slice().sort((a, b) => a.name.localeCompare(b.name)).forEach(s => {
+  const o = document.createElement('option'); o.value = s.name; UI.el('spelllist').appendChild(o);
+});
+function parseDuration(durStr, cl) {
+  const s = (durStr || '').toLowerCase();
+  if (/permanent/.test(s)) return { dur: 0, unit: 'perm' };
+  if (/instantaneous/.test(s)) return { dur: 1, unit: 'rounds' };
+  if (/dispelled/.test(s)) return { dur: 0, unit: 'dispel' };
+  const per = /\/\s*level/.test(s) || /per level/.test(s);
+  const m = s.match(/(\d+)\s*(round|min|hour)/);
+  const base = m ? parseInt(m[1], 10) : 1;
+  let unit = 'rounds';
+  if (m && /min/.test(m[2])) unit = 'minutes';
+  else if (m && /hour/.test(m[2])) unit = 'hours';
+  return { dur: per ? base * cl : base, unit: unit };
+}
+UI.el('fromspell').addEventListener('click', () => {
+  const name = UI.el('en').value.trim();
+  const sp = DATA.spells.find(s => s.name.toLowerCase() === name.toLowerCase());
+  const cl = parseInt(UI.el('ecl').value, 10) || 5;
+  if (!sp) { UI.el('turninfo').textContent = 'Spell "' + name + '" not in database — enter duration manually.'; return; }
+  const d = parseDuration(sp.duration, cl);
+  UI.el('ed').value = d.dur; UI.el('eu').value = d.unit;
+  UI.el('turninfo').textContent = sp.name + ': ' + sp.duration + ' → ' + d.dur + ' ' + d.unit + ' at CL ' + cl;
+});
+function addEffect(name, target, dur, unit, conc) {
+  effects.push({ id: uid(), name: name, target: target || '—', dur: dur, unit: unit, conc: !!conc });
+  renderEffects(); persist();
+}
+UI.el('addeffect').addEventListener('click', () => {
+  const name = UI.el('en').value.trim(); if (!name) return;
+  addEffect(name, UI.el('et').value.trim() || '—', parseInt(UI.el('ed').value, 10) || 0, UI.el('eu').value, UI.el('econc').checked);
+  UI.el('en').value = ''; UI.el('et').value = '';
+});
+function renderEffects() {
+  const list = UI.el('efflist');
+  if (!effects.length) { list.innerHTML = '<p class="muted2">No active effects.</p>'; return; }
+  const byTarget = {};
+  effects.forEach(ef => { (byTarget[ef.target] = byTarget[ef.target] || []).push(ef); });
+  list.innerHTML = Object.keys(byTarget).map(t => {
+    const rows = byTarget[t].map(ef => {
+      let cls = 'eff';
+      if (ef.unit === 'rounds' && ef.dur === 1) cls += ' expiring';
+      else if (ef.unit === 'rounds' && ef.dur === 2) cls += ' soon';
+      if (ef.conc) cls += ' conc';
+      const durTxt = ef.unit === 'perm' ? 'permanent' : ef.unit === 'dispel' ? 'until dispelled' : ef.dur + ' ' + ef.unit;
+      return '<div class="' + cls + '">' + UI.esc(ef.name) + ' — ' + durTxt + (ef.conc ? ' [concentration]' : '') +
+        ' <b data-eff="' + ef.id + '" style="cursor:pointer;color:var(--bad)">×</b></div>';
+    }).join('');
+    return '<div style="margin-top:8px"><strong style="color:var(--gold)">' + UI.esc(t) + '</strong>' + rows + '</div>';
+  }).join('');
+}
+UI.el('efflist').addEventListener('click', e => {
+  const b = e.target.closest('[data-eff]'); if (!b) return;
+  effects = effects.filter(ef => ef.id !== +b.getAttribute('data-eff')); renderEffects(); persist();
+});
+
+function flashConc(c, dmg) {
+  const conc = effects.filter(e => e.conc);
+  if (!conc.length) return;
+  const info = UI.el('turninfo');
+  info.classList.add('warn');
+  info.textContent = '⚠ ' + c.name + ' took ' + dmg + ' dmg — if a concentrating caster was hit, Concentration DC ' + (10 + dmg) + ' (+spell level): ' +
+    conc.map(e => e.name + ' on ' + e.target).join(', ');
+  document.querySelectorAll('#efflist .eff.conc').forEach(el => { el.classList.add('flashing'); setTimeout(() => el.classList.remove('flashing'), 2500); });
+  setTimeout(() => info.classList.remove('warn'), 4000);
+}
+
+// Import an encounter handed off from the Encounter generator (HP + init pre-rolled)
+function importEncounter(announce) {
+  let p = null;
+  try { p = JSON.parse(localStorage.getItem('ptolus-pending-encounter')); } catch (e) {}
+  if (!p || !p.combatants || !p.combatants.length) {
+    if (announce) UI.el('turninfo').textContent = 'No pending encounter. In the Encounter generator, roll one and click "Send to Combat Tracker".';
+    return false;
+  }
+  p.combatants.forEach(c => {
+    const hp = Math.max(1, c.maxhp || c.hp || 1);
+    addCombatant(c.name, c.init || 0, hp, { srcName: c.srcName || null, custom: c.cr ? 'CR ' + c.cr : '' });
+  });
+  localStorage.removeItem('ptolus-pending-encounter');
+  renderCombat();
+  UI.el('turninfo').textContent = 'Imported ' + p.combatants.length + ' combatant(s) from the Encounter generator.';
+  refreshImportBtn();
+  return true;
+}
+function refreshImportBtn() {
+  let p = null; try { p = JSON.parse(localStorage.getItem('ptolus-pending-encounter')); } catch (e) {}
+  const n = p && p.combatants ? p.combatants.length : 0;
+  const b = UI.el('importenc');
+  b.textContent = n ? 'Import Encounter (' + n + ')' : 'Import Encounter';
+  b.classList.toggle('primary', n > 0);
+}
+UI.el('importenc').addEventListener('click', () => importEncounter(true));
+refreshImportBtn();
+
+// ---- Award XP: tally defeated monsters → EL → hand off to the XP Calculator ----
+function crValue(c) {
+  if (c.srcName) { const m = DATA.monsters.find(x => x.name === c.srcName); if (m && typeof m.cr_value === 'number') return m.cr_value; }
+  const mm = String(c.custom || '').match(/CR\s*(\d+)\s*\/\s*(\d+)|CR\s*([\d.]+)/i);
+  if (mm) return mm[3] != null ? parseFloat(mm[3]) : (parseInt(mm[1], 10) / parseInt(mm[2], 10));
+  return 0;
+}
+function isDefeated(c) {
+  if (c.isPC) return false;
+  if (c.hpCur <= 0) return true;
+  return (c.conditions || []).some(x => /^(Dead|Dying|Unconscious|Stable|Helpless)$/.test(x.name));
+}
+function sendToXP() {
+  const defeated = combatants.filter(isDefeated);
+  const crs = defeated.map(crValue).filter(v => v > 0);
+  if (!crs.length) {
+    UI.el('turninfo').textContent = 'No defeated monsters with a known CR. (Drop a monster to ≤0 HP or mark it Dead, and use ones added from the Monster list / an imported encounter.)';
+    return;
+  }
+  const el = Tables.elFromCRs(crs);
+  let size = 4, apl = null;
+  const pcs = combatants.filter(c => c.isPC).length;
+  if (typeof Ctx !== 'undefined') { const c = Ctx.all(); apl = c.partyLevel; if (c.partySize) size = c.partySize; }
+  else if (pcs) size = pcs;
+  const payload = { encounters: [{ el: el, mult: 1, crs: crs }], size: size, ts: Date.now() };
+  if (apl != null) payload.apl = apl;
+  try { localStorage.setItem('ptolus-pending-xp', JSON.stringify(payload)); } catch (e) {}
+  UI.el('turninfo').textContent = '✦ Sent EL ' + el + ' (' + crs.length + ' defeated) to the XP Calculator. Open it → "Import from Combat".';
+}
+UI.el('toxp').addEventListener('click', sendToXP);
+
+renderCombat(); renderEffects();
+</script>
+</body>
+</html>

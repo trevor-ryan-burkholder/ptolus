@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quest &amp; Plot Tracker — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .q-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(330px, 1fr)); gap:14px; }
+  .q-card { background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:12px 14px; }
+  .q-card.st-active { border-left:4px solid var(--gold); }
+  .q-card.st-lead { border-left:4px solid var(--muted); }
+  .q-card.st-hold { border-left:4px solid var(--warn); }
+  .q-card.st-done { border-left:4px solid var(--good); opacity:.78; }
+  .q-card.st-failed { border-left:4px solid var(--bad); opacity:.7; }
+  .q-card .q-top { display:flex; gap:8px; align-items:center; margin-bottom:6px; }
+  .q-card .q-title { flex:1; font-weight:bold; font-size:16px; }
+  .q-card label { margin:8px 0 2px; }
+  .q-card select, .q-card input, .q-card textarea { font-size:14px; padding:5px 7px; }
+  .q-row { display:flex; gap:6px; }
+  .q-row > * { flex:1; }
+  .q-steps { list-style:none; padding:0; margin:6px 0; }
+  .q-steps li { display:flex; gap:6px; align-items:flex-start; padding:2px 0; font-size:14px; }
+  .q-steps li.sd { color:var(--muted); text-decoration:line-through; }
+  .q-steps input[type=checkbox] { width:auto; margin-top:4px; }
+  .q-clock { font-family:'Courier New', monospace; font-size:13px; color:var(--gold); margin-top:6px; }
+  .q-clock .miss { color:var(--bad); }
+  .q-del { font-size:12px; padding:3px 8px; }
+  .typetag { font-size:11px; text-transform:uppercase; letter-spacing:1px; padding:1px 6px; border-radius:4px; border:1px solid var(--line); color:var(--muted); }
+  .addbar { display:flex; gap:8px; flex-wrap:wrap; align-items:end; margin-bottom:14px; }
+  .addbar > div { display:flex; flex-direction:column; }
+  .addbar label { margin:0 0 2px; }
+  .addbar input, .addbar select { width:auto; }
+  #qtitle { min-width:240px; }
+</style>
+</head>
+<body>
+<div style="padding:0 20px;">
+  <div class="addbar">
+    <div><label for="qtitle">New quest / lead</label><input id="qtitle" placeholder="Title (e.g. The Lead Box)"></div>
+    <div><label for="qtype">Type</label><select id="qtype"><option value="main">Main</option><option value="side" selected>Side</option><option value="personal">Personal</option><option value="faction">Faction</option></select></div>
+    <div><label for="qgiver">Giver / source</label><input id="qgiver" placeholder="Who/where"></div>
+    <div><label for="qclock">Link clock</label><select id="qclock"></select></div>
+    <div><button class="primary" id="qadd" style="width:auto;margin-top:0;padding:8px 16px;">+ Add</button></div>
+  </div>
+
+  <div class="log-head" style="margin-bottom:10px;">
+    <h2 style="margin:0;">Quests</h2>
+    <label style="display:inline-flex;align-items:center;gap:6px;margin:0 0 0 16px;color:var(--muted);">Filter
+      <select id="filter" style="width:auto;padding:4px 8px;"><option value="open" selected>Open (active+lead+hold)</option><option value="all">All</option><option value="active">Active</option><option value="lead">Leads</option><option value="hold">On hold</option><option value="done">Done</option><option value="failed">Failed</option></select>
+    </label>
+    <a class="home" href="../city-turn/index.html" style="margin-left:auto;">City Turn clocks ▸</a>
+    <button id="refresh">↻ Clocks</button>
+  </div>
+  <div id="cards" class="q-grid"></div>
+  <p class="hint" id="count"></p>
+
+  <div class="panel" style="margin-top:20px;max-width:680px;">
+    <h2>Backup (this tool)</h2>
+    <div class="btn-row"><button id="export">Export quests JSON</button><button id="doimport">Import</button></div>
+    <textarea id="json" rows="3" placeholder="Quest JSON" style="margin-top:8px;"></textarea>
+    <p class="hint">For a full-campaign backup of every tool at once, use the <a href="../save/index.html">Campaign Save</a> page.</p>
+  </div>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/state.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Quest & Plot Tracker', 'Threads, leads, and what each faction clock will trigger');
+UI.diceTray();
+const KEY = 'ptolus-quests-v1';
+const CT_KEY = 'ptolus-cityturn-v1';
+const esc = UI.esc;
+
+const STATUS = { active: 'Active', lead: 'Lead', hold: 'On hold', done: 'Done', failed: 'Failed' };
+const STATUS_ORDER = ['active', 'lead', 'hold', 'done', 'failed'];
+
+let state = load();
+function load() { try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.quests) return s; } catch (e) {} return { seq: 0, quests: [] }; }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+function byId(id) { return state.quests.find(q => q.id === id); }
+
+/* ---- city-turn clocks ---- */
+function clocks() { try { const s = JSON.parse(localStorage.getItem(CT_KEY)); if (s && s.projects) return s.projects; } catch (e) {} return []; }
+function clockFor(fac) { return clocks().find(p => p.fac === fac) || null; }
+
+function populateClockSelect(sel, current) {
+  const facs = clocks().map(p => p.fac);
+  let html = '<option value="">— none —</option>';
+  facs.forEach(f => { html += '<option value="' + esc(f) + '"' + (f === current ? ' selected' : '') + '>' + esc(f) + '</option>'; });
+  // keep a stale link visible even if its clock was removed
+  if (current && facs.indexOf(current) === -1) html += '<option value="' + esc(current) + '" selected>' + esc(current) + ' (no clock)</option>';
+  sel.innerHTML = html;
+}
+
+/* ---- render ---- */
+function clockBlock(fac) {
+  if (!fac) return '';
+  const p = clockFor(fac);
+  if (!p) return '<div class="q-clock"><span class="miss">⚙ ' + esc(fac) + ' — no matching clock</span></div>';
+  const dots = '●'.repeat(p.filled) + '○'.repeat(Math.max(0, p.total - p.filled));
+  const done = p.filled >= p.total;
+  return '<div class="q-clock">⚙ ' + esc(fac) + ': ' + dots + ' ' + p.filled + '/' + p.total +
+    (done ? ' ✦' : '') + '\n<span style="color:var(--muted)">▶ ' + esc(p.payoff || '') + '</span></div>';
+}
+function stepsBlock(q) {
+  let h = '<ul class="q-steps">';
+  (q.steps || []).forEach((s, i) => {
+    h += '<li class="' + (s.done ? 'sd' : '') + '"><input type="checkbox" data-act="step" data-id="' + q.id + '" data-i="' + i + '"' + (s.done ? ' checked' : '') + '><span>' + esc(s.text) + '</span> <button class="q-del" data-act="delstep" data-id="' + q.id + '" data-i="' + i + '">✕</button></li>';
+  });
+  h += '</ul><button class="q-del" data-act="addstep" data-id="' + q.id + '">+ step</button>';
+  return h;
+}
+function card(q) {
+  const opts = STATUS_ORDER.map(s => '<option value="' + s + '"' + (q.status === s ? ' selected' : '') + '>' + STATUS[s] + '</option>').join('');
+  const typeOpts = ['main', 'side', 'personal', 'faction'].map(t => '<option value="' + t + '"' + (q.type === t ? ' selected' : '') + '>' + t[0].toUpperCase() + t.slice(1) + '</option>').join('');
+  return '<div class="q-card st-' + q.status + '">' +
+    '<div class="q-top"><input class="q-title" data-f="title" data-id="' + q.id + '" value="' + esc(q.title) + '">' +
+      '<button class="q-del" data-act="del" data-id="' + q.id + '">Delete</button></div>' +
+    '<div class="q-row">' +
+      '<div><label>Status</label><select data-f="status" data-id="' + q.id + '">' + opts + '</select></div>' +
+      '<div><label>Type</label><select data-f="type" data-id="' + q.id + '">' + typeOpts + '</select></div>' +
+    '</div>' +
+    '<label>Giver / source</label><input data-f="giver" data-id="' + q.id + '" value="' + esc(q.giver || '') + '">' +
+    '<label>Summary</label><textarea data-f="summary" data-id="' + q.id + '" rows="2">' + esc(q.summary || '') + '</textarea>' +
+    '<label>Steps / objectives</label>' + stepsBlock(q) +
+    '<label>Reward</label><input data-f="reward" data-id="' + q.id + '" value="' + esc(q.reward || '') + '">' +
+    '<label>Linked faction clock</label><select data-f="clock" data-id="' + q.id + '" class="clocksel"></select>' +
+    clockBlock(q.clock) +
+    '<label>Notes</label><textarea data-f="notes" data-id="' + q.id + '" rows="2">' + esc(q.notes || '') + '</textarea>' +
+    '</div>';
+}
+function visible() {
+  const f = UI.el('filter').value;
+  let list = state.quests.slice();
+  if (f === 'open') list = list.filter(q => ['active', 'lead', 'hold'].indexOf(q.status) !== -1);
+  else if (f !== 'all') list = list.filter(q => q.status === f);
+  list.sort((a, b) => STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status));
+  return list;
+}
+function render() {
+  const list = visible();
+  UI.el('cards').innerHTML = list.length ? list.map(card).join('') : '<p class="hint">No quests in this filter. Add one above.</p>';
+  // fill the per-card clock selects (can't set selected via innerHTML easily for dynamic lists)
+  document.querySelectorAll('.clocksel').forEach(sel => {
+    const q = byId(parseInt(sel.getAttribute('data-id'), 10));
+    populateClockSelect(sel, q ? q.clock : '');
+  });
+  const open = state.quests.filter(q => ['active', 'lead', 'hold'].indexOf(q.status) !== -1).length;
+  UI.el('count').textContent = state.quests.length + ' quest(s) total · ' + open + ' open · showing ' + list.length;
+}
+
+/* ---- mutations ---- */
+function addQuest() {
+  const title = (UI.el('qtitle').value || '').trim();
+  if (!title) { UI.el('qtitle').focus(); return; }
+  state.seq++;
+  state.quests.push({
+    id: state.seq, title: title, type: UI.el('qtype').value, status: 'active',
+    giver: (UI.el('qgiver').value || '').trim(), summary: '', steps: [], reward: '',
+    clock: UI.el('qclock').value || '', notes: ''
+  });
+  UI.el('qtitle').value = ''; UI.el('qgiver').value = '';
+  save(); render();
+}
+
+UI.el('qadd').addEventListener('click', addQuest);
+UI.el('qtitle').addEventListener('keydown', e => { if (e.key === 'Enter') addQuest(); });
+UI.el('filter').addEventListener('change', render);
+UI.el('refresh').addEventListener('click', () => { populateClockSelect(UI.el('qclock'), UI.el('qclock').value); render(); });
+
+// commit text/select edits without a full re-render (keeps focus) — re-render only when it changes grouping/clock display
+UI.el('cards').addEventListener('change', e => {
+  const f = e.target.getAttribute('data-f');
+  if (f) {
+    const q = byId(parseInt(e.target.getAttribute('data-id'), 10)); if (!q) return;
+    q[f] = e.target.value;
+    save();
+    if (f === 'status' || f === 'type' || f === 'clock') render();
+    return;
+  }
+  if (e.target.getAttribute('data-act') === 'step') {
+    const q = byId(parseInt(e.target.getAttribute('data-id'), 10)); if (!q) return;
+    const i = parseInt(e.target.getAttribute('data-i'), 10);
+    q.steps[i].done = e.target.checked; save(); render();
+  }
+});
+UI.el('cards').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const act = b.getAttribute('data-act');
+  const q = byId(parseInt(b.getAttribute('data-id'), 10)); if (!q) return;
+  if (act === 'del') { if (confirm('Delete "' + q.title + '"?')) { state.quests = state.quests.filter(x => x.id !== q.id); save(); render(); } }
+  else if (act === 'addstep') { const t = prompt('Step / objective:'); if (t) { q.steps = q.steps || []; q.steps.push({ text: t, done: false }); save(); render(); } }
+  else if (act === 'delstep') { const i = parseInt(b.getAttribute('data-i'), 10); q.steps.splice(i, 1); save(); render(); }
+});
+
+// backup
+UI.el('export').addEventListener('click', () => { const t = JSON.stringify(state); UI.el('json').value = t; if (navigator.clipboard) navigator.clipboard.writeText(t).catch(() => {}); });
+UI.el('doimport').addEventListener('click', () => { try { const s = JSON.parse(UI.el('json').value); if (s && s.quests) { state = s; save(); render(); } else alert('Not a quests backup.'); } catch (e) { alert('Invalid JSON'); } });
+
+// initial add-bar clock select
+populateClockSelect(UI.el('qclock'), '');
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dungeon Levels — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .bar { padding:12px 20px; display:flex; gap:10px; align-items:center; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .bar .right { margin-left:auto; display:flex; gap:8px; }
+  .wrap { padding:16px 20px 60px; }
+  .zcard { background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:14px; margin-bottom:12px; }
+  .zcard.locked { opacity:0.45; }
+  .zcard h3 { margin:0 0 4px; color:var(--gold); font-size:19px; }
+  .zcard .meta { font-size:13px; color:var(--muted); margin-bottom:8px; }
+  .zcard .field { margin:5px 0; font-size:14px; line-height:1.4; }
+  .zcard .field b { color:var(--gold); }
+  .zcard .status { display:inline-block; border:1px solid var(--gold-dim); border-radius:4px; padding:1px 8px; font-size:12px; color:var(--gold); }
+  .zcard textarea, .zcard input, .zcard select { font-size:14px; margin:2px 0 6px; }
+  .zcard textarea { min-height:48px; }
+  .lbl { color:var(--muted); font-size:12px; }
+  .delbtn { float:right; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <button id="editmode">✎ Edit Mode</button>
+  <button id="add">+ Add Zone</button>
+  <label style="margin:0;"><input type="checkbox" id="revealdeep" style="width:auto;margin-right:6px;">Reveal deep zones (Arc III+)</label>
+  <div class="right">
+    <button id="export">Export Notes (JSON)</button>
+    <button id="reset">Reset to Canon</button>
+  </div>
+</div>
+<div class="wrap"><div id="zones"></div>
+  <details style="margin-top:16px;"><summary style="color:var(--gold);cursor:pointer;">Export / Import JSON</summary>
+    <textarea id="json" style="min-height:120px;width:100%;" placeholder="Export drops your notes here. Paste a saved blob and click Import."></textarea>
+    <button id="import" style="margin-top:6px;">Import</button>
+  </details>
+</div>
+
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Dungeon Level Reference', 'Canonical zones beneath Ptolus — editable, saved locally');
+UI.diceTray();
+const KEY = 'ptolus-dungeon-zones-v1';
+const STATUSES = ['Unexplored', 'Passed Through', 'Partially Mapped', 'Cleared (partial)', 'Active', 'Avoided'];
+
+const CANON = [
+  { id: 'A', name: 'The Sewers', depth: '≤ 20 ft below street', env: 'sewer · ptolus_undercity', cr: '1/3–3',
+    factions: 'Ratmen (ratlings/ratlords/ratbrutes), System Monitors, Plagueborn cult shrines, Church of Lothian (rat-tail bounty)',
+    features: 'Prust-built arched stone; 16-ft mains, 10-ft central channel. Older collapsed system under Oldtown. Dweomer St. has alchemical-runoff mutants. Grates: Str DC 22 to pry (damaging them is a crime).',
+    connections: 'City streets (grates); Ghul\'s Labyrinth (many); Undercity Market; river exits',
+    status: 'Unexplored', notes: '', locked: false, ref: 'Ptolus p. 439–446' },
+  { id: 'B', name: 'The Undercity', depth: 'Near-surface (deep in places)', env: 'ptolus_undercity · dungeon', cr: '1–10',
+    factions: "Delver's Guild, Longfingers Guild, Brotherhood of Redemption, Order of the Legacy, Ennin slavers (Dark Market)",
+    features: 'Undercity Market (Guild-run, 10% salvage tax), Dark Market (Search DC 25), Longfingers HQ, the Prison ("the Pit"), Mirror Maze, Chamber of Longing, Fortress of the Redeemed, Ravenstroke.',
+    connections: 'Streets (staircases); Sewers (many); Ghul\'s Labyrinth (numerous); Prison ↔ Cliffs of Lost Wishes',
+    status: 'Unexplored', notes: '', locked: false, ref: 'Ptolus p. 423–438' },
+  { id: 'C', name: "Ghul's Labyrinth", depth: 'Variable — the "default dungeon"', env: 'ptolus_dungeon · dungeon', cr: '2–8',
+    factions: 'No single controller; criminal groups, chaos cults, independent monsters, Longfingers (near HQ), Shilukar\'s chaositech lab',
+    features: 'Artificial honeycomb built by Ghul to stage the Dwarvenhearth assault. Old Sorn-Ulth orc traps active. Guild waystations (restocked weekly). Pits of Insanity throughout.',
+    connections: 'Sewers; Undercity; Banewarrens (edges); Caverns (many); Dwarvenhearth (Grand Entrance)',
+    status: 'Unexplored', notes: '', locked: false, ref: 'Ptolus p. 418–422' },
+  { id: 'E', name: 'The Caverns (Giant\'s Staircase & below)', depth: 'Far below the Labyrinth', env: 'underground · planar_lower (deep)', cr: '5–15+',
+    factions: 'Stonelost dwarves (Kaled Del), Pactlords of the Quaan, Children of Mrathrach (nagas), rhodintor, zaug, House Vrama dark elves',
+    features: 'Giant\'s Staircase → Eternity Cave (Erdek Ard); Umbral Lake (aboleths/skum); Serpent Caves; Vaults of the Rhodintor (greatest chaositech cache); Kastralathakasal; dark elf cities (Ul-Drakkan, Nluguran, Dreta Phantas).',
+    connections: 'Clock Tower cellars (Oldtown) → Giant\'s Staircase; Ghul\'s Labyrinth (many); Dwarvenhearth Grand Entrance',
+    status: 'Unexplored', notes: '', locked: false, ref: 'Ptolus p. 447–458' },
+  { id: 'F', name: 'Dwarvenhearth', depth: 'Via Eternity Cave Grand Entrance (mid–deep)', env: 'dungeon · underground', cr: '5–18',
+    factions: 'Soulless (guardians), Erebaccus, Daragin, House Vrama (Zachean), Stonelost dwarves (exterior watch)',
+    features: 'Sacked dwarven city-fortress (Ghulwar, ~330 BE). Gear Gate (hardness 13, 1,200 hp). Tomb of King Stardelve (Platinum Cestus). Cathedral Cavern. Day/Night King\'s Palaces. Mines still rich. Dwarven stone is hardness 10.',
+    connections: 'Grand Entrance (below South Market); Ghul\'s Labyrinth (many); natural Caverns; rumored tunnels to Banewarrens',
+    status: 'Unexplored', notes: '', locked: false, ref: 'Ptolus p. 460–483' },
+  { id: 'D', name: 'The Banewarrens', depth: 'Within & below the Spire (3,000-ft shaft)', env: 'dungeon · planar_lower', cr: '8–15+',
+    factions: 'Not faction-controlled. House Vladaam holds the Banewarrens key (unknowing). Dark elves seek entry.',
+    features: 'Danar Rotansin\'s sealed vaults for "banes." Outer/Inner Vaults + the Baneheart (Tremoc Korin). Saggarintys (imprisoned silver dragon), Dark Averon, the Malificite. Only the Banewarrens key opens all seals. (Its own adventure arc.)',
+    connections: 'Ghul\'s Labyrinth (edges); Spire interior (ascending)',
+    status: 'Unexplored', notes: '', locked: true, ref: 'Ptolus p. 419–420' },
+];
+
+let zones = load();
+function load() { try { const s = JSON.parse(localStorage.getItem(KEY)); if (Array.isArray(s)) return s; } catch (e) {} return JSON.parse(JSON.stringify(CANON)); }
+function save() { localStorage.setItem(KEY, JSON.stringify(zones)); }
+let editing = false;
+
+function render() {
+  const reveal = UI.el('revealdeep').checked;
+  UI.el('zones').innerHTML = zones.map((z, i) => {
+    if (z.locked && !reveal) return '<div class="zcard locked"><h3>Zone ' + UI.esc(z.id) + ' — ' + UI.esc(z.name) + ' 🔒</h3><div class="meta">Deep zone — toggle "Reveal deep zones" to view (avoid spoiling scope).</div></div>';
+    if (editing) return editCard(z, i);
+    return viewCard(z);
+  }).join('');
+}
+function viewCard(z) {
+  return '<div class="zcard">' +
+    '<h3>Zone ' + UI.esc(z.id) + ' — ' + UI.esc(z.name) + '</h3>' +
+    '<div class="meta">' + UI.esc(z.depth) + ' · <span class="status">' + UI.esc(z.status) + '</span>' + (z.ref ? ' · <span class="lbl">' + UI.esc(z.ref) + '</span>' : '') + '</div>' +
+    field('Environment', z.env) + field('Typical CR', z.cr) + field('Factions', z.factions) +
+    field('Features', z.features) + field('Connections', z.connections) +
+    (z.notes ? field('Party Notes', z.notes) : '') +
+    '</div>';
+}
+function field(label, val) { return '<div class="field"><b>' + label + ':</b> ' + UI.esc(val || '—') + '</div>'; }
+function editCard(z, i) {
+  const inp = (k, ml) => ml
+    ? '<textarea data-i="' + i + '" data-k="' + k + '">' + UI.esc(z[k] || '') + '</textarea>'
+    : '<input data-i="' + i + '" data-k="' + k + '" value="' + UI.esc(z[k] || '') + '">';
+  return '<div class="zcard"><button class="delbtn" data-del="' + i + '">✕ delete</button>' +
+    '<span class="lbl">ID</span><input data-i="' + i + '" data-k="id" value="' + UI.esc(z.id) + '" style="width:60px">' +
+    '<span class="lbl">Name</span>' + inp('name') +
+    '<span class="lbl">Depth</span>' + inp('depth') +
+    '<span class="lbl">Environment</span>' + inp('env') +
+    '<span class="lbl">Typical CR</span>' + inp('cr') +
+    '<span class="lbl">Factions</span>' + inp('factions', true) +
+    '<span class="lbl">Features</span>' + inp('features', true) +
+    '<span class="lbl">Connections</span>' + inp('connections', true) +
+    '<span class="lbl">Status</span><select data-i="' + i + '" data-k="status">' +
+      STATUSES.map(s => '<option' + (s === z.status ? ' selected' : '') + '>' + s + '</option>').join('') + '</select>' +
+    '<span class="lbl">Party Notes</span>' + inp('notes', true) +
+    '</div>';
+}
+
+UI.el('zones').addEventListener('input', e => {
+  const el = e.target.closest('[data-k]'); if (!el) return;
+  zones[+el.getAttribute('data-i')][el.getAttribute('data-k')] = el.value; save();
+});
+UI.el('zones').addEventListener('click', e => {
+  const d = e.target.closest('[data-del]'); if (!d) return;
+  if (confirm('Delete this zone?')) { zones.splice(+d.getAttribute('data-del'), 1); save(); render(); }
+});
+UI.el('editmode').addEventListener('click', () => { editing = !editing; UI.el('editmode').textContent = editing ? '✓ Done Editing' : '✎ Edit Mode'; render(); });
+UI.el('add').addEventListener('click', () => { zones.push({ id: '?', name: 'New Zone', depth: '', env: '', cr: '', factions: '', features: '', connections: '', status: 'Unexplored', notes: '', locked: false }); editing = true; UI.el('editmode').textContent = '✓ Done Editing'; save(); render(); });
+UI.el('revealdeep').addEventListener('change', render);
+UI.el('export').addEventListener('click', () => { const t = JSON.stringify(zones, null, 2); UI.el('json').value = t; if (navigator.clipboard) navigator.clipboard.writeText(t).catch(() => {}); });
+UI.el('import').addEventListener('click', () => { try { const s = JSON.parse(UI.el('json').value); if (Array.isArray(s)) { zones = s; save(); render(); } } catch (e) { alert('Invalid JSON.'); } });
+UI.el('reset').addEventListener('click', () => { if (confirm('Discard your edits and restore canonical zones?')) { zones = JSON.parse(JSON.stringify(CANON)); save(); render(); } });
+
+render();
+</script>
+</body>
+</html>

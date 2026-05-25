@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ptolus Adventure Runner</title>
+<link rel="stylesheet" href="shared/ui.css">
+<style>
+  .launch-wrap { padding: 8px 24px 40px; max-width: 1100px; margin: 0 auto; }
+  .cat { margin-top: 28px; }
+  .cat h2 {
+    color: var(--gold); font-size: 15px; text-transform: uppercase; letter-spacing: 2px;
+    border-bottom: 1px solid var(--line); padding-bottom: 6px; margin-bottom: 14px;
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+  a.card {
+    display: block; text-decoration: none; color: var(--text);
+    background: var(--bg-panel); border: 1px solid var(--line); border-radius: 8px;
+    padding: 14px 16px; transition: border-color 0.12s, transform 0.08s;
+  }
+  a.card:hover { border-color: var(--gold); transform: translateY(-2px); }
+  a.card .name { color: var(--gold); font-weight: bold; font-size: 18px; }
+  a.card .desc { color: var(--muted); font-size: 14px; margin-top: 4px; line-height: 1.35; }
+  .tagline { color: var(--muted); font-size: 15px; margin-top: 2px; }
+  .palette-wrap { position: relative; margin: 14px 0 4px; }
+  #palette { width: 100%; padding: 11px 14px; font-size: 17px; }
+  #results { position: absolute; left: 0; right: 0; top: 100%; z-index: 30; background: var(--bg-panel);
+             border: 1px solid var(--gold-dim); border-radius: 8px; margin-top: 4px; max-height: 60vh; overflow-y: auto; display: none; }
+  #results .rgrp { color: var(--gold); font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; padding: 8px 12px 2px; }
+  #results a { display: block; padding: 6px 14px; color: var(--text); text-decoration: none; font-size: 14px; }
+  #results a:hover, #results a.sel { background: var(--bg-input); }
+  #results a .rsub { color: var(--muted); font-size: 12px; }
+  #results .none { color: var(--muted); padding: 10px 14px; font-style: italic; }
+  a.banner {
+    display: block; text-decoration: none; margin: 16px 0 4px;
+    background: linear-gradient(90deg, #2a2412, var(--bg-panel)); border: 1px solid var(--gold-dim);
+    border-radius: 8px; padding: 16px 20px; transition: border-color 0.12s, transform 0.08s;
+  }
+  a.banner:hover { border-color: var(--gold); transform: translateY(-2px); }
+  a.banner .name { color: var(--gold); font-weight: bold; font-size: 20px; }
+  a.banner .desc { color: var(--text); font-size: 14px; margin-top: 3px; }
+</style>
+</head>
+<body>
+<header class="runner-head">
+  <h1>Ptolus Adventure Runner</h1>
+  <span class="sub">GM tools for the City by the Spire — 3.5e / d20</span>
+</header>
+
+<div class="launch-wrap">
+  <p class="tagline">Self-contained table tools. Pick a generator. Every page has a seed control for deterministic re-rolls.</p>
+
+  <div class="palette-wrap">
+    <input id="palette" placeholder="Search everything — tools, rules &amp; lore, monsters, spells, items…  (press /)" autocomplete="off">
+    <div id="results"></div>
+  </div>
+
+  <a class="banner" href="library/index.html">
+    <div class="name">📚 Reference Library</div>
+    <div class="desc">Every doc in one place — Ptolus lore, 3.5e rules, classes &amp; races, and all generator specs. Searchable, rendered in-browser.</div>
+  </a>
+
+  <a class="banner" href="codex/index.html">
+    <div class="name">🐉 Codex</div>
+    <div class="desc">Searchable stat blocks &amp; cards — monsters, spells, magic items, gear, and psionic powers. Filter by CR, tier, class, school.</div>
+  </a>
+
+  <div class="cat">
+    <h2>At the Table</h2>
+    <div class="grid">
+      <a class="card" href="dashboard/index.html"><div class="name">🖥 GM Dashboard</div><div class="desc">One screen: party, live combat, faction clocks, campaign context.</div></a>
+      <a class="card" href="display/index.html"><div class="name">📺 Player Display</div><div class="desc">Second screen for players — initiative, bloodied status, read-aloud.</div></a>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2>Generators</h2>
+    <div class="grid">
+      <a class="card" href="encounters/index.html"><div class="name">⚔ Encounters</div><div class="desc">Random encounter by region + party level, with EL and average loot.</div></a>
+      <a class="card" href="loot/index.html"><div class="name">💰 Treasure / Loot</div><div class="desc">Treasure parcels by EL — coins, goods, magic items (DMG 7-4).</div></a>
+      <a class="card" href="npcs/index.html"><div class="name">🎭 NPCs</div><div class="desc">Instant NPC: race, class, personality, quirk, secret, motive.</div></a>
+      <a class="card" href="names/index.html"><div class="name">📜 Names</div><div class="desc">Culture-keyed names for people, places, and factions.</div></a>
+      <a class="card" href="weather/index.html"><div class="name">🌧 Weather &amp; Ambience</div><div class="desc">Weather plus read-aloud city ambience for a scene.</div></a>
+      <a class="card" href="tavern/index.html"><div class="name">🍺 Tavern &amp; Shop</div><div class="desc">Keyed tavern or shop — owner, atmosphere, stock, rumor.</div></a>
+      <a class="card" href="dungeons/index.html"><div class="name">🏰 Dungeon Rooms</div><div class="desc">Keyed room or whole level: shape, exits, contents, dressing, encounter.</div></a>
+      <a class="card" href="traps/index.html"><div class="name">⚠ Traps</div><div class="desc">CR-scaled mechanical &amp; magic traps — trigger, DCs, save, effect.</div></a>
+      <a class="card" href="advancer/index.html"><div class="name">🐲 Monster Advancer</div><div class="desc">Scale any monster to a target CR — add HD or apply templates.</div></a>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2>Combat &amp; Session</h2>
+    <div class="grid">
+      <a class="card" href="party/index.html"><div class="name">🧝 Party Roster</div><div class="desc">PCs, AC, saves &amp; passive Perception — feeds combat and XP.</div></a>
+      <a class="card" href="combat/index.html"><div class="name">🛡 Combat Tracker</div><div class="desc">Initiative, HP, conditions, inline stat blocks, attack &amp; save rolls.</div></a>
+      <a class="card" href="delve/index.html"><div class="name">🔦 Delve Tracker</div><div class="desc">Time, torch burn &amp; wandering-monster checks as the party descends.</div></a>
+      <a class="card" href="xp/index.html"><div class="name">✦ XP Calculator</div><div class="desc">Per-character XP from the ELs the party defeated.</div></a>
+      <a class="card" href="commissariat/index.html"><div class="name">⏱ City Watch Timer</div><div class="desc">City Watch response countdown — real table tension.</div></a>
+      <a class="card" href="calendar/index.html"><div class="name">📅 Imperial Calendar</div><div class="desc">Track the date, weekday, holy days, and campaign time.</div></a>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2>City &amp; Intrigue</h2>
+    <div class="grid">
+      <a class="card" href="city-events/index.html"><div class="name">🏙 City Events</div><div class="desc">What's happening in Ptolus this week.</div></a>
+      <a class="card" href="jobs/index.html"><div class="name">📋 Job Board</div><div class="desc">Delver contracts: patron, objective, reward, catch.</div></a>
+      <a class="card" href="street-scenes/index.html"><div class="name">🚶 Street Scenes</div><div class="desc">The texture of a city street corner, right now.</div></a>
+      <a class="card" href="districts/index.html"><div class="name">🏛 Districts</div><div class="desc">Canonical venues, NPCs &amp; hooks for all 11 districts.</div></a>
+      <a class="card" href="factions/index.html"><div class="name">⚑ Faction Tracker</div><div class="desc">Track each faction's attitude toward the party (saved).</div></a>
+      <a class="card" href="rumors/index.html"><div class="name">💬 Rumors</div><div class="desc">Rumors keyed to the source NPC's profession.</div></a>
+      <a class="card" href="city-turn/index.html"><div class="name">⏳ City Turn</div><div class="desc">Faction clocks — advance the city's plots between sessions.</div></a>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2>Ptolus-Specific</h2>
+    <div class="grid">
+      <a class="card" href="chaositech/index.html"><div class="name">⚙ Chaositech</div><div class="desc">Unstable chaositech items — function, glitch, flavor.</div></a>
+      <a class="card" href="investigations/index.html"><div class="name">🔍 Investigations</div><div class="desc">Crime scene seed: victim, method, clue, false lead.</div></a>
+      <a class="card" href="noble-schemes/index.html"><div class="name">♟ Noble Schemes</div><div class="desc">House-vs-house intrigue hooks for Arc II+.</div></a>
+      <a class="card" href="chaos/index.html"><div class="name">🌀 Pits of Insanity</div><div class="desc">Chaos mutation &amp; warping effects, minor and major.</div></a>
+      <a class="card" href="corruption/index.html"><div class="name">☣ Corruption Tracker</div><div class="desc">Per-character taint from chaositech, the Pits, and the Galchutt.</div></a>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2>Reference</h2>
+    <div class="grid">
+      <a class="card" href="reference/conditions.html"><div class="name">📖 Conditions</div><div class="desc">All 3.5e conditions on one searchable page.</div></a>
+      <a class="card" href="reference/actions.html"><div class="name">⏳ Action Economy</div><div class="desc">Action types with common examples.</div></a>
+      <a class="card" href="reference/dungeon-levels.html"><div class="name">🗺 Dungeon Levels</div><div class="desc">Known Dungeon levels — factions, CR, features (editable).</div></a>
+      <a class="card" href="permits/index.html"><div class="name">🪪 Permits &amp; Licensing</div><div class="desc">Ptolus permits, costs, issuers, monster grades.</div></a>
+      <a class="card" href="divine/index.html"><div class="name">⛪ Deities &amp; Domains</div><div class="desc">Ptolus pantheon + 3.5e cleric domains (granted powers + spell lists).</div></a>
+      <a class="card" href="whoswho/index.html"><div class="name">👥 Ptolus Who's-Who</div><div class="desc">Canon NPC &amp; venue directory — search by name, faction, district.</div></a>
+    </div>
+  </div>
+
+  <div class="cat">
+    <h2>Campaign Prep</h2>
+    <div class="grid">
+      <a class="card" href="prep/index.html"><div class="name">📝 Session Prep</div><div class="desc">Scaffold the next session file, dated to the calendar.</div></a>
+      <a class="card" href="quests/index.html"><div class="name">🗺 Quests &amp; Plots</div><div class="desc">Track threads, leads &amp; objectives — linked to City Turn clocks.</div></a>
+      <a class="card" href="handout/index.html"><div class="name">📜 Handouts</div><div class="desc">In-world proclamations, letters, posters &amp; broadsheets.</div></a>
+      <a class="card" href="save/index.html"><div class="name">💾 Campaign Save</div><div class="desc">Export or restore every tool's data in one backup file.</div></a>
+    </div>
+  </div>
+</div>
+
+<script src="shared/data.js"></script>
+<script src="shared/docs.js"></script>
+<script src="data/divine.js"></script>
+<script src="data/whoswho.js"></script>
+<script>
+(function () {
+  var inp = document.getElementById('palette'), box = document.getElementById('results');
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  // tools = launcher cards + banners
+  var tools = [].map.call(document.querySelectorAll('a.card, a.banner'), function (a) {
+    return { name: a.querySelector('.name').textContent.replace(/^[^\w]+\s*/, '').trim(), href: a.getAttribute('href') };
+  });
+  function group(title, items) {
+    if (!items.length) return '';
+    return '<div class="rgrp">' + esc(title) + '</div>' + items.map(function (i) {
+      return '<a href="' + i.href + '">' + esc(i.label) + (i.sub ? ' <span class="rsub">· ' + esc(i.sub) + '</span>' : '') + '</a>';
+    }).join('');
+  }
+  function search(q) {
+    q = q.toLowerCase().trim();
+    if (q.length < 2) { box.style.display = 'none'; box.innerHTML = ''; return; }
+    var t = tools.filter(function (x) { return x.name.toLowerCase().indexOf(q) !== -1; })
+      .map(function (x) { return { label: x.name, href: x.href }; });
+    var docs = (window.DOCS || []).filter(function (d) { return d.title.toLowerCase().indexOf(q) !== -1; })
+      .slice(0, 8).map(function (d) { return { label: d.title, sub: d.group, href: 'library/index.html#' + d.id }; });
+    function dataHits(arr, tab, subf) {
+      return (arr || []).filter(function (e) { return e.name.toLowerCase().indexOf(q) !== -1; }).slice(0, 8)
+        .map(function (e) { return { label: e.name, sub: subf(e), href: 'codex/index.html#' + tab + ':' + encodeURIComponent(e.name) }; });
+    }
+    var D = window.DATA || {};
+    var mons = dataHits(D.monsters, 'monsters', function (e) { return 'CR ' + e.cr; });
+    var spl = dataHits(D.spells, 'spells', function (e) { return e.school; });
+    var itm = dataHits(D.magicItems, 'magicItems', function (e) { return e.tier; });
+    var gear = dataHits(D.mundaneItems, 'mundane', function (e) { return e.category; });
+    var pw = dataHits(D.powers, 'powers', function (e) { return e.discipline || ''; });
+    function nameHits(arr, hrefFn, subf) {
+      return (arr || []).filter(function (e) { return e.name.toLowerCase().indexOf(q) !== -1; }).slice(0, 6)
+        .map(function (e) { return { label: e.name, sub: subf(e), href: hrefFn(e) }; });
+    }
+    var WW = window.WHOSWHO || {}, DV = window.DIVINE || {};
+    var npcs = nameHits(WW.npcs, function (e) { return 'whoswho/index.html#view=npcs&q=' + encodeURIComponent(e.name); }, function (e) { return (e.faction && e.faction !== '—') ? e.faction : (e.role || ''); });
+    var venues = nameHits(WW.venues, function (e) { return 'whoswho/index.html#view=venues&q=' + encodeURIComponent(e.name); }, function (e) { return e.type || ''; });
+    var deities = nameHits(DV.deities, function (e) { return 'divine/index.html#view=deities&q=' + encodeURIComponent(e.name); }, function (e) { return e.title || ''; });
+    var domains = nameHits(DV.domains, function (e) { return 'divine/index.html#view=domains&q=' + encodeURIComponent(e.name); }, function (e) { return e.source || ''; });
+    var html = group('Tools', t) + group('Docs', docs) + group('NPCs', npcs) + group('Venues', venues) +
+      group('Deities', deities) + group('Domains', domains) + group('Monsters', mons) +
+      group('Spells', spl) + group('Magic Items', itm) + group('Gear', gear) + group('Powers', pw);
+    box.innerHTML = html || '<div class="none">No matches for "' + esc(q) + '".</div>';
+    box.style.display = 'block';
+  }
+  inp.addEventListener('input', function () { search(inp.value); });
+  inp.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { box.style.display = 'none'; inp.blur(); }
+    if (e.key === 'Enter') { var a = box.querySelector('a'); if (a) location.href = a.getAttribute('href'); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && document.activeElement !== inp) { e.preventDefault(); inp.focus(); }
+  });
+  document.addEventListener('click', function (e) { if (!e.target.closest('.palette-wrap')) box.style.display = 'none'; });
+})();
+</script>
+</body>
+</html>

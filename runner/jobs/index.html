@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delver Job Board — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+</head>
+<body>
+<div class="runner-main">
+  <div class="panel">
+    <h2>Job</h2>
+    <label for="plevel">Party Level (1–20)</label>
+    <input type="number" id="plevel" min="1" max="20" value="4">
+    <label for="jtype">Job Type</label>
+    <select id="jtype">
+      <option value="random" selected>Random</option>
+      <option value="dungeon">Dungeon Delve</option>
+      <option value="city">City Contract</option>
+      <option value="faction">Faction Job</option>
+      <option value="black">Black Market</option>
+      <option value="emergency">Emergency</option>
+    </select>
+    <label for="faction">Faction Filter</label>
+    <select id="faction">
+      <option value="any" selected>Any</option>
+      <option>City Watch</option><option>Delver's Guild</option>
+      <option>Inverted Pyramid</option><option>Church of Lothian</option>
+      <option>Balacazars</option><option>Noble House</option><option>Anonymous</option>
+    </select>
+    <button class="primary" id="post">Post Job</button>
+    <button id="board" style="width:100%;margin-top:8px;">Post Board (1d4+2)</button>
+    <div id="seed"></div>
+  </div>
+
+  <div>
+    <div class="log-head"><h2>Job Board</h2><button id="clear">Clear Log</button></div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/state.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Delver Job Board', 'Full contracts, one button');
+UI.contextBar();
+UI.diceTray();
+UI.seedControl('seed');
+const log = UI.logger('log', 'clear');
+const D = Dice;
+
+const HOUSES = ['Abanar','Dallimothan','Erthuo','Kath','Khatru','Nagel','Rau','Sadar','Shever','Vladaam'];
+const PATRONS = {
+  'Delver\'s Guild': () => 'Aldric Voss, Delver\'s Guild Factor (human, officious, always counting coin). Contact: Guild office, Undercity Market — ask for Voss by name.',
+  'Noble House': () => { const h = D.pick(HOUSES); return 'A steward of House ' + h + ' (deniable, never names the house aloud). Contact: a discreet message, a back-room meeting in the Nobles\' Quarter.'; },
+  'Inverted Pyramid': () => 'A robed Inverted Pyramid mage (cryptic, gives only what you need). Contact: an intermediary leaves a marked stone; you\'ll be found.',
+  'Church of Lothian': () => 'A priest of Lothian (righteous framing, real agenda underneath). Contact: the Temple District, a quiet chapel side-room.',
+  'City Watch': () => D.pick(['A City Watch officer','a Commissar\'s agent']) + ' (official cover, unofficial ask). Contact: not the Watchhouse — a tavern, off the record.',
+  'Balacazars': () => 'A Balacazar fixer (don\'t ask questions, don\'t be late). Contact: the Warrens, a fence who vouches for you first.',
+  'Anonymous': () => 'Anonymous, via a nervous intermediary (the real patron is unknown — that\'s the hook). Contact: dead-drop and a counter-sign.',
+  'Merchant': () => 'A merchant of the Guildsman District (mundane but pays reliably). Contact: their shopfront, in business hours.',
+  'Desperate': () => 'A desperate individual (urgent, personal, possibly a trap). Contact: they find you, breathless, in public.',
+};
+const PATRON_BY_TYPE = {
+  dungeon: [['Delver\'s Guild',4],['Inverted Pyramid',2],['Merchant',1],['Anonymous',1]],
+  city: [['City Watch',3],['Noble House',3],['Church of Lothian',2],['Merchant',1]],
+  faction: [['Noble House',3],['Inverted Pyramid',2],['Balacazars',2],['Church of Lothian',1]],
+  black: [['Balacazars',4],['Anonymous',2],['Desperate',1]],
+  emergency: [['Desperate',3],['City Watch',2],['Noble House',1],['Delver\'s Guild',1]],
+};
+const DUNGEON_LOCS = ['Level 1 (Ratman warrens)','Level 2 (south corridor)','Level 3 (Ossuary Corridor)','Level 3 (the Ironwrights\' hall)','Level 4 (the Vault doors)','Ghul\'s Labyrinth (outer reaches)','an uncharted side-passage off Level 2'];
+const OBJ = {
+  dungeon: [
+    'Retrieve a {item} from {loc}. The last team that tried didn\'t come back.',
+    'Clear {loc} of {creature} — bring proof.',
+    'Map {loc}. No team has returned with usable charts.',
+    'Escort a scholar into {loc} and back out again.',
+    'Find out what happened to the {prev} who went into {loc} and vanished.',
+  ],
+  city: [
+    'Locate {person} — alive preferred, but that\'s negotiable.',
+    'Deliver {item} to {person} without being seen.',
+    'Investigate {incident}. The Commissar\'s office wants it quiet.',
+    'Protect {person} for {dur}.',
+    'Acquire {item} from someone who won\'t sell it.',
+  ],
+  faction: [
+    'Steal {item} from a rival faction.',
+    'Discredit {person} — evidence preferred, rumor acceptable.',
+    'Disrupt an operation without leaving traces.',
+    'Move {item} across the city without triggering City Watch notice.',
+    'Surveil {person} and report back.',
+  ],
+  black: [
+    'Transport {cargo} — no questions.',
+    'Provide muscle for an exchange.',
+    'Make a problem disappear (intimidation, not murder — probably).',
+    'Obtain {item} that technically requires a permit.',
+  ],
+};
+const ITEMS = ['a brass compass','a sealed lead box','a noble\'s signet ring','a stolen ledger','a chaositech component','a relic of Lothian','an old map fragment','a vial of something that glows'];
+const CREATURES = ['skeletons and ghouls','a ratman warband','a nest of darkmantles','an ooze that\'s eaten the last two teams','something the Guild won\'t name'];
+const PERSONS = ['a missing apprentice','a noble\'s wayward son','a fence who knows too much','a witness in hiding','a defaulting debtor','a rival\'s informant'];
+const INCIDENTS = ['a string of disappearances in the Warrens','a desecrated street shrine','a warehouse fire that wasn\'t an accident','a body found with no marks'];
+const CARGO = ['a covered wagon, contents undeclared','a crate that hums faintly','six barrels labeled "salt"','a passenger who must not be seen'];
+const PREV = ['delver team (the Brass Hooks)','two-person scout team','Guild survey crew'];
+const DURS = ['three nights','one week','until a certain ship sails'];
+
+const COMPLICATIONS = [
+  'The target location has changed since the job was posted.',
+  'A rival delver team took the same job — they\'re a day ahead.',
+  'The patron is being watched — meeting them is itself a risk.',
+  'The objective is tied to a faction the party has history with.',
+  'The thing being retrieved doesn\'t want to be retrieved.',
+  'A third party is also interested — and better funded.',
+];
+const CATCHES = [
+  'The reward is lower than what they\'d actually pay — room to negotiate.',
+  'The patron reports to someone else; the real client is unknown.',
+  'The job is a test — the real ask comes after.',
+  'The patron needs this done because they can\'t be seen doing it themselves.',
+  'The "retrieve" job is really a "find out if it still exists" job.',
+  'Success will make an enemy the patron never warned them about.',
+];
+const HOOKS_POOL = [
+  'Who hired the last team, and for what?',
+  'The item is attuned to something. What?',
+  'Why does the patron want this done now?',
+  'What\'s the patron not telling the party about the location?',
+  'Who else is watching this job get done?',
+];
+
+function reward(level) {
+  if (level <= 3) return { base: D.range(2,6)*50, bonus: D.range(1,3)*50 };
+  if (level <= 6) return { base: D.range(8,16)*50, bonus: D.range(2,6)*50 };
+  if (level <= 10) return { base: D.range(10,25)*100, bonus: D.range(5,10)*100 };
+  if (level <= 15) return { base: D.range(6,16)*500, bonus: D.range(2,6)*500 };
+  return { base: 10000 + D.range(0,20)*1000, bonus: 0 };
+}
+function fillTemplate(t) {
+  return t.replace('{item}', D.pick(ITEMS)).replace('{loc}', D.pick(DUNGEON_LOCS))
+    .replace('{creature}', D.pick(CREATURES)).replace('{person}', D.pick(PERSONS))
+    .replace('{incident}', D.pick(INCIDENTS)).replace('{cargo}', D.pick(CARGO))
+    .replace('{prev}', D.pick(PREV)).replace('{dur}', D.pick(DURS));
+}
+function resolveType(t) { return t === 'random' ? D.pick(['dungeon','city','faction','black','emergency']) : t; }
+
+function pickPatron(jtype, factionFilter) {
+  if (factionFilter !== 'any') return factionFilter;
+  return D.weightedPick(PATRON_BY_TYPE[jtype === 'emergency' ? 'emergency' : jtype] || PATRON_BY_TYPE.city);
+}
+
+function buildJob(level, jtype, factionFilter, full) {
+  const realType = resolveType(jtype);
+  const objType = realType === 'emergency' ? D.pick(['dungeon','city','faction']) : realType;
+  const urgent = realType === 'emergency';
+  const patronKey = pickPatron(realType, factionFilter);
+  const patron = (PATRONS[patronKey] || PATRONS['Anonymous'])();
+  const objective = fillTemplate(D.pick(OBJ[objType]));
+  const r = reward(level);
+  const typeLabel = { dungeon:'Dungeon Delve', city:'City Contract', faction:'Faction Job', black:'Black Market', emergency:'Emergency' }[realType];
+  const el = '~EL ' + Math.max(1, level - 1) + '–' + (level + 2);
+
+  if (!full) {
+    return '<span class="head">• ' + typeLabel + (urgent ? ' (URGENT)' : '') + '</span> — patron: ' + patronKey +
+      '\n   ' + objective.split('.')[0] + '. → reward ' + Tagless(r.base) + ' gp';
+  }
+  let out = '<span class="head">[JOB POSTING — Party Lvl ' + level + ' — ' + typeLabel + (urgent ? ' — URGENT' : '') + ']</span>\n\n';
+  out += 'PATRON: ' + patron + '\n\n';
+  out += 'OBJECTIVE: ' + objective + '\n';
+  if (objType === 'dungeon') out += 'ESTIMATED THREAT: ' + el + '\n';
+  out += '\nREWARD: ' + Tagless(r.base) + ' gp on completion' + (r.bonus ? '; +' + Tagless(r.bonus) + ' gp bonus possible' : (level >= 16 ? '; or political capital (negotiable)' : '')) + '\n';
+  out += 'TIMELINE: ' + (urgent ? 'Time-limited — ' + D.pick(['before the next dawn','within three days','before a certain ship sails']) : 'Open — but someone else may take it.') + '\n\n';
+  out += '<span class="muted">COMPLICATION: ' + D.pick(COMPLICATIONS) + '</span>\n';
+  out += '<span class="muted">THE CATCH: ' + D.pick(CATCHES) + '</span>\n\n';
+  out += 'HOOKS:\n' + D.pickN(HOOKS_POOL, 2).map(h => '  → ' + h).join('\n');
+  return out;
+}
+function Tagless(n) { return n.toLocaleString('en-US'); }
+
+UI.el('post').addEventListener('click', () => {
+  const lvl = clampLvl();
+  log.append(buildJob(lvl, UI.el('jtype').value, UI.el('faction').value, true));
+});
+UI.el('board').addEventListener('click', () => {
+  const lvl = clampLvl();
+  const n = D.roll(4) + 2;
+  let out = '<span class="head">[DELVER\'S GUILD JOB BOARD — ' + n + ' postings — Party Lvl ' + lvl + ']</span>\n';
+  for (let i = 0; i < n; i++) out += '\n' + buildJob(lvl, 'random', UI.el('faction').value, false) + '\n';
+  log.append(out);
+});
+function clampLvl() { return Math.max(1, Math.min(20, parseInt(UI.el('plevel').value, 10) || 1)); }
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>City Turn — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .toolbar { display:flex; gap:8px; align-items:center; padding:12px 20px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .toolbar .right { margin-left:auto; display:flex; gap:8px; }
+  .wrap { padding:16px 20px 60px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:12px; margin-bottom:16px; }
+  .pcard { background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:14px; }
+  .pcard.done { border-color:var(--gold-dim); opacity:0.7; }
+  .pcard .fac { color:var(--gold); font-weight:bold; }
+  .pcard .goal { font-size:14px; margin:2px 0 8px; }
+  .clock { font-family:'Courier New',monospace; font-size:20px; letter-spacing:2px; color:var(--gold); }
+  .pcard .ct { color:var(--muted); font-size:13px; }
+  .btns { display:flex; gap:6px; margin-top:8px; }
+  .btns button { flex:1; padding:5px; }
+  .donetag { color:var(--good); font-weight:bold; }
+  textarea.notes { width:100%; min-height:34px; font-size:13px; margin-top:6px; }
+  .addrow { display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap; padding:12px; background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; }
+  .addrow .f { display:flex; flex-direction:column; } .addrow label { margin:0 0 3px; } .addrow input { width:auto; }
+  .log { margin-top:14px; }
+  .hint2 { color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button class="primary" id="advance" style="width:auto;margin:0;">▶ Advance a Week</button>
+  <span class="hint2" id="weekinfo"></span>
+  <div class="right"><button id="export">Copy State</button><button id="reset">Reset to Default</button></div>
+</div>
+<div class="wrap">
+  <div id="cards"></div>
+  <div class="addrow">
+    <div class="f"><label>Faction</label><input id="nf" placeholder="Faction"></div>
+    <div class="f"><label>Goal / project</label><input id="ng" placeholder="what they're working toward" style="width:240px"></div>
+    <div class="f"><label>Segments</label><input id="ns" type="number" value="6" style="width:60px"></div>
+    <button id="addproj">Add Clock</button>
+  </div>
+  <div class="log-head" style="margin-top:16px;"><h2>Turn Log</h2><button id="clearlog">Clear</button></div>
+  <div class="log" id="log"></div>
+  <p class="hint2" style="margin-top:12px;">Each week, every active clock advances on its own momentum (a d6 per faction: 5–6 = +2, 3–4 = +1, 1–2 = no progress). A filled clock fires its payoff. Tie the party's actions to the table — interfere to slow a clock, or ignore one and watch it complete. Saved in this browser.</p>
+  <details style="margin-top:8px;"><summary style="color:var(--gold);cursor:pointer">State JSON</summary><textarea id="json" style="width:100%;min-height:100px"></textarea><button id="doimport" style="margin-top:6px">Import</button></details>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('City Turn — Faction Clocks', 'Advance the city between sessions');
+UI.diceTray();
+const D = Dice;
+const KEY = 'ptolus-cityturn-v1';
+const DEFAULT = [
+  { fac: 'The Chaos Cults', goal: 'Awaken the Galchutt', total: 12, filled: 1, momentum: 1, payoff: 'The Night of Dissolution begins — the city\'s doom clock.', notes: '' },
+  { fac: 'The Forsaken', goal: 'Open the Banewarrens', total: 10, filled: 0, momentum: 1, payoff: 'A bane is loosed; a major artifact threat enters play.', notes: '' },
+  { fac: 'The Balacazars', goal: 'Consolidate the Warrens', total: 8, filled: 2, momentum: 1, payoff: 'The family locks down the underworld; prices and pressure rise.', notes: '' },
+  { fac: 'The Killravens', goal: 'Seize Balacazar territory', total: 8, filled: 1, momentum: 1, payoff: 'Open gang war erupts across the Docks and Warrens.', notes: '' },
+  { fac: 'House Vladaam', goal: 'Claim the contested asset', total: 6, filled: 0, momentum: 1, payoff: 'Vladaam wins a key holding; a rival house is ruined.', notes: '' },
+  { fac: 'The Inverted Pyramid', goal: 'Contain the chaos relic', total: 6, filled: 0, momentum: 1, payoff: 'The relic is locked away — or quietly studied. The Pyramid owes a favor, or hides a secret.', notes: '' },
+  { fac: 'The Delver\'s Guild', goal: 'Chart the deep Dungeon', total: 6, filled: 0, momentum: 1, payoff: 'New safe routes open; better maps become available to members.', notes: '' },
+  { fac: 'The City Watch', goal: 'Crack down on unlicensed magic', total: 4, filled: 0, momentum: 1, payoff: 'Spellcasting permits enforced citywide; unlicensed casters hunted.', notes: '' },
+];
+let state = load();
+function load() { try { const s = JSON.parse(localStorage.getItem(KEY)); if (s && s.projects) return s; } catch (e) {} return { week: 0, projects: JSON.parse(JSON.stringify(DEFAULT)) }; }
+function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+const log = UI.logger('log', 'clearlog');
+
+function clockStr(p) { return '●'.repeat(p.filled) + '○'.repeat(Math.max(0, p.total - p.filled)); }
+function done(p) { return p.filled >= p.total; }
+function card(p, i) {
+  return '<div class="pcard' + (done(p) ? ' done' : '') + '" data-i="' + i + '">' +
+    '<div class="fac">' + UI.esc(p.fac) + ' <button data-act="del" style="float:right;font-size:12px">✕</button></div>' +
+    '<div class="goal">' + UI.esc(p.goal) + '</div>' +
+    '<div class="clock">' + clockStr(p) + '</div><div class="ct">' + p.filled + ' / ' + p.total + (done(p) ? ' — <span class="donetag">COMPLETE</span>' : '') + '</div>' +
+    (done(p) ? '<div class="ct" style="color:var(--good)">▶ ' + UI.esc(p.payoff) + '</div>' : '') +
+    '<div class="btns"><button data-act="m1">−</button><button data-act="p1">+</button><button data-act="reset1">reset</button></div>' +
+    '<textarea class="notes" data-act="notes" placeholder="notes…">' + UI.esc(p.notes || '') + '</textarea></div>';
+}
+function render() {
+  UI.el('cards').innerHTML = state.projects.length ? '<div class="grid">' + state.projects.map(card).join('') + '</div>' : '<p class="hint2">No clocks. Add one below or Reset to Default.</p>';
+  UI.el('weekinfo').textContent = 'Week ' + state.week;
+}
+
+UI.el('advance').addEventListener('click', () => {
+  state.week++;
+  let out = '<span class="head">[CITY TURN — Week ' + state.week + ']</span>\n';
+  state.projects.forEach(p => {
+    if (done(p)) { out += '• ' + p.fac + ': complete.\n'; return; }
+    const r = D.roll(6);
+    const tick = (r >= 5 ? 2 : r >= 3 ? 1 : 0) * (p.momentum || 1);
+    const before = p.filled;
+    p.filled = Math.min(p.total, p.filled + tick);
+    let line = '• ' + p.fac + ' (' + p.goal + '): ' + (tick ? '+' + tick : 'no progress') + ' → ' + p.filled + '/' + p.total + ' [d6=' + r + ']';
+    if (p.filled >= p.total && before < p.total) line += '\n  <span class="good">▶ CLOCK FILLED — ' + p.payoff + '</span>';
+    out += line + '\n';
+  });
+  save(); render();
+  log.append(out);
+});
+UI.el('cards').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const i = +b.closest('.pcard').getAttribute('data-i'); const p = state.projects[i]; if (!p) return;
+  const a = b.getAttribute('data-act');
+  if (a === 'del') { if (confirm('Delete this clock?')) { state.projects.splice(i, 1); save(); render(); } }
+  else if (a === 'p1') { p.filled = Math.min(p.total, p.filled + 1); save(); render(); }
+  else if (a === 'm1') { p.filled = Math.max(0, p.filled - 1); save(); render(); }
+  else if (a === 'reset1') { p.filled = 0; save(); render(); }
+});
+UI.el('cards').addEventListener('change', e => {
+  const b = e.target.closest('[data-act="notes"]'); if (!b) return;
+  state.projects[+b.closest('.pcard').getAttribute('data-i')].notes = b.value; save();
+});
+UI.el('addproj').addEventListener('click', () => {
+  const fac = UI.el('nf').value.trim(), goal = UI.el('ng').value.trim();
+  if (!fac || !goal) return;
+  state.projects.push({ fac: fac, goal: goal, total: Math.max(1, parseInt(UI.el('ns').value, 10) || 6), filled: 0, momentum: 1, payoff: 'The project completes.', notes: '' });
+  UI.el('nf').value = ''; UI.el('ng').value = ''; save(); render();
+});
+UI.el('export').addEventListener('click', () => { const t = JSON.stringify(state); UI.el('json').value = t; if (navigator.clipboard) navigator.clipboard.writeText(t).catch(() => {}); });
+UI.el('doimport').addEventListener('click', () => { try { const s = JSON.parse(UI.el('json').value); if (s && s.projects) { state = s; save(); render(); } } catch (e) { alert('Invalid JSON'); } });
+UI.el('reset').addEventListener('click', () => { if (confirm('Reset clocks to canonical defaults?')) { state = { week: 0, projects: JSON.parse(JSON.stringify(DEFAULT)) }; save(); render(); } });
+
+render();
+</script>
+</body>
+</html>

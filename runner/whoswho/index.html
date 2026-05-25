@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ptolus Who's-Who — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .controls { display:flex; gap:10px; flex-wrap:wrap; align-items:end; padding:14px 20px 0; }
+  .controls > div { display:flex; flex-direction:column; }
+  .controls label { margin:0 0 3px; }
+  .controls input, .controls select { width:auto; }
+  #q { min-width:240px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:12px; padding:14px 20px 50px; }
+  .card { background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; padding:12px 14px; }
+  .card .nm { color:var(--gold); font-weight:bold; font-size:17px; }
+  .card .rl { color:var(--text); font-size:14px; }
+  .card .meta { color:var(--muted); font-size:13px; margin:4px 0; }
+  .card .line { font-size:14px; margin:3px 0; }
+  .card .secret { color:var(--warn); font-size:13px; margin-top:5px; border-left:3px solid var(--gold-dim); padding-left:7px; }
+  .card .hook { color:var(--muted); font-size:13px; font-style:italic; margin-top:4px; }
+  .tagd { display:inline-block; font-size:11px; text-transform:uppercase; letter-spacing:1px; border:1px solid var(--line); border-radius:4px; padding:0 6px; margin-left:5px; color:var(--muted); }
+  .disp-friendly { color:var(--good); } .disp-hostile { color:var(--bad); } .disp-wary { color:var(--warn); }
+  .count { color:var(--muted); font-size:13px; padding:2px 20px 0; }
+</style>
+</head>
+<body>
+<div class="controls">
+  <div><label for="view">Show</label>
+    <select id="view"><option value="npcs" selected>NPCs</option><option value="venues">Venues</option></select>
+  </div>
+  <div><label for="q">Search</label><input id="q" placeholder="name, role, faction, what they want…"></div>
+  <div><label for="district">District</label><select id="district"></select></div>
+  <div id="fwrap"><label for="faction">Faction</label><select id="faction"></select></div>
+  <div id="twrap" style="display:none;"><label for="vtype">Type</label><select id="vtype"></select></div>
+</div>
+<p class="count" id="count"></p>
+<div class="grid" id="grid"></div>
+
+<script src="../data/whoswho.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead("Ptolus Who's-Who", 'Canon NPCs & venues — GM lookup');
+const esc = UI.esc;
+const NPCS = (window.WHOSWHO && WHOSWHO.npcs) || [];
+const VENUES = (window.WHOSWHO && WHOSWHO.venues) || [];
+const CANON_DISTRICTS = ["Nobles' Quarter", 'Midtown', 'Temple District', 'South Market', 'North Market', 'Guildsman', 'Oldtown', 'Rivergate', 'Docks', 'Warrens', 'Necropolis', 'Undercity'];
+
+function fill(sel, values, allLabel) {
+  sel.innerHTML = '<option value="all">' + allLabel + '</option>' + values.map(v => '<option value="' + esc(v) + '">' + esc(v) + '</option>').join('');
+}
+function distinct(arr) { return [...new Set(arr.filter(x => x && x !== '—'))].sort(); }
+
+fill(UI.el('district'), CANON_DISTRICTS, 'All districts');
+fill(UI.el('faction'), distinct(NPCS.map(n => n.faction)), 'All factions');
+fill(UI.el('vtype'), distinct(VENUES.map(v => v.type)), 'All types');
+
+function inDistrict(rec, d) { return d === 'all' || String(rec.district || '').toLowerCase().indexOf(d.toLowerCase()) !== -1; }
+
+function npcCard(n) {
+  const disp = (n.disposition || '').toLowerCase();
+  return '<div class="card"><div class="nm">' + esc(n.name) +
+    (n.alignment ? '<span class="tagd">' + esc(n.alignment) + '</span>' : '') +
+    (disp ? '<span class="tagd disp-' + disp + '">' + esc(n.disposition) + '</span>' : '') + '</div>' +
+    (n.role ? '<div class="rl">' + esc(n.role) + '</div>' : '') +
+    '<div class="meta">' + [n.race_class, n.district, (n.faction && n.faction !== '—' ? n.faction : '')].filter(Boolean).join(' · ') + '</div>' +
+    (n.location && n.location !== '—' ? '<div class="line">📍 ' + esc(n.location) + '</div>' : '') +
+    (n.wants && n.wants !== '—' ? '<div class="line">Wants: ' + esc(n.wants) + '</div>' : '') +
+    (n.secret ? '<div class="secret">Secret: ' + esc(n.secret) + '</div>' : '') + '</div>';
+}
+function venueCard(v) {
+  return '<div class="card"><div class="nm">' + esc(v.name) + '<span class="tagd">' + esc(v.type) + '</span></div>' +
+    '<div class="meta">' + [v.district, (v.proprietor && v.proprietor !== '—' ? '👤 ' + v.proprietor : '')].filter(Boolean).join(' · ') + '</div>' +
+    (v.services && v.services !== '—' ? '<div class="line">' + esc(v.services) + '</div>' : '') +
+    (v.prices && v.prices !== '—' ? '<div class="line">💰 ' + esc(v.prices) + '</div>' : '') +
+    (v.hook ? '<div class="hook">' + esc(v.hook) + '</div>' : '') + '</div>';
+}
+
+function render() {
+  const view = UI.el('view').value;
+  const q = UI.el('q').value.toLowerCase().trim();
+  const d = UI.el('district').value;
+  UI.el('fwrap').style.display = view === 'npcs' ? 'flex' : 'none';
+  UI.el('twrap').style.display = view === 'venues' ? 'flex' : 'none';
+
+  if (view === 'npcs') {
+    const fac = UI.el('faction').value;
+    let list = NPCS.filter(n => inDistrict(n, d) && (fac === 'all' || n.faction === fac));
+    if (q) list = list.filter(n => (n.name + ' ' + n.role + ' ' + n.race_class + ' ' + n.faction + ' ' + n.location + ' ' + n.wants + ' ' + n.secret).toLowerCase().indexOf(q) !== -1);
+    list.sort((a, b) => a.name.localeCompare(b.name));
+    UI.el('grid').innerHTML = list.map(npcCard).join('') || '<p class="count">No NPCs match.</p>';
+    UI.el('count').textContent = list.length + ' of ' + NPCS.length + ' NPCs';
+  } else {
+    const t = UI.el('vtype').value;
+    let list = VENUES.filter(v => inDistrict(v, d) && (t === 'all' || v.type === t));
+    if (q) list = list.filter(v => (v.name + ' ' + v.proprietor + ' ' + v.services + ' ' + v.prices + ' ' + v.hook).toLowerCase().indexOf(q) !== -1);
+    list.sort((a, b) => a.name.localeCompare(b.name));
+    UI.el('grid').innerHTML = list.map(venueCard).join('') || '<p class="count">No venues match.</p>';
+    UI.el('count').textContent = list.length + ' of ' + VENUES.length + ' venues';
+  }
+}
+['view', 'q', 'district', 'faction', 'vtype'].forEach(id => { UI.el(id).addEventListener(id === 'q' ? 'input' : 'change', render); });
+
+// deep-link from the launcher palette: #view=venues&q=Ghostly
+(function () {
+  const h = location.hash.slice(1); if (!h) return; const p = {};
+  h.split('&').forEach(kv => { const i = kv.indexOf('='); if (i > 0) p[kv.slice(0, i)] = decodeURIComponent(kv.slice(i + 1)); });
+  if (p.view) UI.el('view').value = p.view;
+  if (p.q) UI.el('q').value = p.q;
+})();
+render();
+</script>
+</body>
+</html>

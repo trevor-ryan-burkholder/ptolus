@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delve Tracker — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .delve-status { background:#15140f; border:1px solid var(--gold-dim); border-radius:8px; padding:12px 14px; margin-bottom:14px;
+                  font-family:'Courier New', monospace; font-size:15px; line-height:1.7; white-space:pre-wrap; }
+  .delve-status .big { color:var(--gold); font-weight:bold; font-size:18px; }
+  .delve-status .warn { color:var(--warn); }
+  .delve-status .bad { color:var(--bad); }
+  .delve-status .dim { color:var(--muted); }
+  .grp { border-top:1px dashed var(--line); margin-top:12px; padding-top:10px; }
+  .grp h3 { margin:0 0 6px; font-size:13px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .grid2 button { width:100%; }
+</style>
+</head>
+<body>
+<div class="runner-main">
+  <div class="panel">
+    <h2>Delve</h2>
+    <div class="delve-status" id="status"></div>
+
+    <div class="grp">
+      <h3>Advance Time</h3>
+      <div class="grid2">
+        <button id="t-explore">Explore room (+10)</button>
+        <button id="t-search">Search (+10)</button>
+        <button id="t-careful">Careful move (+20)</button>
+        <button id="t-rest">Short rest (+60)</button>
+      </div>
+      <div class="btn-row">
+        <input type="number" id="t-custom" min="1" value="5" style="flex:1;">
+        <button id="t-custom-go" style="flex:1;">+ minutes</button>
+      </div>
+    </div>
+
+    <div class="grp">
+      <h3>Light Sources</h3>
+      <div class="grid2">
+        <button id="l-torch">Torch (1 hr · 20 ft)</button>
+        <button id="l-lantern">Hooded lantern (6 hr · 30 ft)</button>
+        <button id="l-sunrod">Sunrod (6 hr · 30 ft)</button>
+        <button id="l-ever">Everburning (∞ · 20 ft)</button>
+      </div>
+      <button id="l-snuff" style="width:100%;margin-top:6px;">Snuff all light</button>
+    </div>
+
+    <div class="grp">
+      <h3>Depth &amp; Checks</h3>
+      <div class="btn-row">
+        <button id="ascend">▲ Ascend</button>
+        <button id="descend">▼ Descend</button>
+      </div>
+      <label for="region">Encounter region</label>
+      <select id="region">
+        <option value="ptolus_dungeon" selected>The Dungeon (Ptolus)</option>
+        <option value="ptolus_undercity">Undercity</option>
+        <option value="ptolus_necropolis">Necropolis</option>
+        <option value="dungeon">Generic Dungeon</option>
+        <option value="underground">Underground (caves)</option>
+      </select>
+      <label for="plevel">Party Level (1–20)</label>
+      <input type="number" id="plevel" min="1" max="20" value="5">
+      <div class="btn-row">
+        <span style="flex:1;">
+          <label for="interval" style="margin-top:0;">Check every</label>
+          <select id="interval"><option value="10">10 min</option><option value="30" selected>30 min</option><option value="60">1 hour</option></select>
+        </span>
+        <span style="flex:1;">
+          <label for="chance" style="margin-top:0;">Chance</label>
+          <select id="chance"><option value="4">1 in 4</option><option value="6" selected>1 in 6</option><option value="8">1 in 8</option><option value="10">1 in 10</option></select>
+        </span>
+      </div>
+      <button class="primary" id="check">Roll Wandering Check now</button>
+      <button id="tocombat" style="width:100%;margin-top:8px;">⚔ Send last encounter to Combat</button>
+    </div>
+
+    <button id="reset" style="width:100%;margin-top:12px;">Reset Delve</button>
+    <div id="seed"></div>
+  </div>
+
+  <div>
+    <div class="log-head"><h2>Delve Journal</h2><button id="clear">Clear Log</button></div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/tables.js"></script>
+<script src="../shared/data.js"></script>
+<script src="../shared/state.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Delve Tracker', 'Time, light, and wandering monsters underground');
+UI.contextBar();
+UI.diceTray();
+UI.seedControl('seed');
+const log = UI.logger('log', 'clear');
+const D = Dice;
+const SAVE_KEY = 'ptolus-delve-v1';
+const REGION_LABEL = { ptolus_dungeon: 'The Dungeon', ptolus_undercity: 'Undercity', ptolus_necropolis: 'Necropolis', dungeon: 'Generic Dungeon', underground: 'Underground' };
+
+let lastEncounter = null;
+
+/* ---- state ---- */
+const DEFAULT_STATE = { elapsed: 0, depth: 1, lights: [], toCheck: 30, interval: 30, chance: 6 };
+let state = Object.assign({}, DEFAULT_STATE);
+function save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); } catch (e) {} }
+(function restore() {
+  try { const s = JSON.parse(localStorage.getItem(SAVE_KEY)); if (s && typeof s === 'object') state = Object.assign({}, DEFAULT_STATE, s); } catch (e) {}
+})();
+
+/* ---- helpers ---- */
+function fmtTime(min) {
+  const h = Math.floor(min / 60), m = min % 60;
+  if (h && m) return h + 'h ' + m + 'm';
+  if (h) return h + 'h';
+  return m + 'm';
+}
+function plevel() {
+  if (typeof Ctx !== 'undefined') return Ctx.all().partyLevel;
+  return Math.max(1, Math.min(20, parseInt(UI.el('plevel').value, 10) || 1));
+}
+function targetEL() { return Math.max(1, plevel() + (state.depth - 1)); }
+
+/* ---- status panel ---- */
+function renderStatus() {
+  let s = '<span class="big">Underground ' + fmtTime(state.elapsed) + '</span>   ·   Depth: Level ' + state.depth + '\n';
+  // light
+  if (!state.lights.length) {
+    s += '<span class="bad">No light burning — darkness.</span>\n';
+  } else {
+    s += 'Light:\n';
+    state.lights.forEach(l => {
+      if (l.remaining == null) s += '  • ' + l.name + ' (' + l.radius + ' ft, permanent)\n';
+      else {
+        const cls = l.remaining <= 10 ? 'bad' : (l.remaining <= 20 ? 'warn' : 'dim');
+        s += '  • ' + l.name + ' (' + l.radius + ' ft) — <span class="' + cls + '">' + l.remaining + ' min left</span>\n';
+      }
+    });
+  }
+  s += '<span class="dim">Next wandering check in ' + Math.max(0, state.toCheck) + ' min · 1 in ' + state.chance + ' · target EL ' + targetEL() + '</span>';
+  UI.el('status').innerHTML = s;
+}
+
+/* ---- time + checks ---- */
+function advanceTime(min, label) {
+  min = Math.max(0, Math.round(min));
+  if (!min) return;
+  state.elapsed += min;
+  // burn light
+  const out = [];
+  state.lights.forEach(l => { if (l.remaining != null) l.remaining -= min; });
+  for (let i = state.lights.length - 1; i >= 0; i--) {
+    if (state.lights[i].remaining != null && state.lights[i].remaining <= 0) { out.unshift(state.lights[i].name); state.lights.splice(i, 1); }
+  }
+  log.append('<span class="muted">+' + min + ' min — ' + (label || 'time passes') + '. (Underground ' + fmtTime(state.elapsed) + ')</span>');
+  out.forEach(n => log.append('<span class="bad">✦ ' + n + ' burns out.</span>'));
+  // wandering checks
+  state.toCheck -= min;
+  let checks = 0;
+  while (state.toCheck <= 0) { checks++; state.toCheck += state.interval; }
+  for (let i = 0; i < checks; i++) wanderingCheck(true);
+  save(); renderStatus();
+}
+
+function wanderingCheck(fromTime) {
+  state.chance = parseInt(UI.el('chance').value, 10) || 6;
+  const roll = D.roll(state.chance);
+  const tag = fromTime ? '' : ' (manual)';
+  if (roll !== 1) {
+    log.append('<span class="muted">Wandering check' + tag + ' (1 in ' + state.chance + '): rolled ' + roll + ' — clear.</span>');
+    save(); renderStatus();
+    return;
+  }
+  const region = UI.el('region').value;
+  const el = targetEL();
+  const picks = buildEncounter(region, el);
+  if (!picks) {
+    log.append('<span class="head">⚠ WANDERING MONSTER' + tag + '</span>\n<span class="bad">No monsters tagged for ' + REGION_LABEL[region] + '. Add to monsters.json.</span>');
+    save(); renderStatus();
+    return;
+  }
+  lastEncounter = picks;
+  const groups = tally(picks);
+  const actualEL = Tables.elFromCRs(picks.map(m => m.cr_value));
+  const t = Tables.treasureValueByEL(actualEL);
+  let out = '<span class="head">⚠ WANDERING MONSTER' + tag + ' — Depth ' + state.depth + ' — ' + REGION_LABEL[region] + '</span>\n';
+  out += groups.map(g =>
+    '<a href="../codex/index.html#monsters:' + encodeURIComponent(g.m.name) + '" target="_blank">' + UI.esc(g.m.name) + '</a>' +
+    ' (CR ' + g.m.cr + ')' + (g.n > 1 ? ' ×' + g.n : '')).join(' + ') + '\n';
+  out += '<span class="muted">→ approx EL ' + actualEL + ' · loot ' + Tables.gp(t.coins_gp) + ' coins | ' + Tables.gp(t.goods_gp) + ' goods | ' + Tables.gp(t.items_gp) + ' items</span>\n';
+  out += '<span class="muted">→ Reaction: ' + reaction() + '. Distance: ' + (D.range(2, 8) * 10) + ' ft.</span>';
+  log.append(out);
+  save(); renderStatus();
+}
+function reaction() {
+  return D.pick(['already aware, lying in wait', 'aware and approaching', 'unaware — surprise possible', 'fleeing toward the party from something else', 'feeding/distracted', 'hostile on sight']);
+}
+
+/* ---- encounter builder (region-filtered, near target EL) ---- */
+function poolFor(region) {
+  return DATA.monsters.filter(m => Array.isArray(m.environments) && m.cr_value > 0 && (m.environments.indexOf(region) !== -1 || m.environments.indexOf('any') !== -1));
+}
+function pickNearCR(pool, target) {
+  if (!pool.length) return null;
+  for (let tol = 0.5; tol <= 25; tol += 1) { const c = pool.filter(m => Math.abs(m.cr_value - target) <= tol); if (c.length) return D.pick(c); }
+  return pool.slice().sort((a, b) => Math.abs(a.cr_value - target) - Math.abs(b.cr_value - target))[0];
+}
+function buildEncounter(region, el) {
+  const pool = poolFor(region);
+  if (!pool.length) return null;
+  const picks = [];
+  const tpl = D.pick(['single', 'single', 'pair', 'group']);
+  if (tpl === 'single') { const m = pickNearCR(pool, el); if (m) picks.push(m); }
+  else if (tpl === 'pair') { const m = pickNearCR(pool, el - 2); if (m) picks.push(m, m); }
+  else {
+    const cnt = D.range(3, 5); const mook = pickNearCR(pool, Math.max(0.25, el - 4));
+    if (mook) for (let i = 0; i < cnt; i++) picks.push(mook);
+    if (D.coinFlip()) { const boss = pickNearCR(pool.filter(m => m !== mook), el - 2); if (boss) picks.push(boss); }
+  }
+  if (!picks.length) { const m = pickNearCR(pool, el); if (m) picks.push(m); }
+  return picks.length ? picks : null;
+}
+function tally(picks) { const map = new Map(); picks.forEach(m => { const e = map.get(m.name) || { m: m, n: 0 }; e.n++; map.set(m.name, e); }); return [...map.values()]; }
+
+/* ---- send to combat ---- */
+function sendToCombat() {
+  if (!lastEncounter || !lastEncounter.length) { log.append('<span class="bad">No wandering monster to send yet.</span>'); return; }
+  const counts = {}; lastEncounter.forEach(m => counts[m.name] = (counts[m.name] || 0) + 1);
+  const seen = {};
+  const combatants = lastEncounter.map(m => {
+    let hp = m.hp; try { if (m.hd) hp = D.d(m.hd.replace(/\s/g, '')); } catch (e) {}
+    hp = Math.max(1, hp);
+    let name = m.name;
+    if (counts[m.name] > 1) { seen[m.name] = (seen[m.name] || 0) + 1; name = m.name + ' ' + seen[m.name]; }
+    return { name: name, srcName: m.name, hp: hp, maxhp: hp, init: D.roll(20) + (m.initiative || 0), cr: m.cr };
+  });
+  try { localStorage.setItem('ptolus-pending-encounter', JSON.stringify({ combatants: combatants, ts: Date.now() })); } catch (e) {}
+  log.append('<span class="good">✓ Sent ' + combatants.length + ' combatant(s) to the Combat Tracker. Open it → "Import Encounter".</span>');
+}
+
+/* ---- light ---- */
+function addLight(name, remaining, radius) {
+  state.lights.push({ name: name, remaining: remaining, radius: radius });
+  log.append('<span class="good">✦ Lit: ' + name + (remaining == null ? ' (permanent)' : ' (' + remaining + ' min)') + '.</span>');
+  save(); renderStatus();
+}
+
+/* ---- depth ---- */
+function descend(delta) {
+  state.depth = Math.max(1, state.depth + delta);
+  log.append('<span class="head">' + (delta > 0 ? '▼ Descend' : '▲ Ascend') + ' to Level ' + state.depth + '</span>\n<span class="muted">Wandering EL now targets ' + targetEL() + '.</span>');
+  save(); renderStatus();
+}
+
+/* ---- wiring ---- */
+UI.el('t-explore').addEventListener('click', () => advanceTime(10, 'explore a room'));
+UI.el('t-search').addEventListener('click', () => advanceTime(10, 'search'));
+UI.el('t-careful').addEventListener('click', () => advanceTime(20, 'careful movement'));
+UI.el('t-rest').addEventListener('click', () => advanceTime(60, 'short rest'));
+UI.el('t-custom-go').addEventListener('click', () => advanceTime(parseInt(UI.el('t-custom').value, 10) || 0, 'time passes'));
+UI.el('l-torch').addEventListener('click', () => addLight('Torch', 60, 20));
+UI.el('l-lantern').addEventListener('click', () => addLight('Hooded lantern', 360, 30));
+UI.el('l-sunrod').addEventListener('click', () => addLight('Sunrod', 360, 30));
+UI.el('l-ever').addEventListener('click', () => addLight('Everburning torch', null, 20));
+UI.el('l-snuff').addEventListener('click', () => { state.lights = []; log.append('<span class="bad">All light extinguished.</span>'); save(); renderStatus(); });
+UI.el('ascend').addEventListener('click', () => descend(-1));
+UI.el('descend').addEventListener('click', () => descend(1));
+UI.el('check').addEventListener('click', () => wanderingCheck(false));
+UI.el('tocombat').addEventListener('click', sendToCombat);
+UI.el('interval').addEventListener('change', () => {
+  const v = parseInt(UI.el('interval').value, 10) || 30;
+  state.interval = v; if (state.toCheck > v) state.toCheck = v; save(); renderStatus();
+});
+UI.el('chance').addEventListener('change', () => { state.chance = parseInt(UI.el('chance').value, 10) || 6; save(); renderStatus(); });
+UI.el('reset').addEventListener('click', () => {
+  state = Object.assign({}, DEFAULT_STATE, { interval: parseInt(UI.el('interval').value, 10) || 30, chance: parseInt(UI.el('chance').value, 10) || 6, toCheck: parseInt(UI.el('interval').value, 10) || 30 });
+  lastEncounter = null; save(); renderStatus();
+  log.append('<span class="muted">Delve reset. The party is at the entrance, no time elapsed.</span>');
+});
+
+// initialise selects from restored state
+UI.el('interval').value = String(state.interval);
+UI.el('chance').value = String(state.chance);
+renderStatus();
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>District Generator — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+</head>
+<body>
+<div class="runner-main">
+  <div class="panel">
+    <h2>District</h2>
+    <label for="district">District</label>
+    <select id="district"></select>
+    <button class="primary" id="brief">District Brief</button>
+    <button id="venue" style="width:100%;margin-top:8px;">Random Venue</button>
+    <button id="scene" style="width:100%;margin-top:8px;">What's Happening Here</button>
+    <div id="seed"></div>
+    <p class="hint">Canonical venues, NPCs &amp; hooks from the Ptolus gazetteer.</p>
+  </div>
+
+  <div>
+    <div class="log-head"><h2>District Log</h2><button id="clear">Clear Log</button></div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/state.js"></script>
+<script src="../data/districts.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('District Generator', 'Where you are, who\'s here, what\'s the hook');
+UI.contextBar();
+UI.diceTray();
+UI.seedControl('seed');
+const log = UI.logger('log', 'clear');
+const D = Dice;
+
+// populate dropdown from the data (Undercity included)
+Object.keys(DISTRICT_DATA).forEach(name => {
+  const o = document.createElement('option'); o.value = name; o.textContent = name;
+  UI.el('district').appendChild(o);
+});
+
+const BEATS = [
+  'A City Watch patrol works the corner, checking faces against a folded notice.',
+  'Two locals argue in a doorway; it stops the instant the party is noticed.',
+  'A child darts past with a stolen something and a grin.',
+  'Bells from the Temple District drift over the rooftops.',
+  'A hawker presses the party to buy, and won\'t take a polite no.',
+  'A cloaked figure watches from across the way, then isn\'t there.',
+  'Rain starts; the gutters and the smell rise together.',
+  'A delver crew passes, gear dented, talking too loudly to seem calm.',
+];
+
+function cur() { return UI.el('district').value; }
+function dd() { return DISTRICT_DATA[cur()]; }
+
+function brief() {
+  const d = dd(); if (!d) return;
+  let out = '<span class="head">[' + cur().toUpperCase() + ' — district brief]</span>\n';
+  out += '<span class="muted">Tone: ' + d.tone + '</span>\n\n' + d.overview + '\n\nNOTABLE VENUES:\n';
+  out += d.venues.map(v => '  • ' + v.n + ' — ' + v.d).join('\n');
+  log.append(out);
+}
+function venue() {
+  const d = dd(); if (!d) return;
+  const v = D.pick(d.venues);
+  log.append('<span class="head">[' + cur() + ' — venue]</span>\n' +
+    v.n + ' — ' + v.d + '\n<span class="muted">Hook: ' + v.h + '</span>');
+}
+function scene() {
+  const d = dd(); if (!d) return;
+  const v = D.pick(d.venues);
+  log.append('<span class="head">[' + cur() + ' — what\'s happening]</span>\n' +
+    D.pick(BEATS) + '\n' +
+    'Nearby: ' + v.n + ' — ' + v.d + '.\n' +
+    '<span class="muted">Hook: ' + v.h + '</span>');
+}
+
+UI.el('brief').addEventListener('click', brief);
+UI.el('venue').addEventListener('click', venue);
+UI.el('scene').addEventListener('click', scene);
+</script>
+</body>
+</html>

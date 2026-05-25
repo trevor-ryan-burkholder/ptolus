@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rumor Generator — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+</head>
+<body>
+<div class="runner-main">
+  <div class="panel">
+    <h2>Rumors</h2>
+    <label for="source">Source NPC Type</label>
+    <select id="source">
+      <option value="delver" selected>Delver (Undercity / Delver's Square)</option>
+      <option value="priest">Temple Priest</option>
+      <option value="watch">City Watch Guard</option>
+      <option value="dock">Dock Worker</option>
+      <option value="servant">Noble's Servant</option>
+      <option value="merchant">Merchant (Markets)</option>
+      <option value="warrens">Warrens Resident</option>
+      <option value="vendor">Undercity Market Vendor</option>
+    </select>
+    <label for="arc">Campaign Arc</label>
+    <select id="arc"><option value="1" selected>Arc I (1–5)</option><option value="2">Arc II (6–10)</option><option value="3">Arc III (11–15)</option><option value="4">Arc IV–V (16+)</option></select>
+    <label for="count">Rumor Count</label>
+    <select id="count"><option>3</option><option selected>4</option><option>5</option></select>
+    <button class="primary" id="gen">Generate Rumors</button>
+    <div id="seed"></div>
+  </div>
+
+  <div>
+    <div class="log-head"><h2>Rumor Log</h2><button id="clear">Clear Log</button></div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/state.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Rumor Generator', 'Keyed to what the source would actually know');
+UI.contextBar();
+UI.diceTray();
+UI.seedControl('seed');
+const log = UI.logger('log', 'clear');
+const D = Dice;
+
+const LABEL = { delver:'Delver', priest:'Temple Priest', watch:'City Watch Guard', dock:'Dock Worker', servant:"Noble's Servant", merchant:'Merchant', warrens:'Warrens Resident', vendor:'Undercity Market Vendor' };
+// each rumor: [text, truth, hook, minArc]
+const R = {
+  delver: [
+    ['The deep levels are played out — every team past Level 5 lately came back empty. Not worth the risk anymore.', 'False', 'Planted by someone who wants teams to stop probing toward what they\'re guarding below Level 5.', 1],
+    ['Level 2’s south corridor was reopened by the Guild after last season’s collapse. The team that shored it up came back one member short and won’t say what happened.', 'Mostly True', 'The missing delver was taken by something that moved into the collapse zone — uncatalogued.', 1],
+    ['The Guild’s offering ten gold for maps of anything past the Ossuary Corridor that nobody’s charted. Easy money, if you don’t die.', 'True', 'A real Guild posting (Ptolus p. 108). What’s at the far end is why nobody returns with a complete map.', 1],
+    ['Watch the ratmen on Level 1 — they’ve organized. They’ve got a leader now, and it’s not one of their own giving orders.', 'Mostly True', 'A Forsaken cultist uses the ratmen as a screen for something he doesn’t want found.', 1],
+    ['A team came up yesterday with a sealed lead box from Level 3, went straight to the Inverted Pyramid, and didn’t come out for two days.', 'True', 'The box held a chaos relic — a shard of Ghul’s armaments. The Pyramid is arguing over destroy vs. study.', 1],
+    ['The Undercity Market had a break-in two nights ago — the Dark Market side, in through the sewer junction.', 'True', 'The Longfingers Guild pulled the job for a Balacazar underboss, stealing from a vendor who didn’t know what he had.', 1],
+    ['A Guildmaster-level delver went down on a private job and hasn’t surfaced. The Guild isn’t saying anything officially.', 'Partial', 'The job was for House Vladaam, not the Guild. He’s alive, imprisoned in a Vladaam facility.', 1],
+    ['There’s a waystation on Level 2 southeast restocked with far more than Guild standard. Someone’s staging for a long trip.', 'True', 'An Inverted Pyramid–funded team is planning a three-week push past Level 4.', 1],
+    ['The Pits of Insanity have been drifting. An old reliable route on Level 1 now runs right past a new one. Three teams have taken damage.', 'Mostly True', 'The Entropy Sphere’s activity has shifted; the cartographers know but haven’t updated public maps.', 1],
+    ['Something’s come up from a level no team has ever reached. The Guild knows. They’re not posting it. That means it frightened them.', 'True', 'A creature from the Caverns of the Galchutt breached upward through a collapse. The Guild is assessing quietly.', 2],
+    ['Someone new — not the Pyramid — is buying information about the Banewarrens, and paying well. Nobody knows the buyer.', 'Mostly True', 'A chaos-cult front is mapping the Banewarrens’ outer seals. They’re close to a weakness.', 2],
+  ],
+  priest: [
+    ['The Necropolis disturbances are just grave-robbers after gold — nothing the Church needs to act on.', 'False', 'A deliberate downplay; the real activity is organized and worse, and someone inside the Church is keeping it quiet.', 1],
+    ['Three families came in this week asking for blessing against nightmares — same block of Midtown, same dream, red eyes in the dark, all starting the same night.', 'Mostly True', 'A demon bound in a cellar on that block projects fear; its containment recently weakened.', 1],
+    ['The Church got an anonymous donation last month — ten thousand gold in a box, left at the door. The Arch-Prelate won’t discuss it, and I’ve never seen him nervous before.', 'True', 'A House Vladaam bribe to look away from an undead matter in the Necropolis.', 1],
+    ['A Forsaken was seen near the Temple District three nights ago. The Knights of the Pale found nothing. The Forsaken are careful — if one was seen, it wanted to be.', 'Mostly True', 'A deliberate sighting: delivering a message to someone inside the District in secret contact with the Fallen.', 1],
+    ['The Church of Lothian and the Keepers of the Veil are arguing over jurisdiction of the eastern Necropolis wall — three months now. There’s something behind it they both want.', 'True', 'A sealed crypt holds a pre-Lothian artifact both claim. It predates both groups by six centuries.', 1],
+    ['A young woman came in last week — couldn’t speak or write, and it wasn’t physical. A magical silence that wouldn’t dispel. She’d been enslaved in the Dark Market.', 'True', 'She escaped; the Ennin slavers want her back. She knows a buyer the Longfingers would also like to identify.', 1],
+    ['A Lothian brother who tends the Necropolis says something’s disturbing the tombs — not random, specific old families. Someone is researching a bloodline.', 'Mostly True', 'A Vladaam agent seeks proof of an inheritance claim by demonstrating all other heirs are dead.', 1],
+    ['A paladin came for healing he didn’t want recorded — burned from the inside by chaos energy. He looked like he’d been near a Pit of Insanity.', 'True', 'He found a chaos-cult site beneath the Guildsman District and is deciding whether to tell the Knights of the Pale.', 1],
+    ['Three separate reports this month of chanting beneath homes — different districts, different nights. The Arch-Prelate treats them as separate. I don’t think they are.', 'Partial', 'Two are unconnected cultists. The third is a faction the Church has never encountered.', 1],
+  ],
+  watch: [
+    ['Word in the Watchhouse is the new spellcasting tax got quietly killed — nobody\'s enforcing it, so don\'t sweat the permit.', 'False', 'It\'s very much alive; the rumor is bait to catch unlicensed casters off guard.', 1],
+    ['We had orders not to enter a specific Guildsman District block after dark — no reason given. Three days, then lifted. Nobody will say what was there.', 'Mostly True', 'The Commissar’s Men ran a covert Imperial Eyes surveillance handoff there.', 1],
+    ['The Balacazars have a new lieutenant in the Warrens — young, well-dressed, not a fighter. That’s the worrying kind.', 'True', 'He’s an Inverted Pyramid mage on retainer, placed by arrangement for a specific operation.', 1],
+    ['A complaint about a Grade 2 in Midtown got logged as misidentification. But the witness was a physician, not a drunk.', 'Mostly True', 'A troll escaped a House Khatru holding facility; the house is quietly recapturing it.', 1],
+    ['There’s a new tax on unlicensed public spellcasting — the Commissar pushed it through. The Inverted Pyramid is furious.', 'True', 'A trial enforcement nobody wants to use; it exists to give the Commissar leverage in a different negotiation.', 1],
+    ['A constable was bribed last month — took it, reported it, and they agreed to take it again and see where it leads.', 'Mostly True', 'A Balacazar front; the sting is ongoing but they’ve gone quiet, suspicious.', 1],
+    ['The Sisterhood arrested someone in Midtown they didn’t process through the Watchhouse — took them straight to the Priory. No paperwork.', 'True', 'A minor House Sadar noble caught with a chaos cultist; the Sisterhood is deciding how to handle it.', 1],
+    ['We’ve been told to leave a particular Oldtown alley off our route. I walked it on my own time — it smelled wrong. Magic wrong.', 'Mostly True', 'It conceals a Ghul’s Labyrinth access the Pyramid uses for transit; the Watch has been "managed."', 1],
+    ['Next time someone builds in Midtown they’ll break through into something. Surveyors keep finding voids; the engineers call it settling. They’re lying.', 'True', 'Three Ghul’s Labyrinth chambers run under a six-block area; the city hides it to avoid panic.', 1],
+  ],
+  dock: [
+    ['That "ghost ship" everyone\'s on about? The Harbor Master says it\'s just one captain\'s books logged twice. Nothing in the crates.', 'False', 'A cover story; the crates are real and dangerous, and the bookkeeping explanation was paid for.', 1],
+    ['A ship’s come in three times in two months — the Ardathos, out of the south. Cargo logged "mixed," crates never opened. We call her the Ghost Ship; she’s not on the Harbor Master’s ledger.', 'Mostly True', 'Running chaositech components for the Balacazars — not yet on any banned list because the Commissar’s office can’t describe it.', 1],
+    ['The deep-water dock’s had armed men on it a week — no uniform I know — guarding something big they brought in on a flat barge.', 'True', 'House Shever imported a prototype device they don’t want the Shuul to know about; the guards are Shever security.', 1],
+    ['Captain Urven off the Mercies swears she saw lights in the bay three nights running — stationary, under the water. She filed a report and was told to mind her cargo.', 'Mostly True', 'Sahuagin scouts mapping the harbor’s defenses; the Keepers of the Veil are monitoring.', 1],
+    ['A logged, scheduled container got held at the last minute by someone from the Commissar’s office. Nobody opened it. It’s on Pier Three.', 'True', 'Flagged by Imperial Eyes; magically traced, waiting to see who collects it.', 1],
+    ['The fish market’s been short two weeks. The boats pulled their range in by three miles and won’t say why.', 'Mostly True', 'Something large moves at depth; two captains have seen tentacles. The Keepers of the Veil watch.', 1],
+    ['A man came looking for passage out, no name, paid in gems, wanted to leave that day. The Watch came asking after someone matching him this morning.', 'True', 'A witness to a House Vladaam matter; the ship hasn’t cleared the harbor and the Watch has an eye on it.', 1],
+  ],
+  servant: [
+    ['House Vladaam\'s extra staff are just for a grand reception this season — the event of the year, half the Quarter invited.', 'False', 'There is no reception; the talk is misdirection for what the staff are actually for.', 1],
+    ['Lord Abanar has met privately with someone from the Inverted Pyramid three times this month — always at night, never registered with the staff.', 'Mostly True', 'Abanar is negotiating an enchantment service that won’t bear scrutiny; the mage is extracting a concession.', 1],
+    ['House Vladaam hired twice the usual staff this season — all young, healthy, no family nearby. The "reception" they cite has no invitations sent.', 'True', 'The "staff" are experiment subjects. Business as usual for Vladaam — but at a larger scale.', 1],
+    ['Lady Kath’s youngest is seeing someone from the Guildsman District. Not a noble. If Lord Kath finds out, there’ll be lawyers and maybe blades.', 'True', 'The someone is a senior Delver’s Guild member — a net positive Lord Kath won’t see that way at first.', 1],
+    ['Lord Nagel turned down a very large anonymous donation last week. He turns down nothing. Whatever was attached, he didn’t want it.', 'Mostly True', 'It came with a request to shelter a person under investigation; he knew the name and the risk.', 1],
+    ['House Khatru has been moving money quietly, off the public ledgers. Military families do that before a campaign — and none is announced.', 'True', 'Khatru is preparing private military action against a competitor — not yet chosen.', 1],
+    ['Lord Vladaam’s personal physician resigned and left the city overnight, no notice — and was replaced the same day, as if expected.', 'Mostly True', 'He found something that frightened him; the replacement is under a compulsion to stay and not ask.', 1],
+  ],
+  merchant: [
+    ['The iron shortage is just a Smiths\' Guild price stunt — there\'s plenty, they\'re holding it back to drive up rates.', 'False', 'No stunt; a house is quietly buying military-grade stock, and blaming the Guild keeps eyes off the buyer.', 1],
+    ['Someone’s buying iron in quantity — small purchases, different buyers, always the same military-grade spec. Five suppliers, same pattern.', 'Mostly True', 'A House Khatru front stockpiling for private armor production, avoiding the Smiths’ Guild trail.', 1],
+    ['The Shuul opened a supplier on the Docks — regular shipments of a material my supplier called "glass but heavier, and it hums." He was told not to ask.', 'Mostly True', 'Stabilized chaositech components; the Shuul is experimenting with chaos-derived materials.', 1],
+    ['The Delver’s Guild is buying magical light sources in bulk — everburning torches, sunrods, more than usual. They’re prepping a long dark push.', 'True', 'They’ve found a deep Dwarvenhearth sub-level and are mounting a serious expedition.', 1],
+    ['A well-dressed man paid in Imperial gold for six months of preserved food, held under a false name. Either an expedition or someone expecting the city to stop working.', 'Partial', 'A delver planning a long solo descent after being turned down by every team. He won’t come back.', 1],
+    ['The Alchemists are quietly refusing reagent orders for anyone tied to House Vladaam — no statement, but the word went out.', 'True', 'Vladaam alchemicals killed an apprentice; the guild head is taking informal action.', 1],
+    ['A new South Market shop opened — expensive, owner nobody knows, paperwork perfectly in order. Too perfectly. Real new merchants are never that correct.', 'True', 'A Balacazar laundering front; the owner is a genuine, knowing operative.', 1],
+  ],
+  warrens: [
+    ['That thing under Bucket Lane is just a story the gangs tell to keep folk off their turf. Nothing\'s down there.', 'False', 'Something very real is down there; the "just a story" line keeps scavengers from disturbing it.', 1],
+    ['The Beggar King’s east-side territory shifted last week. New boundary. Two beggars from that corner never came back. Nobody’s asking.', 'Mostly True', 'A new gang is moving up from the Undercity via the sewers; the Beggar King is deciding to fight or deal.', 1],
+    ['There’s something in the sewer under Bucket Lane. Not ratmen — big, patient. Three weeks and it hasn’t done anything. That’s the worrying part.', 'True', 'An otyugh feeding on refuse; if the refuse drops, it’ll start eyeing residents.', 1],
+    ['A healer set up here last month — no charge, no questions. Nobody’s shut him down. He’s either well protected or useful to someone.', 'Partial', 'A cleric of Navashtrom doing real charity — and openly passing chaos-cult intel to the Keepers of the Veil.', 1],
+    ['The goblins under the south block have gone quiet — "holding still" quiet. They’re afraid of something.', 'True', 'A Forsaken cultist left an intimidation sigil to keep creatures from a passage he wants clear.', 1],
+    ['An Ornu-Nom orc family — here twenty years, never a problem — had their movement permit revoked last week, no explanation.', 'Mostly True', 'A clerk’s error a Watch sergeant exploited for a bribe before "finding" the mistake. Routine here.', 1],
+    ['I heard a woman screaming behind the old mill three nights ago. By the time I looked: nothing. No blood. Just one black feather.', 'True', 'Vai assassins collecting a Balacazar debt differently than with coin. The feather is their calling card.', 1],
+  ],
+  vendor: [
+    ['Travinor locked down the Dark Market because business is bad — the delvers just stopped coming, simple as that.', 'False', 'Business is fine; he\'s hunting an infiltrator, and the "bad business" tale keeps the real reason quiet.', 1],
+    ['That map a team sold the Guild library last month — the scale doesn’t match known areas on two sides. Either a bad cartographer or they edited something out.', 'Mostly True', 'They edited out a chamber with a chaos relic they mean to retrieve themselves first.', 1],
+    ['Travinor’s restricted Dark Market access to known regulars for two weeks — first time ever. Something spooked him.', 'True', 'A Commissar’s Eyes operative got close; he’s tightening access until it’s identified.', 1],
+    ['The Guild is quietly buying items marked with a specific symbol — and won’t describe the symbol publicly.', 'Mostly True', 'It’s Ghul’s personal mark; they’ve found evidence someone is looting his inner sanctum.', 1],
+    ['I sold a stranger two Charm Person scrolls in a week — paid above asking, didn’t haggle. She’s not building a collection.', 'True', 'A Vai operative tooling up for a contract. Not a threat to me — but her target should worry.', 1],
+    ['Something broke through the eastern sewer junction last week. The Guild called it "structural settling." The repair team hasn’t been seen since — and isn’t listed missing.', 'Mostly True', 'Something pushed up from Ghul’s Labyrinth; the team survived and is isolated, debriefing.', 1],
+    ['A buyer came through wanting chaos-resistant materials, anti-scrying gear, and maps below Level 6. That’s not a delver’s list — that’s a mage prepping for something.', 'True', 'An Inverted Pyramid senior mage prepping an expedition to the Caverns of the Galchutt, a year in planning.', 1],
+  ],
+};
+const CIRCLED = ['①','②','③','④','⑤'];
+
+function generate() {
+  const src = UI.el('source').value;
+  const arc = parseInt(UI.el('arc').value, 10);
+  const count = parseInt(UI.el('count').value, 10);
+  const pool = R[src].filter(r => r[3] <= arc);
+  const picks = D.pickN(pool, Math.min(count, pool.length));
+  let out = '<span class="head">[RUMORS — Source: ' + LABEL[src] + ' — Arc ' + roman(arc) + ']</span>\n';
+  picks.forEach((r, i) => {
+    const truthClass = r[1] === 'True' ? 'true' : r[1] === 'False' ? 'false' : 'partial';
+    out += '\n' + CIRCLED[i] + ' "' + r[0] + '"\n';
+    out += '   <span class="' + truthClass + '">TRUTH: ' + r[1] + '</span> | <span class="muted">HOOK: ' + r[2] + '</span>\n';
+  });
+  log.append(out);
+}
+function roman(a) { return ['','I','II','III','IV+'][a] || a; }
+UI.el('gen').addEventListener('click', generate);
+</script>
+</body>
+</html>

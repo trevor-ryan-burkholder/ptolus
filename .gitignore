@@ -1,0 +1,11 @@
+# Copyrighted source material — DO NOT publish to a public repo / GitHub Pages
+sources/
+
+# Build artifacts & dependencies
+web/node_modules/
+web/dist/
+node_modules/
+
+# OS / editor
+.DS_Store
+*.local

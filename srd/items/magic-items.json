@@ -1,0 +1,4165 @@
+[
+  {
+    "name": "Potion of Cure Light Wounds",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 50,
+    "body_slot": null,
+    "caster_level": 1,
+    "aura": "faint conjuration",
+    "description": "Drinker is healed 1d8+1 hit points.",
+    "source": "DMG 232",
+    "tags": [
+      "healing",
+      "potion",
+      "common"
+    ]
+  },
+  {
+    "name": "Potion of Cure Moderate Wounds",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 300,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint conjuration",
+    "description": "Drinker is healed 2d8+3 hit points.",
+    "source": "DMG 232",
+    "tags": [
+      "healing",
+      "potion",
+      "common"
+    ]
+  },
+  {
+    "name": "Potion of Cure Serious Wounds",
+    "category": "Potion",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 750,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate conjuration",
+    "description": "Drinker is healed 3d8+5 hit points.",
+    "source": "DMG 232",
+    "tags": [
+      "healing",
+      "potion"
+    ]
+  },
+  {
+    "name": "Potion of Bull's Strength",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 300,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "+4 enhancement to Strength for 3 minutes.",
+    "source": "DMG 232",
+    "tags": [
+      "buff",
+      "potion"
+    ]
+  },
+  {
+    "name": "Potion of Cat's Grace",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 300,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "+4 enhancement to Dexterity for 3 minutes.",
+    "source": "DMG 232",
+    "tags": [
+      "buff",
+      "potion"
+    ]
+  },
+  {
+    "name": "Potion of Bear's Endurance",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 300,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "+4 enhancement to Constitution for 3 minutes.",
+    "source": "DMG 232",
+    "tags": [
+      "buff",
+      "potion"
+    ]
+  },
+  {
+    "name": "Potion of Invisibility",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 300,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint illusion",
+    "description": "Drinker becomes invisible for 3 minutes or until attacks.",
+    "source": "DMG 232",
+    "tags": [
+      "stealth",
+      "potion"
+    ]
+  },
+  {
+    "name": "Potion of Fly",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 750,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate transmutation",
+    "description": "Drinker gains fly speed 60 ft. (good) for 5 minutes.",
+    "source": "DMG 232",
+    "tags": [
+      "mobility",
+      "potion"
+    ]
+  },
+  {
+    "name": "Potion of Haste",
+    "category": "Potion",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 750,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate transmutation",
+    "description": "Drinker affected as by haste for 5 rounds.",
+    "source": "DMG 232",
+    "tags": [
+      "buff",
+      "potion"
+    ]
+  },
+  {
+    "name": "Potion of Neutralize Poison",
+    "category": "Potion",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 750,
+    "body_slot": null,
+    "caster_level": 7,
+    "aura": "moderate conjuration",
+    "description": "Neutralizes one poison affecting drinker.",
+    "source": "DMG 232",
+    "tags": [
+      "restoration",
+      "potion"
+    ]
+  },
+  {
+    "name": "Scroll of Magic Missile (CL 1)",
+    "category": "Scroll",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 25,
+    "body_slot": null,
+    "caster_level": 1,
+    "aura": "faint evocation",
+    "description": "Single-use; casts magic missile (1 missile, 1d4+1 force damage).",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "damage",
+      "common"
+    ]
+  },
+  {
+    "name": "Scroll of Cure Light Wounds (CL 1)",
+    "category": "Scroll",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 25,
+    "body_slot": null,
+    "caster_level": 1,
+    "aura": "faint conjuration",
+    "description": "Single-use; casts cure light wounds (1d8+1 hp).",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "healing",
+      "common"
+    ]
+  },
+  {
+    "name": "Scroll of Fireball (CL 5)",
+    "category": "Scroll",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 375,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate evocation",
+    "description": "Single-use; casts fireball (5d6 fire, Reflex DC 14 half).",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "damage",
+      "area"
+    ]
+  },
+  {
+    "name": "Scroll of Knock (CL 3)",
+    "category": "Scroll",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 150,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "Single-use; casts knock to open locked doors and containers.",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "utility"
+    ]
+  },
+  {
+    "name": "Scroll of Dispel Magic (CL 5)",
+    "category": "Scroll",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 375,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate abjuration",
+    "description": "Single-use; casts dispel magic.",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "abjuration"
+    ]
+  },
+  {
+    "name": "Scroll of Fly (CL 5)",
+    "category": "Scroll",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 375,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate transmutation",
+    "description": "Single-use; casts fly on the reader.",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "mobility"
+    ]
+  },
+  {
+    "name": "Wand of Magic Missile (CL 1, 50 charges)",
+    "category": "Wand",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 750,
+    "body_slot": null,
+    "caster_level": 1,
+    "aura": "faint evocation",
+    "description": "Casts magic missile (1 missile, 1d4+1) per charge.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "damage",
+      "common"
+    ]
+  },
+  {
+    "name": "Wand of Cure Light Wounds (CL 1, 50 charges)",
+    "category": "Wand",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 750,
+    "body_slot": null,
+    "caster_level": 1,
+    "aura": "faint conjuration",
+    "description": "Casts cure light wounds (1d8+1) per charge.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "healing",
+      "common"
+    ]
+  },
+  {
+    "name": "Wand of Lightning Bolt (CL 5, 50 charges)",
+    "category": "Wand",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 11250,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate evocation",
+    "description": "Casts lightning bolt (5d6, Reflex DC 14 half) per charge.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "damage",
+      "area"
+    ]
+  },
+  {
+    "name": "Wand of Web (CL 3, 50 charges)",
+    "category": "Wand",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4500,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint conjuration",
+    "description": "Casts web per charge.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "control"
+    ]
+  },
+  {
+    "name": "Cloak of Resistance +1",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 1000,
+    "body_slot": "shoulders",
+    "caster_level": 5,
+    "aura": "faint abjuration",
+    "description": "+1 resistance bonus on all saves.",
+    "source": "DMG 252",
+    "tags": [
+      "defensive",
+      "saves",
+      "common"
+    ]
+  },
+  {
+    "name": "Cloak of Resistance +2",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4000,
+    "body_slot": "shoulders",
+    "caster_level": 7,
+    "aura": "moderate abjuration",
+    "description": "+2 resistance bonus on all saves.",
+    "source": "DMG 252",
+    "tags": [
+      "defensive",
+      "saves"
+    ]
+  },
+  {
+    "name": "Cloak of Resistance +3",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 9000,
+    "body_slot": "shoulders",
+    "caster_level": 9,
+    "aura": "moderate abjuration",
+    "description": "+3 resistance bonus on all saves.",
+    "source": "DMG 252",
+    "tags": [
+      "defensive",
+      "saves"
+    ]
+  },
+  {
+    "name": "Hat of Disguise",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 1800,
+    "body_slot": "head",
+    "caster_level": 1,
+    "aura": "faint illusion",
+    "description": "As disguise self at will.",
+    "source": "DMG 258",
+    "tags": [
+      "illusion",
+      "infiltration",
+      "ptolus-useful"
+    ]
+  },
+  {
+    "name": "Boots of Elvenkind",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2500,
+    "body_slot": "feet",
+    "caster_level": 5,
+    "aura": "faint transmutation",
+    "description": "+5 competence bonus on Move Silently checks.",
+    "source": "DMG 250",
+    "tags": [
+      "stealth",
+      "common"
+    ]
+  },
+  {
+    "name": "Cloak of Elvenkind",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2500,
+    "body_slot": "shoulders",
+    "caster_level": 5,
+    "aura": "faint illusion",
+    "description": "+5 competence bonus on Hide checks.",
+    "source": "DMG 251",
+    "tags": [
+      "stealth",
+      "common"
+    ]
+  },
+  {
+    "name": "Bag of Holding (Type I)",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2500,
+    "body_slot": null,
+    "caster_level": 9,
+    "aura": "moderate conjuration",
+    "description": "Holds up to 250 lb. or 30 cubic ft.; weighs 15 lb. when full.",
+    "source": "DMG 248",
+    "tags": [
+      "utility",
+      "storage",
+      "common"
+    ]
+  },
+  {
+    "name": "Bag of Holding (Type II)",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 5000,
+    "body_slot": null,
+    "caster_level": 9,
+    "aura": "moderate conjuration",
+    "description": "Holds up to 500 lb. or 70 cubic ft.; weighs 25 lb. when full.",
+    "source": "DMG 248",
+    "tags": [
+      "utility",
+      "storage"
+    ]
+  },
+  {
+    "name": "Headband of Intellect +2",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4000,
+    "body_slot": "head",
+    "caster_level": 8,
+    "aura": "moderate transmutation",
+    "description": "+2 enhancement to Intelligence.",
+    "source": "DMG 258",
+    "tags": [
+      "enhancement",
+      "caster"
+    ]
+  },
+  {
+    "name": "Periapt of Wisdom +2",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4000,
+    "body_slot": "throat",
+    "caster_level": 8,
+    "aura": "moderate transmutation",
+    "description": "+2 enhancement to Wisdom.",
+    "source": "DMG 264",
+    "tags": [
+      "enhancement",
+      "caster"
+    ]
+  },
+  {
+    "name": "Cloak of Charisma +2",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4000,
+    "body_slot": "shoulders",
+    "caster_level": 8,
+    "aura": "moderate transmutation",
+    "description": "+2 enhancement to Charisma.",
+    "source": "DMG 251",
+    "tags": [
+      "enhancement",
+      "social"
+    ]
+  },
+  {
+    "name": "Belt of Giant Strength +2",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4000,
+    "body_slot": "waist",
+    "caster_level": 8,
+    "aura": "moderate transmutation",
+    "description": "+2 enhancement to Strength.",
+    "source": "DMG 248",
+    "tags": [
+      "enhancement",
+      "martial"
+    ]
+  },
+  {
+    "name": "Gloves of Dexterity +2",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4000,
+    "body_slot": "hands",
+    "caster_level": 8,
+    "aura": "moderate transmutation",
+    "description": "+2 enhancement to Dexterity.",
+    "source": "DMG 257",
+    "tags": [
+      "enhancement",
+      "rogue"
+    ]
+  },
+  {
+    "name": "Amulet of Health +2",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4000,
+    "body_slot": "throat",
+    "caster_level": 8,
+    "aura": "moderate transmutation",
+    "description": "+2 enhancement to Constitution.",
+    "source": "DMG 247",
+    "tags": [
+      "enhancement",
+      "common"
+    ]
+  },
+  {
+    "name": "Boots of Striding and Springing",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 5500,
+    "body_slot": "feet",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "+10 ft. base land speed; +5 competence bonus on Jump checks.",
+    "source": "DMG 251",
+    "tags": [
+      "mobility"
+    ]
+  },
+  {
+    "name": "Goggles of Night",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 12000,
+    "body_slot": "eyes",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "Darkvision 60 ft. while worn.",
+    "source": "DMG 257",
+    "tags": [
+      "vision",
+      "utility"
+    ]
+  },
+  {
+    "name": "Ring of Protection +1",
+    "category": "Ring",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2000,
+    "body_slot": "ring",
+    "caster_level": 5,
+    "aura": "faint abjuration",
+    "description": "+1 deflection bonus to AC.",
+    "source": "DMG 232",
+    "tags": [
+      "defensive",
+      "common"
+    ]
+  },
+  {
+    "name": "Ring of Protection +2",
+    "category": "Ring",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 8000,
+    "body_slot": "ring",
+    "caster_level": 10,
+    "aura": "moderate abjuration",
+    "description": "+2 deflection bonus to AC.",
+    "source": "DMG 232",
+    "tags": [
+      "defensive"
+    ]
+  },
+  {
+    "name": "Ring of Feather Falling",
+    "category": "Ring",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2200,
+    "body_slot": "ring",
+    "caster_level": 5,
+    "aura": "faint transmutation",
+    "description": "Activates instantly when wearer falls more than 5 ft.; feather fall.",
+    "source": "DMG 232",
+    "tags": [
+      "protection",
+      "utility"
+    ]
+  },
+  {
+    "name": "Ring of Invisibility",
+    "category": "Ring",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 20000,
+    "body_slot": "ring",
+    "caster_level": 3,
+    "aura": "faint illusion",
+    "description": "As invisibility, at will (60 minutes per activation; ends if wearer attacks).",
+    "source": "DMG 232",
+    "tags": [
+      "stealth"
+    ]
+  },
+  {
+    "name": "Ring of Mind Shielding",
+    "category": "Ring",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 8000,
+    "body_slot": "ring",
+    "caster_level": 3,
+    "aura": "faint abjuration",
+    "description": "Continuously protects wearer from detect thoughts, discern lies, and any attempt to magically discern alignment.",
+    "source": "DMG 232",
+    "tags": [
+      "protection",
+      "ptolus-useful"
+    ]
+  },
+  {
+    "name": "+1 Longsword",
+    "category": "Magic Weapon",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2315,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint evocation",
+    "description": "+1 enhancement bonus to attack and damage rolls. Damage 1d8 + Str + 1.",
+    "source": "DMG 222",
+    "tags": [
+      "weapon",
+      "common"
+    ]
+  },
+  {
+    "name": "+1 Flaming Longsword",
+    "category": "Magic Weapon",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 8315,
+    "body_slot": null,
+    "caster_level": 10,
+    "aura": "moderate evocation",
+    "description": "+1 enhancement; deals +1d6 fire damage on hit. Flame can be activated as a free action.",
+    "source": "DMG 224",
+    "tags": [
+      "weapon",
+      "fire"
+    ]
+  },
+  {
+    "name": "+1 Holy Longsword",
+    "category": "Magic Weapon",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 18315,
+    "body_slot": null,
+    "caster_level": 7,
+    "aura": "moderate evocation",
+    "description": "+1 enhancement; +2d6 damage vs. evil creatures; evil wielder is negative-leveled while wielding.",
+    "source": "DMG 225",
+    "tags": [
+      "weapon",
+      "good-aligned"
+    ]
+  },
+  {
+    "name": "+1 Composite Longbow (+2 Str)",
+    "category": "Magic Weapon",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2500,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint evocation",
+    "description": "+1 enhancement bonus to attack and damage rolls. Damage 1d8 + 2 + 1.",
+    "source": "DMG 222",
+    "tags": [
+      "weapon",
+      "ranged",
+      "common"
+    ]
+  },
+  {
+    "name": "+1 Dagger",
+    "category": "Magic Weapon",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2302,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint evocation",
+    "description": "+1 enhancement bonus to attack and damage rolls.",
+    "source": "DMG 222",
+    "tags": [
+      "weapon",
+      "common",
+      "rogue"
+    ]
+  },
+  {
+    "name": "+1 Chain Shirt",
+    "category": "Magic Armor",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 1250,
+    "body_slot": "body",
+    "caster_level": 3,
+    "aura": "faint abjuration",
+    "description": "+1 enhancement to armor bonus. Light armor, AC bonus +5.",
+    "source": "DMG 218",
+    "tags": [
+      "armor",
+      "light",
+      "common"
+    ]
+  },
+  {
+    "name": "+1 Breastplate",
+    "category": "Magic Armor",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 1350,
+    "body_slot": "body",
+    "caster_level": 3,
+    "aura": "faint abjuration",
+    "description": "+1 enhancement to armor bonus. Medium armor, AC bonus +6.",
+    "source": "DMG 218",
+    "tags": [
+      "armor",
+      "medium"
+    ]
+  },
+  {
+    "name": "+1 Full Plate",
+    "category": "Magic Armor",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 2650,
+    "body_slot": "body",
+    "caster_level": 3,
+    "aura": "faint abjuration",
+    "description": "+1 enhancement to armor bonus. Heavy armor, AC bonus +9.",
+    "source": "DMG 218",
+    "tags": [
+      "armor",
+      "heavy"
+    ]
+  },
+  {
+    "name": "+1 Heavy Steel Shield",
+    "category": "Magic Shield",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 1170,
+    "body_slot": "shield",
+    "caster_level": 3,
+    "aura": "faint abjuration",
+    "description": "+1 enhancement to shield bonus.",
+    "source": "DMG 218",
+    "tags": [
+      "shield"
+    ]
+  },
+  {
+    "name": "Quiver of Ehlonna",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 1800,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint conjuration",
+    "description": "Holds up to 60 arrows/bolts, 18 javelins, and 6 long staves/bows in dimensional pockets.",
+    "source": "DMG 268",
+    "tags": [
+      "utility",
+      "ranged"
+    ]
+  },
+  {
+    "name": "Eyes of the Eagle",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2500,
+    "body_slot": "eyes",
+    "caster_level": 3,
+    "aura": "faint divination",
+    "description": "+5 competence bonus on Spot checks.",
+    "source": "DMG 255",
+    "tags": [
+      "perception",
+      "common"
+    ]
+  },
+  {
+    "name": "Handy Haversack",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 2000,
+    "body_slot": "shoulders",
+    "caster_level": 9,
+    "aura": "moderate conjuration",
+    "description": "Three pockets each function as bag of holding; item desired is at the top of the central pocket as a move action.",
+    "source": "DMG 258",
+    "tags": [
+      "utility",
+      "storage",
+      "common"
+    ]
+  },
+  {
+    "name": "Mantle of Spell Resistance",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 90000,
+    "body_slot": "shoulders",
+    "caster_level": 15,
+    "aura": "strong abjuration",
+    "description": "Wearer gains spell resistance 21.",
+    "source": "DMG 263",
+    "tags": [
+      "defensive",
+      "anti-magic"
+    ]
+  },
+  {
+    "name": "Stone of Good Luck (Luckstone)",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 20000,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate transmutation",
+    "description": "Carrier gains +1 luck bonus on saves, ability checks, and skill checks.",
+    "source": "DMG 266",
+    "tags": [
+      "luck",
+      "boon"
+    ]
+  },
+  {
+    "name": "Boots of Speed",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 12000,
+    "body_slot": "feet",
+    "caster_level": 10,
+    "aura": "moderate transmutation",
+    "description": "10 rounds/day (not necessarily consecutive) of haste effect.",
+    "source": "DMG 250",
+    "tags": [
+      "mobility",
+      "buff"
+    ]
+  },
+  {
+    "name": "Wings of Flying",
+    "category": "Wondrous Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 54000,
+    "body_slot": "shoulders",
+    "caster_level": 10,
+    "aura": "moderate transmutation",
+    "description": "Wearer can fly 60 ft. (good) for up to 10 minutes per use, 3/day.",
+    "source": "DMG 269",
+    "tags": [
+      "mobility",
+      "flight"
+    ]
+  },
+  {
+    "name": "+2 Longsword",
+    "category": "Magic Weapon",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 8315,
+    "body_slot": null,
+    "caster_level": 6,
+    "aura": "moderate evocation",
+    "description": "+2 enhancement bonus to attack and damage rolls.",
+    "source": "DMG 222",
+    "tags": [
+      "weapon"
+    ]
+  },
+  {
+    "name": "+2 Chain Shirt",
+    "category": "Magic Armor",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 4250,
+    "body_slot": "body",
+    "caster_level": 6,
+    "aura": "moderate abjuration",
+    "description": "+2 enhancement to armor bonus.",
+    "source": "DMG 218",
+    "tags": [
+      "armor",
+      "light"
+    ]
+  },
+  {
+    "name": "Bracers of Armor +2",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4000,
+    "body_slot": "arms",
+    "caster_level": 7,
+    "aura": "moderate conjuration",
+    "description": "Provides a +2 armor bonus to AC; does not stack with worn armor.",
+    "source": "DMG 250",
+    "tags": [
+      "armor-bonus",
+      "caster"
+    ]
+  },
+  {
+    "name": "Bracers of Armor +4",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 16000,
+    "body_slot": "arms",
+    "caster_level": 8,
+    "aura": "moderate conjuration",
+    "description": "Provides a +4 armor bonus to AC.",
+    "source": "DMG 250",
+    "tags": [
+      "armor-bonus",
+      "caster"
+    ]
+  },
+  {
+    "name": "Wand of Cure Moderate Wounds (CL 3, 50 charges)",
+    "category": "Wand",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4500,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint conjuration",
+    "description": "Casts cure moderate wounds (2d8+3) per charge.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "healing"
+    ]
+  },
+  {
+    "name": "Wand of Fireball (CL 5, 50 charges)",
+    "category": "Wand",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 11250,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate evocation",
+    "description": "Casts fireball (5d6 fire, Reflex DC 14 half) per charge.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "damage",
+      "area"
+    ]
+  },
+  {
+    "name": "Sovereign Glue (1 oz)",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 2400,
+    "body_slot": null,
+    "caster_level": 20,
+    "aura": "strong transmutation",
+    "description": "Permanently bonds anything to anything; only solvent dissolves the bond.",
+    "source": "DMG 266",
+    "tags": [
+      "utility",
+      "consumable"
+    ]
+  },
+  {
+    "name": "Universal Solvent (1 oz)",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 50,
+    "body_slot": null,
+    "caster_level": 20,
+    "aura": "strong transmutation",
+    "description": "Dissolves sovereign glue, tanglefoot bags, and similar adhesives.",
+    "source": "DMG 268",
+    "tags": [
+      "utility",
+      "consumable"
+    ]
+  },
+  {
+    "name": "Tindertwig",
+    "category": "Alchemical (mundane-magical)",
+    "tier": "trivial",
+    "subtier": "lesser",
+    "price_gp": 1,
+    "body_slot": null,
+    "caster_level": 0,
+    "aura": "none",
+    "description": "Lights a small fire (torch, oil) as a standard action.",
+    "source": "PHB 128",
+    "tags": [
+      "alchemical",
+      "common"
+    ]
+  },
+  {
+    "name": "Tanglefoot Bag",
+    "category": "Alchemical",
+    "tier": "trivial",
+    "subtier": "lesser",
+    "price_gp": 50,
+    "body_slot": null,
+    "caster_level": 0,
+    "aura": "none",
+    "description": "Thrown weapon (range 10 ft.). Reflex DC 15 or target glued to floor; entangled either way.",
+    "source": "PHB 128",
+    "tags": [
+      "alchemical",
+      "control"
+    ]
+  },
+  {
+    "name": "Alchemist's Fire (flask)",
+    "category": "Alchemical",
+    "tier": "trivial",
+    "subtier": "lesser",
+    "price_gp": 20,
+    "body_slot": null,
+    "caster_level": 0,
+    "aura": "none",
+    "description": "Thrown splash weapon (range 10 ft.). 1d6 fire on direct hit, 1 splash; burns next round for 1d6 (Reflex DC 15 to extinguish).",
+    "source": "PHB 128",
+    "tags": [
+      "alchemical",
+      "fire",
+      "common"
+    ]
+  },
+  {
+    "name": "Holy Water (flask)",
+    "category": "Alchemical",
+    "tier": "trivial",
+    "subtier": "lesser",
+    "price_gp": 25,
+    "body_slot": null,
+    "caster_level": 0,
+    "aura": "none",
+    "description": "Thrown splash weapon (range 10 ft.). 2d4 damage to undead/evil outsiders on direct hit, 1 splash.",
+    "source": "PHB 128",
+    "tags": [
+      "alchemical",
+      "anti-undead",
+      "common"
+    ]
+  },
+  {
+    "name": "Thunderstone",
+    "category": "Alchemical",
+    "tier": "trivial",
+    "subtier": "lesser",
+    "price_gp": 30,
+    "body_slot": null,
+    "caster_level": 0,
+    "aura": "none",
+    "description": "Thrown weapon (range 20 ft.). On hit, all within 10 ft. must succeed DC 15 Fortitude or be deafened 1 hour.",
+    "source": "PHB 128",
+    "tags": [
+      "alchemical",
+      "control"
+    ]
+  },
+  {
+    "name": "Potion of Cure Serious Wounds (alt)",
+    "category": "Potion",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 750,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate conjuration",
+    "description": "Drinker is healed 3d8+5 hit points. (Alternate entry for loot table weight.)",
+    "source": "DMG 232",
+    "tags": [
+      "healing",
+      "potion"
+    ]
+  },
+  {
+    "name": "Potion of Fox's Cunning",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 300,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "+4 enhancement to Intelligence for 3 minutes.",
+    "source": "DMG 232",
+    "tags": [
+      "buff",
+      "potion",
+      "caster"
+    ]
+  },
+  {
+    "name": "Potion of Eagle's Splendor",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 300,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "+4 enhancement to Charisma for 3 minutes.",
+    "source": "DMG 232",
+    "tags": [
+      "buff",
+      "potion",
+      "social"
+    ]
+  },
+  {
+    "name": "Potion of Owl's Wisdom",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 300,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "+4 enhancement to Wisdom for 3 minutes.",
+    "source": "DMG 232",
+    "tags": [
+      "buff",
+      "potion",
+      "caster"
+    ]
+  },
+  {
+    "name": "Potion of Spider Climb",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 300,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "Drinker gains spider climb ability for 3 minutes.",
+    "source": "DMG 232",
+    "tags": [
+      "mobility",
+      "potion"
+    ]
+  },
+  {
+    "name": "Potion of Gaseous Form",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 750,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate transmutation",
+    "description": "Drinker gains gaseous form for 5 minutes; fly 10 ft. (perfect); immune to most physical attacks.",
+    "source": "DMG 232",
+    "tags": [
+      "mobility",
+      "potion",
+      "escape"
+    ]
+  },
+  {
+    "name": "Potion of Barkskin (+2)",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 300,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "+2 enhancement bonus to natural armor for 3 minutes.",
+    "source": "DMG 232",
+    "tags": [
+      "defensive",
+      "potion"
+    ]
+  },
+  {
+    "name": "Potion of Enlarge Person",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 250,
+    "body_slot": null,
+    "caster_level": 1,
+    "aura": "faint transmutation",
+    "description": "Drinker (humanoid only) is enlarged for 1 minute; +2 Str, -2 Dex, -1 attack/AC.",
+    "source": "DMG 232",
+    "tags": [
+      "buff",
+      "potion",
+      "martial"
+    ]
+  },
+  {
+    "name": "Potion of Reduce Person",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 250,
+    "body_slot": null,
+    "caster_level": 1,
+    "aura": "faint transmutation",
+    "description": "Drinker (humanoid only) is reduced for 1 minute; -2 Str, +2 Dex, +1 attack/AC.",
+    "source": "DMG 232",
+    "tags": [
+      "buff",
+      "potion",
+      "rogue"
+    ]
+  },
+  {
+    "name": "Potion of Water Breathing",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 750,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate transmutation",
+    "description": "Drinker can breathe water for 5 hours.",
+    "source": "DMG 232",
+    "tags": [
+      "utility",
+      "potion"
+    ]
+  },
+  {
+    "name": "Potion of Endure Elements",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 50,
+    "body_slot": null,
+    "caster_level": 1,
+    "aura": "faint abjuration",
+    "description": "Comfortable in extremes of cold or heat (0°F to 140°F) for 24 hours.",
+    "source": "DMG 232",
+    "tags": [
+      "utility",
+      "potion",
+      "common"
+    ]
+  },
+  {
+    "name": "Potion of Jump",
+    "category": "Potion",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 50,
+    "body_slot": null,
+    "caster_level": 1,
+    "aura": "faint transmutation",
+    "description": "+10 competence bonus to Jump checks for 1 minute.",
+    "source": "DMG 232",
+    "tags": [
+      "buff",
+      "potion",
+      "common"
+    ]
+  },
+  {
+    "name": "Scroll of Identify (CL 1)",
+    "category": "Scroll",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 25,
+    "body_slot": null,
+    "caster_level": 1,
+    "aura": "faint divination",
+    "description": "Identifies properties of one magic item.",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "utility",
+      "common"
+    ]
+  },
+  {
+    "name": "Scroll of Detect Magic (CL 1)",
+    "category": "Scroll",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 25,
+    "body_slot": null,
+    "caster_level": 1,
+    "aura": "faint divination",
+    "description": "Detects spells and magic items within 60 ft. for 1 minute.",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "utility",
+      "common"
+    ]
+  },
+  {
+    "name": "Scroll of Hold Person (CL 3)",
+    "category": "Scroll",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 150,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint enchantment",
+    "description": "Holds one humanoid (Will DC 13 negates). Subject can retry save each round.",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "control"
+    ]
+  },
+  {
+    "name": "Scroll of Invisibility (CL 3)",
+    "category": "Scroll",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 150,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint illusion",
+    "description": "Subject is invisible until it attacks.",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "stealth"
+    ]
+  },
+  {
+    "name": "Scroll of Slow (CL 5)",
+    "category": "Scroll",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 375,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate transmutation",
+    "description": "Slows up to 6 targets in a 30-ft. area (Will DC 15 negates).",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "control"
+    ]
+  },
+  {
+    "name": "Scroll of Greater Invisibility (CL 7)",
+    "category": "Scroll",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 700,
+    "body_slot": null,
+    "caster_level": 7,
+    "aura": "moderate illusion",
+    "description": "As invisibility but remains in effect when subject attacks.",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "stealth",
+      "combat"
+    ]
+  },
+  {
+    "name": "Scroll of Raise Dead (CL 9)",
+    "category": "Scroll",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 6125,
+    "body_slot": null,
+    "caster_level": 9,
+    "aura": "moderate conjuration",
+    "description": "Restores life to a creature dead no more than 10 years (loses 1 level).",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "healing",
+      "resurrection"
+    ]
+  },
+  {
+    "name": "Scroll of Restoration (CL 7)",
+    "category": "Scroll",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 800,
+    "body_slot": null,
+    "caster_level": 7,
+    "aura": "moderate conjuration",
+    "description": "Removes all negative levels, ability damage, and ability drain. (300 gp material component included.)",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "healing",
+      "restoration"
+    ]
+  },
+  {
+    "name": "Scroll of Cure Critical Wounds (CL 7)",
+    "category": "Scroll",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 700,
+    "body_slot": null,
+    "caster_level": 7,
+    "aura": "moderate conjuration",
+    "description": "Heals 4d8+7 hit points.",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "healing"
+    ]
+  },
+  {
+    "name": "Scroll of Remove Curse (CL 5)",
+    "category": "Scroll",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 375,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate abjuration",
+    "description": "Removes all curses on an object or creature.",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "abjuration"
+    ]
+  },
+  {
+    "name": "Scroll of Lightning Bolt (CL 5)",
+    "category": "Scroll",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 375,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate evocation",
+    "description": "5d6 electricity damage in 120-ft. line (Reflex DC 14 half).",
+    "source": "DMG 238",
+    "tags": [
+      "scroll",
+      "damage"
+    ]
+  },
+  {
+    "name": "Wand of Detect Magic (CL 1, 50 charges)",
+    "category": "Wand",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 375,
+    "body_slot": null,
+    "caster_level": 1,
+    "aura": "faint divination",
+    "description": "Casts detect magic per charge. Extremely useful.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "utility",
+      "common"
+    ]
+  },
+  {
+    "name": "Wand of Scorching Ray (CL 3, 50 charges)",
+    "category": "Wand",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2250,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint evocation",
+    "description": "Casts scorching ray (1 ray, 4d6 fire, ranged touch) per charge.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "damage",
+      "fire"
+    ]
+  },
+  {
+    "name": "Wand of Hold Person (CL 3, 50 charges)",
+    "category": "Wand",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2250,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint enchantment",
+    "description": "Casts hold person (Will DC 13) per charge.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "control"
+    ]
+  },
+  {
+    "name": "Wand of Invisibility (CL 3, 50 charges)",
+    "category": "Wand",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4500,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint illusion",
+    "description": "Casts invisibility per charge.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "stealth"
+    ]
+  },
+  {
+    "name": "Wand of Knock (CL 3, 50 charges)",
+    "category": "Wand",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2250,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "Casts knock per charge; opens locks, bars, stuck doors.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "utility"
+    ]
+  },
+  {
+    "name": "Wand of Slow (CL 5, 50 charges)",
+    "category": "Wand",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 11250,
+    "body_slot": null,
+    "caster_level": 5,
+    "aura": "moderate transmutation",
+    "description": "Casts slow (Will DC 15, 6 targets in 30-ft. area) per charge.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "control"
+    ]
+  },
+  {
+    "name": "Wand of Enervation (CL 7, 50 charges)",
+    "category": "Wand",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 26250,
+    "body_slot": null,
+    "caster_level": 7,
+    "aura": "moderate necromancy",
+    "description": "Casts enervation (ranged touch, 1d4 negative levels) per charge.",
+    "source": "DMG 245",
+    "tags": [
+      "wand",
+      "necromancy",
+      "level-drain"
+    ]
+  },
+  {
+    "name": "Rod of Lordly Might",
+    "category": "Rod",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 70000,
+    "body_slot": null,
+    "caster_level": 19,
+    "aura": "strong transmutation",
+    "description": "Functions as +2 weapon (sword, mace, or spear via transformation), flame blade, hold monster 1/day, fear 1/day, suggestion 1/day, and climbing functions.",
+    "source": "DMG 234",
+    "tags": [
+      "rod",
+      "weapon",
+      "multi-function"
+    ]
+  },
+  {
+    "name": "Metamagic Rod (Extend Spell), Lesser",
+    "category": "Rod",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 3000,
+    "body_slot": null,
+    "caster_level": 17,
+    "aura": "strong (no school)",
+    "description": "3/day: use as a free metamagic component to extend the duration of a spell of 3rd level or lower without using a higher-level slot.",
+    "source": "DMG 235",
+    "tags": [
+      "rod",
+      "metamagic",
+      "caster"
+    ]
+  },
+  {
+    "name": "Metamagic Rod (Empower Spell), Lesser",
+    "category": "Rod",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 9000,
+    "body_slot": null,
+    "caster_level": 17,
+    "aura": "strong (no school)",
+    "description": "3/day: use as a free metamagic component to empower a spell of 3rd level or lower.",
+    "source": "DMG 235",
+    "tags": [
+      "rod",
+      "metamagic",
+      "caster"
+    ]
+  },
+  {
+    "name": "Metamagic Rod (Maximize Spell), Lesser",
+    "category": "Rod",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 14000,
+    "body_slot": null,
+    "caster_level": 17,
+    "aura": "strong (no school)",
+    "description": "3/day: use as a free metamagic component to maximize a spell of 3rd level or lower.",
+    "source": "DMG 235",
+    "tags": [
+      "rod",
+      "metamagic",
+      "caster"
+    ]
+  },
+  {
+    "name": "Rod of Wonder",
+    "category": "Rod",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 12000,
+    "body_slot": null,
+    "caster_level": 10,
+    "aura": "moderate enchantment",
+    "description": "50 charges. Each charge activates a random effect from a d% table (slow, fireball, 1d6 lightning, bulls strength, etc.). Unpredictable.",
+    "source": "DMG 237",
+    "tags": [
+      "rod",
+      "chaotic",
+      "random"
+    ]
+  },
+  {
+    "name": "Staff of Fire",
+    "category": "Staff",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 18950,
+    "body_slot": null,
+    "caster_level": 10,
+    "aura": "moderate evocation",
+    "description": "50 charges. Burning hands (1 charge), fireball (2 charges), wall of fire (3 charges).",
+    "source": "DMG 240",
+    "tags": [
+      "staff",
+      "fire",
+      "damage"
+    ]
+  },
+  {
+    "name": "Staff of Healing",
+    "category": "Staff",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 27750,
+    "body_slot": null,
+    "caster_level": 11,
+    "aura": "moderate conjuration",
+    "description": "50 charges. Cure serious wounds (1 charge), remove blindness/deafness (2 charges), remove disease (3 charges).",
+    "source": "DMG 240",
+    "tags": [
+      "staff",
+      "healing",
+      "divine"
+    ]
+  },
+  {
+    "name": "Staff of Power",
+    "category": "Staff",
+    "tier": "major",
+    "subtier": "greater",
+    "price_gp": 235000,
+    "body_slot": null,
+    "caster_level": 15,
+    "aura": "strong varied",
+    "description": "50 charges. Acts as +2 quarterstaff. 1 charge: magic missile (CL 15, 5 missiles), ray of enfeeblement, levitate. 2 charges: continual flame, lightning bolt (10d6), fireball (10d6). 3 charges: cone of cold (10d6), wall of force, globe of invulnerability. Retributive strike.",
+    "source": "DMG 241",
+    "tags": [
+      "staff",
+      "powerful",
+      "arcane",
+      "boss-loot"
+    ]
+  },
+  {
+    "name": "Staff of the Magi",
+    "category": "Staff",
+    "tier": "major",
+    "subtier": "greater",
+    "price_gp": 263000,
+    "body_slot": null,
+    "caster_level": 20,
+    "aura": "strong varied",
+    "description": "50 charges. Legendary staff; includes all Staff of Power spells plus plane shift, telekinesis, summon monster IX. Absorbs spells targeted at wielder (up to staff's level). Retributive strike.",
+    "source": "DMG 241",
+    "tags": [
+      "staff",
+      "legendary",
+      "arcane",
+      "major-artifact"
+    ]
+  },
+  {
+    "name": "Ring of Protection +3",
+    "category": "Ring",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 18000,
+    "body_slot": "ring",
+    "caster_level": 15,
+    "aura": "moderate abjuration",
+    "description": "+3 deflection bonus to AC.",
+    "source": "DMG 232",
+    "tags": [
+      "defensive"
+    ]
+  },
+  {
+    "name": "Ring of Sustenance",
+    "category": "Ring",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 2500,
+    "body_slot": "ring",
+    "caster_level": 5,
+    "aura": "moderate conjuration",
+    "description": "Wearer needs no food or water; only 2 hours of sleep per day for spellcasters.",
+    "source": "DMG 233",
+    "tags": [
+      "utility",
+      "exploration"
+    ]
+  },
+  {
+    "name": "Ring of Swimming",
+    "category": "Ring",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2500,
+    "body_slot": "ring",
+    "caster_level": 2,
+    "aura": "faint transmutation",
+    "description": "+5 competence bonus on Swim checks.",
+    "source": "DMG 233",
+    "tags": [
+      "utility",
+      "skill"
+    ]
+  },
+  {
+    "name": "Ring of Jumping",
+    "category": "Ring",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2500,
+    "body_slot": "ring",
+    "caster_level": 2,
+    "aura": "faint transmutation",
+    "description": "+5 competence bonus on Jump checks.",
+    "source": "DMG 232",
+    "tags": [
+      "utility",
+      "skill"
+    ]
+  },
+  {
+    "name": "Ring of Evasion",
+    "category": "Ring",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 25000,
+    "body_slot": "ring",
+    "caster_level": 7,
+    "aura": "moderate transmutation",
+    "description": "Grants evasion (on successful Reflex save vs area effect, take no damage instead of half).",
+    "source": "DMG 232",
+    "tags": [
+      "defensive",
+      "rogue"
+    ]
+  },
+  {
+    "name": "Ring of Counterspells",
+    "category": "Ring",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 4000,
+    "body_slot": "ring",
+    "caster_level": 11,
+    "aura": "moderate evocation",
+    "description": "Stores one spell of up to 6th level to auto-counterspell the same spell cast against the wearer.",
+    "source": "DMG 232",
+    "tags": [
+      "defensive",
+      "counterspell"
+    ]
+  },
+  {
+    "name": "Ring of Regeneration",
+    "category": "Ring",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 90000,
+    "body_slot": "ring",
+    "caster_level": 15,
+    "aura": "strong conjuration",
+    "description": "Regenerate 1 hp/round; regrow lost limbs in 1d6+1 weeks (fire and acid cause normal damage).",
+    "source": "DMG 233",
+    "tags": [
+      "healing",
+      "regeneration"
+    ]
+  },
+  {
+    "name": "Healing Belt (MIC)",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 750,
+    "body_slot": "waist",
+    "caster_level": 1,
+    "aura": "faint conjuration",
+    "description": "3 charges/day. Heal as a swift action: 1 charge = 2d8 hp, 2 charges = 3d8 hp, 3 charges = 4d8 hp. Recharges daily. (Source: Magic Item Compendium.)",
+    "source": "MIC 110",
+    "tags": [
+      "healing",
+      "swift-action",
+      "common",
+      "mic"
+    ]
+  },
+  {
+    "name": "Armbands of Might (MIC)",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 4100,
+    "body_slot": "arms",
+    "caster_level": 4,
+    "aura": "faint transmutation",
+    "description": "+2 circumstance bonus on Strength checks and Strength-based skill checks.",
+    "source": "MIC 72",
+    "tags": [
+      "buff",
+      "martial",
+      "mic"
+    ]
+  },
+  {
+    "name": "Vest of Resistance +1",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 1000,
+    "body_slot": "torso",
+    "caster_level": 5,
+    "aura": "faint abjuration",
+    "description": "+1 resistance bonus on all saves. Same effect as Cloak of Resistance but uses torso slot.",
+    "source": "MIC 147",
+    "tags": [
+      "defensive",
+      "saves",
+      "mic"
+    ]
+  },
+  {
+    "name": "Vest of Resistance +2",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4000,
+    "body_slot": "torso",
+    "caster_level": 7,
+    "aura": "moderate abjuration",
+    "description": "+2 resistance bonus on all saves.",
+    "source": "MIC 147",
+    "tags": [
+      "defensive",
+      "saves",
+      "mic"
+    ]
+  },
+  {
+    "name": "Wilding Clasp (MIC)",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 4000,
+    "body_slot": "none",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "Attached to a magic item; that item doesn't merge into animal form during wild shape. Druid utility.",
+    "source": "MIC 148",
+    "tags": [
+      "druid",
+      "utility",
+      "mic"
+    ]
+  },
+  {
+    "name": "Amulet of Natural Armor +1",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2000,
+    "body_slot": "throat",
+    "caster_level": 5,
+    "aura": "faint transmutation",
+    "description": "+1 enhancement bonus to natural armor.",
+    "source": "DMG 247",
+    "tags": [
+      "defensive",
+      "common"
+    ]
+  },
+  {
+    "name": "Amulet of Natural Armor +2",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 8000,
+    "body_slot": "throat",
+    "caster_level": 9,
+    "aura": "moderate transmutation",
+    "description": "+2 enhancement bonus to natural armor.",
+    "source": "DMG 247",
+    "tags": [
+      "defensive"
+    ]
+  },
+  {
+    "name": "Amulet of Natural Armor +3",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 18000,
+    "body_slot": "throat",
+    "caster_level": 13,
+    "aura": "moderate transmutation",
+    "description": "+3 enhancement bonus to natural armor.",
+    "source": "DMG 247",
+    "tags": [
+      "defensive"
+    ]
+  },
+  {
+    "name": "Belt of Giant Strength +4",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 16000,
+    "body_slot": "waist",
+    "caster_level": 12,
+    "aura": "moderate transmutation",
+    "description": "+4 enhancement to Strength.",
+    "source": "DMG 248",
+    "tags": [
+      "enhancement",
+      "martial"
+    ]
+  },
+  {
+    "name": "Gloves of Dexterity +4",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 16000,
+    "body_slot": "hands",
+    "caster_level": 12,
+    "aura": "moderate transmutation",
+    "description": "+4 enhancement to Dexterity.",
+    "source": "DMG 257",
+    "tags": [
+      "enhancement",
+      "rogue"
+    ]
+  },
+  {
+    "name": "Headband of Intellect +4",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 16000,
+    "body_slot": "head",
+    "caster_level": 12,
+    "aura": "moderate transmutation",
+    "description": "+4 enhancement to Intelligence.",
+    "source": "DMG 258",
+    "tags": [
+      "enhancement",
+      "caster"
+    ]
+  },
+  {
+    "name": "Periapt of Wisdom +4",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 16000,
+    "body_slot": "throat",
+    "caster_level": 12,
+    "aura": "moderate transmutation",
+    "description": "+4 enhancement to Wisdom.",
+    "source": "DMG 264",
+    "tags": [
+      "enhancement",
+      "caster"
+    ]
+  },
+  {
+    "name": "Goggles of Minute Seeing",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 1250,
+    "body_slot": "eyes",
+    "caster_level": 3,
+    "aura": "faint divination",
+    "description": "+5 competence bonus on Search checks.",
+    "source": "DMG 257",
+    "tags": [
+      "perception",
+      "skill"
+    ]
+  },
+  {
+    "name": "Amulet of Proof Against Detection and Location",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 35000,
+    "body_slot": "throat",
+    "caster_level": 8,
+    "aura": "moderate abjuration",
+    "description": "Wearer cannot be found by clairaudience/clairvoyance, discern location, locate creature, locate object, or any scrying.",
+    "source": "DMG 247",
+    "tags": [
+      "defensive",
+      "anti-scrying",
+      "ptolus-useful"
+    ]
+  },
+  {
+    "name": "Horseshoes of Speed",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 3000,
+    "body_slot": "feet",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "Worn by horse (set of 4). Affected horse's base speed increased by 30 ft.",
+    "source": "DMG 259",
+    "tags": [
+      "mount",
+      "mobility"
+    ]
+  },
+  {
+    "name": "Gauntlets of Ogre Power",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 4000,
+    "body_slot": "hands",
+    "caster_level": 6,
+    "aura": "moderate transmutation",
+    "description": "+2 enhancement to Strength.",
+    "source": "DMG 257",
+    "tags": [
+      "enhancement",
+      "martial",
+      "common"
+    ]
+  },
+  {
+    "name": "Necklace of Fireballs (Type I)",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 1650,
+    "body_slot": "throat",
+    "caster_level": 10,
+    "aura": "moderate evocation",
+    "description": "2 spheres: one 3d6 fireball, one 2d6 fireball. Thrown as grenades (range 70 ft.).",
+    "source": "DMG 263",
+    "tags": [
+      "consumable",
+      "fire",
+      "damage",
+      "common"
+    ]
+  },
+  {
+    "name": "Horn of Blasting",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 20000,
+    "body_slot": null,
+    "caster_level": 10,
+    "aura": "moderate evocation",
+    "description": "As a standard action, cone of sound 40 ft. deals 5d6 sonic damage (Fort DC 16 or deafened 2d6 rounds); crystalline objects take double damage.",
+    "source": "DMG 258",
+    "tags": [
+      "area-damage",
+      "sonic"
+    ]
+  },
+  {
+    "name": "Ioun Stone (clear spindle)",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 4000,
+    "body_slot": null,
+    "caster_level": 12,
+    "aura": "strong transmutation",
+    "description": "Sustains bearer without food or water. Orbits head.",
+    "source": "DMG 260",
+    "tags": [
+      "utility",
+      "exploration",
+      "ioun"
+    ]
+  },
+  {
+    "name": "Ioun Stone (dusty rose prism)",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 5000,
+    "body_slot": null,
+    "caster_level": 12,
+    "aura": "strong transmutation",
+    "description": "+1 insight bonus to AC. Orbits head.",
+    "source": "DMG 260",
+    "tags": [
+      "defensive",
+      "ioun"
+    ]
+  },
+  {
+    "name": "Ioun Stone (pale blue rhomboid)",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 8000,
+    "body_slot": null,
+    "caster_level": 12,
+    "aura": "strong transmutation",
+    "description": "+2 enhancement to Strength. Orbits head.",
+    "source": "DMG 260",
+    "tags": [
+      "enhancement",
+      "ioun"
+    ]
+  },
+  {
+    "name": "Ioun Stone (scarlet and blue sphere)",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 8000,
+    "body_slot": null,
+    "caster_level": 12,
+    "aura": "strong transmutation",
+    "description": "+2 enhancement to Intelligence. Orbits head.",
+    "source": "DMG 260",
+    "tags": [
+      "enhancement",
+      "caster",
+      "ioun"
+    ]
+  },
+  {
+    "name": "+1 Keen Longsword",
+    "category": "Magic Weapon",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 8315,
+    "body_slot": null,
+    "caster_level": 10,
+    "aura": "moderate transmutation",
+    "description": "+1 enhancement; threat range doubled (17-20 for a longsword). Does not stack with Improved Critical feat.",
+    "source": "DMG 225",
+    "tags": [
+      "weapon",
+      "critical"
+    ]
+  },
+  {
+    "name": "+1 Defending Longsword",
+    "category": "Magic Weapon",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 8315,
+    "body_slot": null,
+    "caster_level": 8,
+    "aura": "moderate abjuration",
+    "description": "+1 enhancement; up to +1 of the enhancement can be transferred to AC as a free action each round.",
+    "source": "DMG 224",
+    "tags": [
+      "weapon",
+      "defensive"
+    ]
+  },
+  {
+    "name": "+1 Ghost Touch Longsword",
+    "category": "Magic Weapon",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 8315,
+    "body_slot": null,
+    "caster_level": 9,
+    "aura": "moderate conjuration",
+    "description": "+1 enhancement; works vs incorporeal creatures; can be picked up by incorporeal creatures.",
+    "source": "DMG 224",
+    "tags": [
+      "weapon",
+      "anti-undead",
+      "ptolus-useful"
+    ]
+  },
+  {
+    "name": "+1 Silver Dagger",
+    "category": "Magic Weapon",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 2322,
+    "body_slot": null,
+    "caster_level": 3,
+    "aura": "faint evocation",
+    "description": "+1 enhancement; cold iron material bypasses DR/silver for lycanthropes and some devils.",
+    "source": "DMG 222",
+    "tags": [
+      "weapon",
+      "silver",
+      "common",
+      "anti-lycanthrope"
+    ]
+  },
+  {
+    "name": "+2 Mithral Chain Shirt",
+    "category": "Magic Armor",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 5100,
+    "body_slot": "body",
+    "caster_level": 6,
+    "aura": "moderate abjuration",
+    "description": "+2 enhancement; mithral halves arcane spell failure (10%); treated as light armor for proficiency.",
+    "source": "DMG 218",
+    "tags": [
+      "armor",
+      "mithral",
+      "light",
+      "caster"
+    ]
+  },
+  {
+    "name": "Cognizance Crystal, 1 PP",
+    "category": "Psionic Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 1000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "faint psychokinesis",
+    "description": "A faceted crystal that stores 1 power point. A manifester can draw on these PP as if they were his own, but only for manifesting powers (not metapsionic costs or psionic focus). Recharges naturally (8 hr rest). Cannot hold more PP than its maximum.",
+    "source": "EPH 159",
+    "tags": [
+      "psionic",
+      "cognizance-crystal",
+      "power-points"
+    ]
+  },
+  {
+    "name": "Cognizance Crystal, 3 PP",
+    "category": "Psionic Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 4000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "faint psychokinesis",
+    "description": "Stores 3 power points. See Cognizance Crystal, 1 PP for rules. Larger crystals have a more complex facet pattern.",
+    "source": "EPH 159",
+    "tags": [
+      "psionic",
+      "cognizance-crystal",
+      "power-points"
+    ]
+  },
+  {
+    "name": "Cognizance Crystal, 5 PP",
+    "category": "Psionic Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 9000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "faint psychokinesis",
+    "description": "Stores 5 power points. See Cognizance Crystal, 1 PP for rules.",
+    "source": "EPH 159",
+    "tags": [
+      "psionic",
+      "cognizance-crystal",
+      "power-points"
+    ]
+  },
+  {
+    "name": "Cognizance Crystal, 7 PP",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 16000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "moderate psychokinesis",
+    "description": "Stores 7 power points. See Cognizance Crystal, 1 PP for rules.",
+    "source": "EPH 159",
+    "tags": [
+      "psionic",
+      "cognizance-crystal",
+      "power-points"
+    ]
+  },
+  {
+    "name": "Cognizance Crystal, 9 PP",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 25000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "moderate psychokinesis",
+    "description": "Stores 9 power points. See Cognizance Crystal, 1 PP for rules.",
+    "source": "EPH 159",
+    "tags": [
+      "psionic",
+      "cognizance-crystal",
+      "power-points"
+    ]
+  },
+  {
+    "name": "Cognizance Crystal, 11 PP",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 36000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "moderate psychokinesis",
+    "description": "Stores 11 power points. See Cognizance Crystal, 1 PP for rules.",
+    "source": "EPH 159",
+    "tags": [
+      "psionic",
+      "cognizance-crystal",
+      "power-points"
+    ]
+  },
+  {
+    "name": "Cognizance Crystal, 13 PP",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 49000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "strong psychokinesis",
+    "description": "Stores 13 power points. See Cognizance Crystal, 1 PP for rules.",
+    "source": "EPH 159",
+    "tags": [
+      "psionic",
+      "cognizance-crystal",
+      "power-points"
+    ]
+  },
+  {
+    "name": "Cognizance Crystal, 15 PP",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 64000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "strong psychokinesis",
+    "description": "Stores 15 power points. See Cognizance Crystal, 1 PP for rules.",
+    "source": "EPH 159",
+    "tags": [
+      "psionic",
+      "cognizance-crystal",
+      "power-points"
+    ]
+  },
+  {
+    "name": "Cognizance Crystal, 17 PP",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 81000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "strong psychokinesis",
+    "description": "Stores 17 power points (max for a single crystal). See Cognizance Crystal, 1 PP for rules.",
+    "source": "EPH 159",
+    "tags": [
+      "psionic",
+      "cognizance-crystal",
+      "power-points"
+    ]
+  },
+  {
+    "name": "Dorje, 1st-Level Power",
+    "category": "Psionic Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 750,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "faint (varies by power)",
+    "description": "A slender crystal rod holding 50 charges of a single 1st-level power (ML 1). Each activation costs 1 charge. The user need not be a manifester to use a dorje, but must meet the power's prerequisites. Common examples: mind thrust, energy ray, inertial armor, far hand. Price listed is base; specific powers add the pp cost × ML × charges formula.",
+    "source": "EPH 160",
+    "tags": [
+      "psionic",
+      "dorje",
+      "power-level-1"
+    ]
+  },
+  {
+    "name": "Dorje, 2nd-Level Power",
+    "category": "Psionic Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 4500,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "faint (varies by power)",
+    "description": "50-charge dorje holding a single 2nd-level power (ML 3). Each activation costs 1 charge.",
+    "source": "EPH 160",
+    "tags": [
+      "psionic",
+      "dorje",
+      "power-level-2"
+    ]
+  },
+  {
+    "name": "Dorje, 3rd-Level Power",
+    "category": "Psionic Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 11250,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "faint (varies by power)",
+    "description": "50-charge dorje holding a single 3rd-level power (ML 5). Each activation costs 1 charge.",
+    "source": "EPH 160",
+    "tags": [
+      "psionic",
+      "dorje",
+      "power-level-3"
+    ]
+  },
+  {
+    "name": "Dorje, 4th-Level Power",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 21000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "moderate (varies by power)",
+    "description": "50-charge dorje holding a single 4th-level power (ML 7). Each activation costs 1 charge.",
+    "source": "EPH 160",
+    "tags": [
+      "psionic",
+      "dorje",
+      "power-level-4"
+    ]
+  },
+  {
+    "name": "Dorje, 5th-Level Power",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 33750,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "moderate (varies by power)",
+    "description": "50-charge dorje holding a single 5th-level power (ML 9). Each activation costs 1 charge.",
+    "source": "EPH 160",
+    "tags": [
+      "psionic",
+      "dorje",
+      "power-level-5"
+    ]
+  },
+  {
+    "name": "Dorje, 6th-Level Power",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 49500,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "strong (varies by power)",
+    "description": "50-charge dorje holding a single 6th-level power (ML 11). Each activation costs 1 charge.",
+    "source": "EPH 160",
+    "tags": [
+      "psionic",
+      "dorje",
+      "power-level-6"
+    ]
+  },
+  {
+    "name": "Dorje, 7th-Level Power",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 68250,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "strong (varies by power)",
+    "description": "50-charge dorje holding a single 7th-level power (ML 13). Each activation costs 1 charge.",
+    "source": "EPH 160",
+    "tags": [
+      "psionic",
+      "dorje",
+      "power-level-7"
+    ]
+  },
+  {
+    "name": "Dorje, 8th-Level Power",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 90000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "overwhelming (varies by power)",
+    "description": "50-charge dorje holding a single 8th-level power (ML 15). Each activation costs 1 charge.",
+    "source": "EPH 160",
+    "tags": [
+      "psionic",
+      "dorje",
+      "power-level-8"
+    ]
+  },
+  {
+    "name": "Dorje, 9th-Level Power",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "greater",
+    "price_gp": 114750,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "overwhelming (varies by power)",
+    "description": "50-charge dorje holding a single 9th-level power (ML 17). Each activation costs 1 charge.",
+    "source": "EPH 160",
+    "tags": [
+      "psionic",
+      "dorje",
+      "power-level-9"
+    ]
+  },
+  {
+    "name": "Power Stone, 1st-Level Power",
+    "category": "Psionic Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 25,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "faint (varies by power)",
+    "description": "A flat, smooth crystal inscribed with a single 1st-level power (ML 1). Single use. The manifester uses it as if manifesting the power normally but does not pay PP. Requires UPD check (DC 25 + PL) if the power is not on the user's class list.",
+    "source": "EPH 163",
+    "tags": [
+      "psionic",
+      "power-stone",
+      "power-level-1",
+      "single-use"
+    ]
+  },
+  {
+    "name": "Power Stone, 2nd-Level Power",
+    "category": "Psionic Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 150,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "faint (varies by power)",
+    "description": "Single-use crystal holding a 2nd-level power (ML 3). See Power Stone, 1st-Level for rules.",
+    "source": "EPH 163",
+    "tags": [
+      "psionic",
+      "power-stone",
+      "power-level-2",
+      "single-use"
+    ]
+  },
+  {
+    "name": "Power Stone, 3rd-Level Power",
+    "category": "Psionic Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 375,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "faint (varies by power)",
+    "description": "Single-use crystal holding a 3rd-level power (ML 5). See Power Stone, 1st-Level for rules.",
+    "source": "EPH 163",
+    "tags": [
+      "psionic",
+      "power-stone",
+      "power-level-3",
+      "single-use"
+    ]
+  },
+  {
+    "name": "Power Stone, 4th-Level Power",
+    "category": "Psionic Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 700,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "moderate (varies by power)",
+    "description": "Single-use crystal holding a 4th-level power (ML 7). See Power Stone, 1st-Level for rules.",
+    "source": "EPH 163",
+    "tags": [
+      "psionic",
+      "power-stone",
+      "power-level-4",
+      "single-use"
+    ]
+  },
+  {
+    "name": "Power Stone, 5th-Level Power",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 1125,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "moderate (varies by power)",
+    "description": "Single-use crystal holding a 5th-level power (ML 9). See Power Stone, 1st-Level for rules.",
+    "source": "EPH 163",
+    "tags": [
+      "psionic",
+      "power-stone",
+      "power-level-5",
+      "single-use"
+    ]
+  },
+  {
+    "name": "Power Stone, 6th-Level Power",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 1650,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "strong (varies by power)",
+    "description": "Single-use crystal holding a 6th-level power (ML 11). See Power Stone, 1st-Level for rules.",
+    "source": "EPH 163",
+    "tags": [
+      "psionic",
+      "power-stone",
+      "power-level-6",
+      "single-use"
+    ]
+  },
+  {
+    "name": "Power Stone, 7th-Level Power",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 2275,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "strong (varies by power)",
+    "description": "Single-use crystal holding a 7th-level power (ML 13). See Power Stone, 1st-Level for rules.",
+    "source": "EPH 163",
+    "tags": [
+      "psionic",
+      "power-stone",
+      "power-level-7",
+      "single-use"
+    ]
+  },
+  {
+    "name": "Power Stone, 8th-Level Power",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 3000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "overwhelming (varies by power)",
+    "description": "Single-use crystal holding a 8th-level power (ML 15). See Power Stone, 1st-Level for rules.",
+    "source": "EPH 163",
+    "tags": [
+      "psionic",
+      "power-stone",
+      "power-level-8",
+      "single-use"
+    ]
+  },
+  {
+    "name": "Power Stone, 9th-Level Power",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 3825,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "overwhelming (varies by power)",
+    "description": "Single-use crystal holding a 9th-level power (ML 17). See Power Stone, 1st-Level for rules.",
+    "source": "EPH 163",
+    "tags": [
+      "psionic",
+      "power-stone",
+      "power-level-9",
+      "single-use"
+    ]
+  },
+  {
+    "name": "Psicrown of the Dominator",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 20250,
+    "body_slot": "head",
+    "caster_level": null,
+    "aura": "strong telepathy",
+    "description": "Contains 50 PP. Powers known: psionic charm (ML 5), psionic suggestion (ML 5), and ego whip (ML 5). The wearer can manifest these powers by spending PP from the crown's reserve (not her own). ML 5 for all powers. Recharges 1 PP per hour.",
+    "source": "EPH 165",
+    "tags": [
+      "psionic",
+      "psicrown",
+      "telepathy",
+      "mind-affecting"
+    ]
+  },
+  {
+    "name": "Psicrown of the Psychic Warrior",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 30938,
+    "body_slot": "head",
+    "caster_level": null,
+    "aura": "strong psychometabolism",
+    "description": "Contains 75 PP. Powers known: expansion (ML 7), animal affinity (ML 7), psionic lion's charge (ML 7). Use PP from the crown's reserve. ML 7 for all powers.",
+    "source": "EPH 165",
+    "tags": [
+      "psionic",
+      "psicrown",
+      "psychometabolism",
+      "combat"
+    ]
+  },
+  {
+    "name": "Psicrown of the Traveler",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 47250,
+    "body_slot": "head",
+    "caster_level": null,
+    "aura": "strong psychoportation",
+    "description": "Contains 100 PP. Powers known: psionic dimension door (ML 9), psionic fly (ML 9), skate (ML 9). Use PP from the crown's reserve. ML 9 for all powers.",
+    "source": "EPH 165",
+    "tags": [
+      "psionic",
+      "psicrown",
+      "psychoportation",
+      "movement"
+    ]
+  },
+  {
+    "name": "Psicrown of the Temporal Juggler",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "greater",
+    "price_gp": 95625,
+    "body_slot": "head",
+    "caster_level": null,
+    "aura": "overwhelming psychoportation",
+    "description": "Contains 175 PP. Powers known: time regression (ML 17), hustle (ML 17), psionic teleport (ML 17). Use PP from the crown's reserve. ML 17 for all powers.",
+    "source": "EPH 165",
+    "tags": [
+      "psionic",
+      "psicrown",
+      "psychoportation",
+      "time"
+    ]
+  },
+  {
+    "name": "Torc of Power Preservation",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 36000,
+    "body_slot": "throat",
+    "caster_level": null,
+    "aura": "strong clairsentience",
+    "description": "This neck torc reduces the PP cost of every power manifested by the wearer by 1 (minimum 1 PP). Does not reduce metapsionic costs. Does not stack with other cost-reduction items. Attuned to a single manifester when first worn; remains attuned until removed for 24 hours.",
+    "source": "EPH 168",
+    "tags": [
+      "psionic",
+      "torc",
+      "power-points",
+      "cost-reduction",
+      "neck"
+    ]
+  },
+  {
+    "name": "Third Eye Concentrate",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 8000,
+    "body_slot": "forehead",
+    "caster_level": null,
+    "aura": "moderate clairsentience",
+    "description": "A gem worn on the forehead. 3/day: the wearer can expend her psionic focus as part of a Concentration check and treat the check as if she had rolled a 15 (not the normal minimum from psionic focus). This stacks with the normal expend-focus benefit, effectively doubling the bonus.",
+    "source": "EPH 168",
+    "tags": [
+      "psionic",
+      "third-eye",
+      "concentration",
+      "head"
+    ]
+  },
+  {
+    "name": "Third Eye Expose",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 10000,
+    "body_slot": "forehead",
+    "caster_level": null,
+    "aura": "moderate clairsentience",
+    "description": "3/day: as a standard action, the wearer can negate a target's psionic focus (Will DC 14 negates). If the target fails, they lose psionic focus immediately. Range 30 ft.",
+    "source": "EPH 168",
+    "tags": [
+      "psionic",
+      "third-eye",
+      "focus",
+      "head"
+    ]
+  },
+  {
+    "name": "Third Eye Matter",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 16000,
+    "body_slot": "forehead",
+    "caster_level": null,
+    "aura": "moderate metacreativity",
+    "description": "Continual: grants the wearer the ability to sense ectoplasm and psionic constructs within 60 ft. (no action). 1/day: duplicate the effects of matter agitation as a 5th-level psion (ML 5).",
+    "source": "EPH 168",
+    "tags": [
+      "psionic",
+      "third-eye",
+      "ectoplasm",
+      "head"
+    ]
+  },
+  {
+    "name": "Third Eye Penetrate",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 25000,
+    "body_slot": "forehead",
+    "caster_level": null,
+    "aura": "strong clairsentience",
+    "description": "Continual: the wearer's manifester level is treated as 2 higher for purposes of overcoming power resistance only. Does not increase other ML-dependent effects.",
+    "source": "EPH 168",
+    "tags": [
+      "psionic",
+      "third-eye",
+      "power-resistance",
+      "head"
+    ]
+  },
+  {
+    "name": "Third Eye Retaliate",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 90000,
+    "body_slot": "forehead",
+    "caster_level": null,
+    "aura": "strong telepathy",
+    "description": "If the wearer is struck by a psionic attack that deals damage, the attacker takes 2d6 psychic damage (no save, no PR). Fires automatically once per round. Does not work against psi-like abilities.",
+    "source": "EPH 168",
+    "tags": [
+      "psionic",
+      "third-eye",
+      "retaliation",
+      "head"
+    ]
+  },
+  {
+    "name": "Third Eye Sense",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 120000,
+    "body_slot": "forehead",
+    "caster_level": null,
+    "aura": "strong clairsentience",
+    "description": "Continual: the wearer gains blindsense 30 ft. and cannot be caught flat-footed against psionic attackers. Additionally, the wearer automatically knows when a psionic power is manifested within 60 ft., including the power's discipline (Psicraft DC 15 to identify specific power, using wearer's Psicraft or free if ML ≥ 15).",
+    "source": "EPH 168",
+    "tags": [
+      "psionic",
+      "third-eye",
+      "sense",
+      "blindsense",
+      "head"
+    ]
+  },
+  {
+    "name": "Power Storing Crystal, Minor",
+    "category": "Psionic Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 8000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "moderate psychokinesis",
+    "description": "Can be charged with a single psionic power of 3rd level or lower by any manifester. Once charged, any manifester (or creature with psi-like abilities) can activate it to release the stored power using the original manifester's parameters. Single use once released; can be recharged. Activation is a standard action.",
+    "source": "EPH 169",
+    "tags": [
+      "psionic",
+      "power-storing-crystal",
+      "stored-power"
+    ]
+  },
+  {
+    "name": "Power Storing Crystal, Major",
+    "category": "Psionic Item",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 18000,
+    "body_slot": null,
+    "caster_level": null,
+    "aura": "strong psychokinesis",
+    "description": "Can store any psionic power of 6th level or lower. See Power Storing Crystal, Minor for activation rules. This version holds greater energy — the crystal glows faintly when charged.",
+    "source": "EPH 169",
+    "tags": [
+      "psionic",
+      "power-storing-crystal",
+      "stored-power"
+    ]
+  },
+  {
+    "name": "Acrobat Boots",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 900,
+    "body_slot": "feet",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "Grants a +2 competence bonus on Tumble checks (continuous). Has 3 charges/day; spending charges grants an enhancement bonus to speed (+10/+15/+20 ft) for 1 round.",
+    "source": "MIC p.67",
+    "tags": [
+      "mobility",
+      "skill-bonus",
+      "tumble",
+      "speed"
+    ]
+  },
+  {
+    "name": "Amulet of Tears",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 2300,
+    "body_slot": "throat",
+    "caster_level": 4,
+    "aura": "faint enchantment",
+    "description": "Has 3 charges renewed each dawn. Spending 1-3 charges grants temporary hit points (12/18/24) lasting up to 10 minutes. A go-to defensive consumable in a single item.",
+    "source": "MIC p.70",
+    "tags": [
+      "defensive",
+      "temp-hp",
+      "healing",
+      "consumable"
+    ]
+  },
+  {
+    "name": "Amulet of Retributive Healing",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 2000,
+    "body_slot": "throat",
+    "caster_level": 9,
+    "aura": "moderate transmutation",
+    "description": "When you heal an ally, you regain hit points equal to half the amount healed. Activatable 3/day as a swift action. Excellent for dedicated healers.",
+    "source": "MIC p.69",
+    "tags": [
+      "healing",
+      "cleric",
+      "paladin",
+      "sustain"
+    ]
+  },
+  {
+    "name": "Amulet of Toxin Delay",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 400,
+    "body_slot": "throat",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "When activated (1/day, immediate), creates a delay poison effect on you for 2 rounds. Can be triggered when required to save against poison.",
+    "source": "MIC p.71",
+    "tags": [
+      "poison",
+      "defensive",
+      "consumable-like",
+      "survival"
+    ]
+  },
+  {
+    "name": "Amulet of Fortune Prevailing",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 5000,
+    "body_slot": "throat",
+    "caster_level": 9,
+    "aura": "moderate abjuration",
+    "description": "Once per day, reroll a saving throw before success or failure is determined (must use second result). Three aventurine stones track charges.",
+    "source": "MIC p.69",
+    "tags": [
+      "save",
+      "luck",
+      "reroll",
+      "defensive"
+    ]
+  },
+  {
+    "name": "Belt of Battle",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 12000,
+    "body_slot": "waist",
+    "caster_level": 9,
+    "aura": "moderate transmutation",
+    "description": "Has 3 charges renewed each dawn. Spending charges as a swift action grants 1 extra move action (1 charge), 1 extra standard action (2 charges), or 1 extra full-round action (3 charges). One of the most powerful action-economy items in 3.5.",
+    "source": "MIC p.73",
+    "tags": [
+      "action-economy",
+      "combat",
+      "fighter",
+      "monk",
+      "must-have"
+    ]
+  },
+  {
+    "name": "Belt of Hidden Pouches",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 5000,
+    "body_slot": "waist",
+    "caster_level": 9,
+    "aura": "moderate conjuration",
+    "description": "Has 10 visible pockets, each functioning as a small bag of holding (0.5 cu ft, 5 lbs, 1/10 weight). Also has 20 secret pockets behind the visible ones, for 30 total. No item wider than 6 inches.",
+    "source": "MIC p.74",
+    "tags": [
+      "utility",
+      "storage",
+      "smuggling",
+      "rogue"
+    ]
+  },
+  {
+    "name": "Belt of One Mighty Blow",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 1500,
+    "body_slot": "waist",
+    "caster_level": 5,
+    "aura": "faint transmutation",
+    "description": "Once per day (swift), your next melee attack deals extra damage: +1d8 (light weapon), +2d6 (one-handed), or +3d6 (two-handed).",
+    "source": "MIC p.74",
+    "tags": [
+      "combat",
+      "damage",
+      "melee",
+      "fighter",
+      "barbarian"
+    ]
+  },
+  {
+    "name": "Boots of Agile Leaping",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 600,
+    "body_slot": "feet",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "Allows adding Dex modifier instead of Str modifier on Jump checks (continuous). Has 3 charges/day for +10/+15/+20 ft competence bonus on Jump for 1 round.",
+    "source": "MIC p.76",
+    "tags": [
+      "mobility",
+      "jump",
+      "dexterity",
+      "rogue"
+    ]
+  },
+  {
+    "name": "Boots of the Battle Charger",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 2000,
+    "body_slot": "feet",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "Once per day (swift), make a charge attack as a standard action (movement up to your speed rather than double). Excellent for reducing action cost of charging.",
+    "source": "MIC p.76",
+    "tags": [
+      "combat",
+      "charge",
+      "fighter",
+      "barbarian",
+      "mobility"
+    ]
+  },
+  {
+    "name": "Boots of Dragonstriding",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 1500,
+    "body_slot": "feet",
+    "caster_level": 9,
+    "aura": "moderate transmutation",
+    "description": "Grants +2 competence on Climb and Jump checks (continuous). Once per day, activate to gain a climb speed equal to your land speed for 10 rounds.",
+    "source": "MIC p.77",
+    "tags": [
+      "mobility",
+      "climb",
+      "jump",
+      "utility",
+      "dungeon-crawl"
+    ]
+  },
+  {
+    "name": "Boots of Landing",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 500,
+    "body_slot": "feet",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "Always land on your feet when falling; reduce fall damage by 2 dice (falls of 20 ft or less deal no damage). Continuous effect, no activation.",
+    "source": "MIC p.78",
+    "tags": [
+      "mobility",
+      "fall-damage",
+      "survival",
+      "dungeon-crawl"
+    ]
+  },
+  {
+    "name": "Dimension Stride Boots",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 2000,
+    "body_slot": "feet",
+    "caster_level": 7,
+    "aura": "faint conjuration",
+    "description": "+2 competence on Jump checks (continuous). Has 5 charges/day; spending charges allows short-range teleportation with line of sight (no chance of error).",
+    "source": "MIC p.94",
+    "tags": [
+      "teleport",
+      "mobility",
+      "jump",
+      "rogue",
+      "scout"
+    ]
+  },
+  {
+    "name": "Bracers of Quick Strike",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 1400,
+    "body_slot": "arms",
+    "caster_level": 5,
+    "aura": "faint transmutation",
+    "description": "Once per day (swift), if you already made a full attack this turn, make one extra attack at your full BAB. Must be worn 24 hours before first use.",
+    "source": "MIC p.81",
+    "tags": [
+      "combat",
+      "extra-attack",
+      "fighter",
+      "ranger",
+      "full-attack"
+    ]
+  },
+  {
+    "name": "Bracers of Opportunity",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 2300,
+    "body_slot": "arms",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "When an opponent grants you an attack of opportunity, you may make it even if you've already reached your normal AoO limit that round. 2/day.",
+    "source": "MIC p.81",
+    "tags": [
+      "combat",
+      "attack-of-opportunity",
+      "fighter",
+      "reach",
+      "control"
+    ]
+  },
+  {
+    "name": "Arcanist's Gloves",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 500,
+    "body_slot": "hands",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "2/day (swift): add +2 to caster level of the next 1st-level arcane spell cast before end of turn. Cheap and useful for any arcane caster.",
+    "source": "MIC p.72",
+    "tags": [
+      "arcane",
+      "wizard",
+      "sorcerer",
+      "caster-level",
+      "utility"
+    ]
+  },
+  {
+    "name": "Brawler's Gauntlets",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 1000,
+    "body_slot": "hands",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "3/day (swift): for 1 round, grants +2 bonus on grapple checks and damage rolls when making unarmed attacks. Good for monks and grapple-focused fighters.",
+    "source": "MIC p.82",
+    "tags": [
+      "grapple",
+      "unarmed",
+      "monk",
+      "fighter"
+    ]
+  },
+  {
+    "name": "Gloves of Lightning",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 2000,
+    "body_slot": "hands",
+    "caster_level": 3,
+    "aura": "faint evocation",
+    "description": "3/day: ranged touch attack (30 ft) dealing 1d8+5 electricity damage. +3 bonus to attack if target wears metal armor. Good cheap offensive utility.",
+    "source": "MIC p.106",
+    "tags": [
+      "electricity",
+      "ranged",
+      "touch",
+      "combat",
+      "arcane",
+      "utility"
+    ]
+  },
+  {
+    "name": "Gloves of Manual Prowess",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 3000,
+    "body_slot": "hands",
+    "caster_level": 3,
+    "aura": "faint transmutation",
+    "description": "Has 3 charges/day (swift). Spending charges grants +5/+7/+10 competence bonus on next Disable Device, Forgery, Open Lock, Sleight of Hand, or Use Rope check. Must begin check within 1 round.",
+    "source": "MIC p.106",
+    "tags": [
+      "skill-bonus",
+      "rogue",
+      "disable-device",
+      "open-lock",
+      "utility"
+    ]
+  },
+  {
+    "name": "Cloak of the Salamander",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 6000,
+    "body_slot": "shoulders",
+    "caster_level": 7,
+    "aura": "moderate evocation",
+    "description": "Covered in dancing flames (harmless to you). 3/day (immediate): any creature striking you with a natural weapon or nonreach melee weapon takes 1d6+7 fire damage until start of your next turn.",
+    "source": "MIC p.88",
+    "tags": [
+      "fire",
+      "defensive",
+      "retaliation",
+      "melee-defense"
+    ]
+  },
+  {
+    "name": "Cloak of Predatory Vigor",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 1400,
+    "body_slot": "shoulders",
+    "caster_level": 3,
+    "aura": "faint conjuration",
+    "description": "While in a rage or frenzy, activate (swift) to heal damage equal to your Hit Dice. Barbarian must-have for extended combats.",
+    "source": "MIC p.87",
+    "tags": [
+      "healing",
+      "barbarian",
+      "rage",
+      "sustain"
+    ]
+  },
+  {
+    "name": "Cloak of Stone",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 8000,
+    "body_slot": "shoulders",
+    "caster_level": 5,
+    "aura": "faint transmutation",
+    "description": "+5 competence bonus on Hide and Move Silently checks (continuous). Once per day, activate (standard) to merge with stone as meld into stone.",
+    "source": "MIC p.88",
+    "tags": [
+      "stealth",
+      "hide",
+      "move-silently",
+      "escape",
+      "rogue",
+      "druid"
+    ]
+  },
+  {
+    "name": "Cloak of Weaponry",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 2300,
+    "body_slot": "shoulders",
+    "caster_level": 9,
+    "aura": "moderate conjuration",
+    "description": "Has an extradimensional space holding one weapon (up to 25 lbs, Medium or smaller). Activate (swift) to draw or stow the weapon instantly. Great concealed-weapon item for city play.",
+    "source": "MIC p.89",
+    "tags": [
+      "utility",
+      "weapon-storage",
+      "rogue",
+      "city",
+      "concealment"
+    ]
+  },
+  {
+    "name": "Circlet of Mages",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 5000,
+    "body_slot": "head",
+    "caster_level": 7,
+    "aura": "moderate transmutation",
+    "description": "+2 competence bonus on Concentration checks (continuous). Has 3 charges/day; spending charges lets you retain a prepared spell or spell slot after casting it (up to 1st/2nd/3rd level).",
+    "source": "MIC p.86",
+    "tags": [
+      "arcane",
+      "wizard",
+      "concentration",
+      "spell-retention",
+      "utility"
+    ]
+  },
+  {
+    "name": "Enduring Amulet",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 1500,
+    "body_slot": "throat",
+    "caster_level": 3,
+    "aura": "faint abjuration",
+    "description": "Continuous endure elements effect. Has 3 charges/day (immediate); spending charges grants resistance to cold and fire (10/15/20) for 1 round. Ideal for wilderness and dungeon environments.",
+    "source": "MIC p.97",
+    "tags": [
+      "survival",
+      "cold",
+      "fire",
+      "resistance",
+      "exploration"
+    ]
+  },
+  {
+    "name": "Necklace of Warning",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 4000,
+    "body_slot": "throat",
+    "caster_level": 3,
+    "aura": "faint divination",
+    "description": "Grants a +2 bonus to your flat-footed AC (up to your normal AC cap). Continuous effect; helps against rogues, ambushes, and other flat-footed situations.",
+    "source": "MIC p.118",
+    "tags": [
+      "defensive",
+      "flat-footed",
+      "AC",
+      "initiative",
+      "surprise"
+    ]
+  },
+  {
+    "name": "Heartseeking Amulet",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 1350,
+    "body_slot": "throat",
+    "caster_level": 3,
+    "aura": "faint conjuration",
+    "description": "3/day (swift): your next melee attack before end of turn is a melee touch attack instead of a normal attack. Excellent for bypassing heavily armored foes.",
+    "source": "MIC p.110",
+    "tags": [
+      "combat",
+      "touch-attack",
+      "bypass-armor",
+      "fighter",
+      "rogue"
+    ]
+  },
+  {
+    "name": "Farspeaking Amulet",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 6000,
+    "body_slot": "throat",
+    "caster_level": 5,
+    "aura": "faint divination",
+    "description": "The central crystal (worn) links telepathically to up to 4 small red charm-crystals carried by others. Activate (swift) to communicate with any charm-carrier on the same plane. Range: unlimited on same plane.",
+    "source": "MIC p.99",
+    "tags": [
+      "communication",
+      "telepathy",
+      "utility",
+      "party",
+      "coordination"
+    ]
+  },
+  {
+    "name": "Mask of Sweet Air",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 2000,
+    "body_slot": "face",
+    "caster_level": 7,
+    "aura": "moderate conjuration",
+    "description": "Breathe freely through smoke, dust, and fumes (continuous). Grants +5 bonus on saves against airborne stench attacks and inhaled poisons (cloudkill, stinking cloud, troglodyte stench, etc.).",
+    "source": "MIC p.116",
+    "tags": [
+      "poison",
+      "survival",
+      "dungeon-crawl",
+      "sewers",
+      "defensive"
+    ]
+  },
+  {
+    "name": "Dragon Mask",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 4000,
+    "body_slot": "face",
+    "caster_level": 6,
+    "aura": "moderate divination",
+    "description": "2/day (swift): see invisibility as the spell, for 5 minutes. Simple, reliable anti-invisible utility for any class.",
+    "source": "MIC p.94",
+    "tags": [
+      "divination",
+      "see-invisibility",
+      "utility",
+      "anti-invisible"
+    ]
+  },
+  {
+    "name": "Sending Stones",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 1400,
+    "body_slot": "none",
+    "caster_level": 7,
+    "aura": "moderate evocation",
+    "description": "A pair of matched stones. Activate (standard) to send a message of up to 25 words to the holder of the other stone (same plane). If one stone is destroyed, the other becomes useless.",
+    "source": "MIC p.184",
+    "tags": [
+      "communication",
+      "utility",
+      "party",
+      "sending",
+      "coordination"
+    ]
+  },
+  {
+    "name": "Scrying Shard",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "greater",
+    "price_gp": 1350,
+    "body_slot": "none",
+    "caster_level": 7,
+    "aura": "moderate divination",
+    "description": "A character of any class can cast scrying using this pink crystal as a focus (the spell itself must be cast or otherwise available). Lowers the class restriction barrier for scrying.",
+    "source": "MIC p.184",
+    "tags": [
+      "scrying",
+      "divination",
+      "utility",
+      "any-class"
+    ]
+  },
+  {
+    "name": "Lockpicking Ring",
+    "category": "Ring",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 3500,
+    "body_slot": "ring",
+    "caster_level": 5,
+    "aura": "faint transmutation",
+    "description": "+5 competence bonus on Open Lock checks (continuous). Once per day, activate to cast knock by touching the ring to a portal. Solid rogue/dungeon item.",
+    "source": "MIC p.114",
+    "tags": [
+      "open-lock",
+      "knock",
+      "rogue",
+      "skill-bonus",
+      "dungeon-crawl"
+    ]
+  },
+  {
+    "name": "Brooch of Stability",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 1000,
+    "body_slot": "throat",
+    "caster_level": 3,
+    "aura": "faint conjuration",
+    "description": "Once per day: when reduced to -1 or lower HP, automatically stabilize (assuming damage wasn't lethal). Cheap life insurance for any character.",
+    "source": "MIC p.83",
+    "tags": [
+      "survival",
+      "stabilize",
+      "dying",
+      "defensive",
+      "any-class"
+    ]
+  },
+  {
+    "name": "Dispelling Cord",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 1000,
+    "body_slot": "torso",
+    "caster_level": 5,
+    "aura": "faint abjuration",
+    "description": "5/day (swift): gain +2 competence bonus on all dispel checks made until end of turn. Each activation unties one of five visible knots, tracking daily uses. Worn around the chest.",
+    "source": "MIC p.94",
+    "tags": [
+      "dispel",
+      "arcane",
+      "wizard",
+      "utility",
+      "anti-magic"
+    ]
+  },
+  {
+    "name": "Bag of Endless Caltrops",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 800,
+    "body_slot": "none",
+    "caster_level": 9,
+    "aura": "moderate conjuration",
+    "description": "5/day (move action): pull out a handful of caltrops covering a 5-ft square. Caltrops are non-magical but free. Pairs well with withdrawal tactics or defending chokepoints.",
+    "source": "MIC p.151",
+    "tags": [
+      "utility",
+      "area-control",
+      "caltrops",
+      "terrain",
+      "dungeon-crawl"
+    ]
+  },
+  {
+    "name": "Magic Bedroll",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 500,
+    "body_slot": "none",
+    "caster_level": 3,
+    "aura": "faint conjuration",
+    "description": "Provides endure elements while you sleep in it. After 8 hours of sleep, recover 1 extra hit point per character level in addition to normal recovery. Getting in/out is a full-round action.",
+    "source": "MIC p.163",
+    "tags": [
+      "exploration",
+      "survival",
+      "rest",
+      "healing",
+      "utility"
+    ]
+  },
+  {
+    "name": "Orb of Mental Renewal",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 3100,
+    "body_slot": "none",
+    "caster_level": 3,
+    "aura": "faint conjuration",
+    "description": "Has 3 charges/day. Spending charges heals ability damage to Int, Wis, or Cha: 1 charge heals 4 pts to one score or 2 pts to all three; scales up with more charges. Must be held while touching the target.",
+    "source": "MIC p.167",
+    "tags": [
+      "healing",
+      "ability-damage",
+      "restoration",
+      "mental",
+      "utility"
+    ]
+  },
+  {
+    "name": "Rod of Bodily Restoration",
+    "category": "Rod",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 3100,
+    "body_slot": "none",
+    "caster_level": 9,
+    "aura": "moderate conjuration",
+    "description": "Has 3 charges/day. Spending charges heals physical ability damage (Str/Dex/Con): 1 charge heals 4 pts to one score or 2 pts to all three; scales with more charges. Must touch target (or hold rod for self).",
+    "source": "MIC p.173",
+    "tags": [
+      "healing",
+      "ability-damage",
+      "restoration",
+      "physical",
+      "utility"
+    ]
+  },
+  {
+    "name": "Rod of Escape",
+    "category": "Rod",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 3500,
+    "body_slot": "none",
+    "caster_level": 9,
+    "aura": "moderate transmutation",
+    "description": "2/day: cast jump. 2/day: cast knock. 1/day: create a 5-ft-radius spherical ward that repels nonmagical water for 10 minutes (allows crossing rivers or working underwater in an air bubble).",
+    "source": "MIC p.173",
+    "tags": [
+      "utility",
+      "escape",
+      "jump",
+      "knock",
+      "water",
+      "dungeon-crawl"
+    ]
+  },
+  {
+    "name": "Runestaff of Abjuration",
+    "category": "Staff",
+    "tier": "major",
+    "subtier": "lesser",
+    "price_gp": 32000,
+    "body_slot": "none",
+    "caster_level": 11,
+    "aura": "strong abjuration",
+    "description": "Spend a prepared arcane spell/slot to cast (3/day each): dismissal, dispel magic, lesser globe of invulnerability, repulsion, resist energy, or shield. Each spell costs a slot of equal or higher level.",
+    "source": "MIC p.176",
+    "tags": [
+      "arcane",
+      "wizard",
+      "abjuration",
+      "staff",
+      "defensive",
+      "versatile"
+    ]
+  },
+  {
+    "name": "Runestaff of Opening",
+    "category": "Staff",
+    "tier": "medium",
+    "subtier": "greater",
+    "price_gp": 15000,
+    "body_slot": "none",
+    "caster_level": 12,
+    "aura": "strong transmutation",
+    "description": "Spend a prepared arcane spell/slot (same level or higher) to cast (3/day each): knock, open/close, passwall, or shatter. Perfect dungeon utility runestaff for arcane casters.",
+    "source": "MIC p.181",
+    "tags": [
+      "arcane",
+      "wizard",
+      "staff",
+      "dungeon-crawl",
+      "knock",
+      "passwall"
+    ]
+  },
+  {
+    "name": "Horned Helm",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 8000,
+    "body_slot": "head",
+    "caster_level": 5,
+    "aura": "faint transmutation",
+    "description": "Antlers join with your skull, granting a natural secondary gore attack (1d8 + half Str bonus). Treated as a magic weapon for DR purposes. Continuous, no activation.",
+    "source": "MIC p.112",
+    "tags": [
+      "natural-attack",
+      "gore",
+      "fighter",
+      "barbarian",
+      "druid",
+      "combat"
+    ]
+  },
+  {
+    "name": "Helm of Glorious Recovery",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 5600,
+    "body_slot": "head",
+    "caster_level": 7,
+    "aura": "moderate conjuration",
+    "description": "Once per day (swift): regain hp equal to your character level + Cha modifier. Excellent for paladins and other Charisma-based fighters who need emergency healing.",
+    "source": "MIC p.111",
+    "tags": [
+      "healing",
+      "paladin",
+      "cleric",
+      "charisma",
+      "swift",
+      "sustain"
+    ]
+  },
+  {
+    "name": "Chronocharm of the Laughing Rogue",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 500,
+    "body_slot": "throat",
+    "caster_level": 5,
+    "aura": "faint transmutation",
+    "description": "Once per day (immediate): reroll a Disable Device check just attempted (even after setting off a trap, but before consequences apply). Multiple chronocharms can be worn simultaneously.",
+    "source": "MIC p.85",
+    "tags": [
+      "rogue",
+      "disable-device",
+      "traps",
+      "reroll",
+      "consumable-like"
+    ]
+  },
+  {
+    "name": "Chronocharm of the Celestial Wanderer",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "subtier": "lesser",
+    "price_gp": 500,
+    "body_slot": "throat",
+    "caster_level": 5,
+    "aura": "faint transmutation",
+    "description": "Once per day (immediate): immediately reroll a single Listen or Spot check just attempted. Second result replaces first. Multiple chronocharms can stack in the throat slot.",
+    "source": "MIC p.85",
+    "tags": [
+      "perception",
+      "listen",
+      "spot",
+      "reroll",
+      "scout",
+      "rogue"
+    ]
+  },
+  {
+    "name": "Formless Vest",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 3200,
+    "body_slot": "torso",
+    "caster_level": 9,
+    "aura": "moderate transmutation",
+    "description": "Once per day (immediate): when struck by a critical hit or sneak attack, take half the damage after it is determined but before it is dealt.",
+    "source": "MIC p.101",
+    "tags": [
+      "defensive",
+      "critical-hit",
+      "sneak-attack",
+      "rogue",
+      "fighter",
+      "survival"
+    ]
+  },
+  {
+    "name": "Goggles of Foefinding",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "subtier": "lesser",
+    "price_gp": 2500,
+    "body_slot": "face",
+    "caster_level": 5,
+    "aura": "faint divination",
+    "description": "While wearing these goggles, ignore cover bonuses to AC for ranged attacks (but not total cover). Continuous effect, no activation. Useful for archers.",
+    "source": "MIC p.108",
+    "tags": [
+      "ranged",
+      "cover",
+      "archer",
+      "ranger",
+      "fighter",
+      "utility"
+    ]
+  },
+  {
+    "name": "Mrathrach Cog",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "price_gp": 9000,
+    "body_slot": "—",
+    "caster_level": 10,
+    "aura": "moderate transmutation",
+    "description": "A toothed brass cog that whirs of its own accord. 1/day, functions as make whole, and can briefly reactivate a dormant Ghul-era mechanism for 1 round.",
+    "source": "Ptolus p. 558",
+    "tags": [
+      "mrathrach",
+      "construct",
+      "utility"
+    ],
+    "subtier": "lesser",
+    "setting_notes": "Bears the alien tooth-and-spiral aesthetic of the Mrathrach Machine; scholars pay well for it."
+  },
+  {
+    "name": "Lens of the Skull-King",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "price_gp": 12000,
+    "body_slot": "eyes",
+    "caster_level": 11,
+    "aura": "moderate divination",
+    "description": "A smoked-crystal monocle etched with Ghulish glyphs. Grants the ability to read Ghul-era script and a +10 competence bonus on Intelligence checks to identify chaositech and ancient mechanisms.",
+    "source": "Ptolus p. 622",
+    "tags": [
+      "mrathrach",
+      "divination"
+    ],
+    "setting_notes": "Said to be ground from a shard of Ghul the Skull-King's own seeing-stone."
+  },
+  {
+    "name": "Spire-Glass Focus",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "price_gp": 11000,
+    "body_slot": "—",
+    "caster_level": 10,
+    "aura": "strong (no school)",
+    "description": "A sliver of the Spire's strange glass set in iron. Once per day it lets you cast a single spell of 3rd level or lower even within a dead-magic zone, as if magic functioned normally there.",
+    "source": "Ptolus p. 451",
+    "tags": [
+      "mrathrach",
+      "arcane"
+    ],
+    "setting_notes": "Reacts to the Spire; carrying it near Jabel Shammar makes it hum painfully."
+  },
+  {
+    "name": "Ring of the Imperial Eye",
+    "category": "Ring",
+    "tier": "medium",
+    "price_gp": 9000,
+    "body_slot": "ring",
+    "caster_level": 7,
+    "aura": "moderate divination",
+    "description": "A platinum ring stamped with the open Eye of the Empire. Grants a +5 competence bonus on Sense Motive and, 1/day, detect scrying for 7 rounds.",
+    "source": "Ptolus ch.4",
+    "tags": [
+      "imperial-relic",
+      "divination"
+    ],
+    "subtier": "greater"
+  },
+  {
+    "name": "Tarsisan Officer's Saber",
+    "category": "Magic Weapon",
+    "tier": "minor",
+    "price_gp": 4315,
+    "body_slot": "—",
+    "caster_level": 5,
+    "aura": "faint evocation",
+    "description": "A +1 longsword bearing the Imperial campaign etching. 1/day as a standard action the wielder rallies allies within 30 ft., granting a +2 morale bonus on attacks for 1 round.",
+    "source": "Ptolus ch.4",
+    "tags": [
+      "imperial-relic",
+      "weapon"
+    ]
+  },
+  {
+    "name": "Censer of Saint Gustav",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "price_gp": 7200,
+    "body_slot": "—",
+    "caster_level": 7,
+    "aura": "moderate conjuration",
+    "description": "A silver censer trailing pale smoke. 1/day it casts remove disease, and while lit it wards a 10-ft. radius against the undead's channel-negative effects (as a minor consecrate).",
+    "source": "Ptolus p. 73",
+    "tags": [
+      "lothian-blessed",
+      "healing",
+      "divine"
+    ]
+  },
+  {
+    "name": "Prayer Beads of Lothian (lesser)",
+    "category": "Wondrous Item",
+    "tier": "medium",
+    "price_gp": 9600,
+    "body_slot": "neck",
+    "caster_level": 9,
+    "aura": "moderate (varies)",
+    "description": "A strand bearing a bead of blessing (allies within 50 ft. gain +1 attack and saves vs. fear for 10 min, 1/day) and a bead of healing (cure serious wounds, 1/day).",
+    "source": "DMG 255 / Ptolus p. 73",
+    "tags": [
+      "lothian-blessed",
+      "divine",
+      "healing"
+    ]
+  },
+  {
+    "name": "Knight of the Pale Signet",
+    "category": "Ring",
+    "tier": "minor",
+    "price_gp": 2000,
+    "body_slot": "ring",
+    "caster_level": 5,
+    "aura": "faint abjuration",
+    "description": "A blackened iron signet of the Knights of the Pale. Grants a +1 resistance bonus on saves and a +2 morale bonus on saves against fear.",
+    "source": "Ptolus p. 122",
+    "tags": [
+      "lothian-blessed",
+      "knights-of-the-pale",
+      "defensive"
+    ]
+  },
+  {
+    "name": "Grailwarden Maul +1",
+    "category": "Magic Weapon",
+    "tier": "medium",
+    "price_gp": 8312,
+    "body_slot": "—",
+    "caster_level": 8,
+    "aura": "faint evocation and transmutation",
+    "description": "A +1 warhammer of dense Grailwarden steel. On a hit against an object or construct it ignores 5 points of hardness.",
+    "source": "Ptolus p. 200",
+    "tags": [
+      "dwarven-forge",
+      "weapon"
+    ]
+  },
+  {
+    "name": "Stonelost Plate +1",
+    "category": "Magic Armor",
+    "tier": "medium",
+    "price_gp": 2650,
+    "body_slot": "body",
+    "caster_level": 5,
+    "aura": "faint abjuration",
+    "description": "+1 full plate forged in lost Dwarvenhearth. The wearer gains a +4 bonus to resist the bull rush, overrun, and trip attempts of larger creatures.",
+    "source": "Ptolus p. 460",
+    "tags": [
+      "dwarven-forge",
+      "armor",
+      "defensive"
+    ]
+  },
+  {
+    "name": "Chaos-Etched Dagger",
+    "category": "Magic Weapon",
+    "tier": "medium",
+    "price_gp": 8302,
+    "body_slot": "—",
+    "caster_level": 9,
+    "aura": "moderate evocation [chaotic]",
+    "description": "A +1 anarchic dagger whose blade crawls with shifting color. On a natural 1 to attack, the wielder takes 1d4 damage as chaos bleeds back up the hilt.",
+    "source": "Night of Dissolution",
+    "tags": [
+      "chaos-cult",
+      "chaos",
+      "weapon",
+      "cursed"
+    ]
+  },
+  {
+    "name": "Vial of Galchutt Ichor",
+    "category": "Wondrous Item",
+    "tier": "minor",
+    "price_gp": 900,
+    "body_slot": "—",
+    "caster_level": 9,
+    "aura": "strong evocation",
+    "description": "A single-use phial of dull, scintillating fluid. Thrown (range 10 ft.) it bursts for 3d6 acid plus 1d6 untyped chaos in a 5-ft. radius; whoever handled it risks 1 point of corruption (see the Pits of Insanity rules).",
+    "source": "Night of Dissolution",
+    "tags": [
+      "chaos-cult",
+      "chaos",
+      "consumable"
+    ],
+    "subtier": "lesser"
+  },
+  {
+    "name": "Idol of the Sleeping Lords",
+    "category": "Wondrous Item",
+    "tier": "major",
+    "price_gp": 24000,
+    "body_slot": "—",
+    "caster_level": 15,
+    "aura": "strong enchantment [evil]",
+    "description": "A fist-sized idol of fused bone and metal. A chaos-cult cell within 30 ft. gains a +2 morale bonus on attacks and saves and may rage 1/day. Prolonged possession draws the attention of the Galchutt (accrue corruption per session).",
+    "source": "Night of Dissolution",
+    "tags": [
+      "chaos-cult",
+      "evil",
+      "cursed"
+    ]
+  }
+]

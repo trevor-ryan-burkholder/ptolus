@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Action Economy — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .wrap { padding:16px 20px 60px; max-width:900px; }
+  details { background:var(--bg-panel); border:1px solid var(--line); border-radius:8px; margin-bottom:10px; padding:0 14px; }
+  details summary { cursor:pointer; color:var(--gold); font-size:16px; font-weight:bold; padding:12px 0; letter-spacing:0.5px; }
+  details[open] summary { border-bottom:1px solid var(--line); margin-bottom:8px; }
+  details ul { margin:6px 0 12px; padding-left:22px; }
+  details li { margin:3px 0; font-size:15px; line-height:1.4; }
+  .yes { color:var(--good); } .no { color:var(--bad); }
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+  <table class="ref">
+    <tr><th>Action Type</th><th>Per Round</th><th>Typical Uses</th></tr>
+    <tr><td>Standard</td><td>1</td><td>Attack, cast most spells, activate items</td></tr>
+    <tr><td>Move</td><td>1</td><td>Move up to speed, draw weapon, pick up item</td></tr>
+    <tr><td>Full-Round</td><td>replaces both</td><td>Full attack, charge, run, coup de grace</td></tr>
+    <tr><td>Free</td><td>several</td><td>Drop item, speak, cease concentration</td></tr>
+    <tr><td>Swift</td><td>1/turn</td><td>Quickened spell, some class abilities</td></tr>
+    <tr><td>Immediate</td><td>1/round</td><td>Out-of-turn; uses next turn's swift</td></tr>
+    <tr><td>Attack of Opportunity</td><td>varies</td><td>Triggered by actions in a threatened square</td></tr>
+  </table>
+  <p class="hint">A standard + a move = a round. A full-round action replaces both.</p>
+
+  <details open><summary>Standard Actions</summary><ul>
+    <li>Single attack (highest BAB) / unarmed strike</li>
+    <li>Cast a touch spell and touch a target the same round</li>
+    <li>A special attack: disarm, trip, sunder, feint</li>
+    <li>Cast a spell with a 1-standard-action casting time</li>
+    <li>Activate a scroll (spell completion) or wand (spell trigger)</li>
+    <li>Use a supernatural or activated magic item (command word is free)</li>
+    <li>Administer a potion to another creature</li>
+    <li>Ready an action; start/complete a full-round action</li>
+  </ul></details>
+
+  <details open><summary>Move Actions</summary><ul>
+    <li>Move up to your speed</li>
+    <li>Draw/sheathe a weapon (draw is free during a move if BAB +1 or higher)</li>
+    <li>Pick up an item; retrieve a stored item</li>
+    <li>Load a hand or light crossbow</li>
+    <li>Open or close a door; mount or dismount</li>
+    <li>Stand up from prone (provokes AoO)</li>
+    <li>Move a heavy object (half speed)</li>
+  </ul></details>
+
+  <details><summary>Full-Round Actions</summary><ul>
+    <li>Full attack (iteratives at −5 / −10 / −15)</li>
+    <li>Charge (2× speed straight line, then attack: +2 attack, −2 AC)</li>
+    <li>Run (4× speed straight line, −4 AC)</li>
+    <li>Coup de grace on a helpless foe (auto-crit; Fort DC 10 + damage or die)</li>
+    <li>Withdraw (2× speed; no AoO from your starting square)</li>
+    <li>Load a heavy/repeating crossbow; cast a 1-full-round spell</li>
+  </ul></details>
+
+  <details><summary>Free / Swift / Immediate</summary><ul>
+    <li><strong>Free:</strong> drop an item, drop prone, speak briefly, cease concentration, use a command-word item</li>
+    <li><strong>Swift (1/turn):</strong> cast a swift-time spell, activate a quickened spell, some class abilities</li>
+    <li><strong>Immediate (1/round):</strong> <em>feather fall</em> while falling; some defensive triggers. Uses your next turn's swift if used between turns.</li>
+  </ul></details>
+
+  <details><summary>Attacks of Opportunity</summary>
+    <p style="margin:4px 0;"><span class="no">Provokes:</span></p><ul>
+      <li>Moving through a threatened square</li>
+      <li>Casting in melee (unless Defensive Casting, DC 15 + spell level)</li>
+      <li>Using a ranged weapon in melee; loading a crossbow</li>
+      <li>Standing up from prone; picking up or retrieving an item</li>
+      <li>Most skill uses in a threatened square</li>
+    </ul>
+    <p style="margin:4px 0;"><span class="yes">Does NOT provoke:</span></p><ul>
+      <li>Drawing a weapon (if BAB +1+, free during a move)</li>
+      <li>The first square you move out of; a 5-foot step</li>
+      <li>Swift actions; total defense</li>
+    </ul>
+    <p style="margin:4px 0;">Limit: 1 AoO per threatening creature per round (Combat Reflexes adds your Dex modifier in extra AoOs).</p>
+  </details>
+
+  <details><summary>5-Foot Step · Ready · Delay</summary><ul>
+    <li><strong>5-foot step:</strong> 5 ft, no AoO, once/round, only if you haven't otherwise moved.</li>
+    <li><strong>Ready:</strong> "I ready to [action] when [trigger]." Uses your standard action; you act just before the trigger.</li>
+    <li><strong>Delay:</strong> voluntarily act later in the round; your initiative resets to where you act.</li>
+  </ul></details>
+
+  <details><summary>Combat Maneuvers</summary>
+    <table class="ref">
+      <tr><th>Maneuver</th><th>Check</th><th>On Success</th></tr>
+      <tr><td>Trip</td><td>Melee touch, then Str vs Str/Dex</td><td>Target prone</td></tr>
+      <tr><td>Disarm</td><td>Melee touch, opposed attack</td><td>Weapon dropped (or to you)</td></tr>
+      <tr><td>Grapple</td><td>Melee touch, then Grapple check</td><td>Target grappled</td></tr>
+      <tr><td>Sunder</td><td>Attack vs object AC (provokes)</td><td>Damage the object</td></tr>
+      <tr><td>Feint</td><td>Bluff vs Sense Motive</td><td>Target loses Dex to AC for 1 attack</td></tr>
+      <tr><td>Bull Rush</td><td>Str check (opposed)</td><td>Push target back</td></tr>
+      <tr><td>Overrun</td><td>Str check (opposed)</td><td>Move through their square</td></tr>
+    </table>
+    <p class="hint">All provoke an AoO unless a feat (e.g., Improved Trip) says otherwise. Feint in combat is a standard action.</p>
+  </details>
+</div>
+<script src="../shared/ui.js"></script>
+<script>UI.mountHead('Action Economy Reference', 'What can be done in a round');
+UI.diceTray();</script>
+</body>
+</html>

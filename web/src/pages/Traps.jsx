@@ -1,0 +1,150 @@
+import { useState } from 'react';
+import D from '../lib/dice.js';
+import { Layout, SeedControl, Log, useLog } from '../components/ui.jsx';
+
+/* ---- curated sample traps (DMG-consistent) ----
+   fields: name, cr, type (mech|magic), trigger, reset, search, disable, defense (atk/save line), effect, note */
+const SAMPLES = [
+  // ---- mechanical ----
+  { name: 'Camouflaged Pit Trap', cr: 1, type: 'mech', trigger: 'location', reset: 'manual', search: 24, disable: 19, defense: 'Reflex DC 20 avoid', effect: '10-ft fall, 1d6 falling', note: 'Lid blends with the floor; the obvious choke point hides it.' },
+  { name: 'Spiked Pit Trap', cr: 2, type: 'mech', trigger: 'location', reset: 'manual', search: 18, disable: 15, defense: 'Reflex DC 20 avoid', effect: '20-ft fall (2d6) + 1d4 spikes at +10 (1d4+2 each)', note: 'Old delver-killer; spikes are often rusted (infection risk).' },
+  { name: 'Poisoned Dart Trap', cr: 2, type: 'mech', trigger: 'location', reset: 'repair', search: 20, disable: 18, defense: 'Atk +8 ranged (1d4+1)', effect: 'plus Medium spider venom — Fort DC 14, 1d4 Str / 1d4 Str', note: 'A single dart from a wall slot.' },
+  { name: 'Swinging Blade', cr: 1, type: 'mech', trigger: 'location', reset: 'automatic', search: 20, disable: 20, defense: 'Atk +5 melee', effect: '2d4 slashing', note: 'A pendulum from the ceiling; resets on its own arc.' },
+  { name: 'Wall Scythe', cr: 2, type: 'mech', trigger: 'location', reset: 'automatic', search: 21, disable: 20, defense: 'Atk +10 melee', effect: '2d4+8 slashing (crit ×4)', note: 'Springs from a slot at chest height.' },
+  { name: 'Fusillade of Darts', cr: 3, type: 'mech', trigger: 'location', reset: 'repair', search: 18, disable: 22, defense: 'Atk +10 ranged vs each target in a 10-ft square', effect: '1d4+1 per dart, up to 6 darts', note: 'Pressure plate empties a whole rack.' },
+  { name: 'Scything Blade (large)', cr: 3, type: 'mech', trigger: 'location', reset: 'automatic', search: 21, disable: 18, defense: 'Atk +14 melee', effect: '2d4+6 slashing (crit ×4)', note: 'Sweeps a 10-ft corridor.' },
+  { name: 'Falling Block', cr: 5, type: 'mech', trigger: 'location', reset: 'manual', search: 20, disable: 22, defense: 'Atk +15 melee', effect: '6d6 bludgeoning', note: 'A ton of masonry drops from above.' },
+  { name: 'Flooding Room', cr: 4, type: 'mech', trigger: 'location', reset: 'no reset', search: 20, disable: 25, defense: '—', effect: 'Room seals & floods in 4 rounds; Swim DC 15/round, then drowning rules', note: 'Doors lock; find the drain or the seam.' },
+  { name: 'Collapsing Column', cr: 4, type: 'mech', trigger: 'proximity', reset: 'no reset', search: 22, disable: 20, defense: 'Reflex DC 20 half', effect: '4d6 bludgeoning; failure also leaves target pinned (Str DC 18 to free)', note: 'Tripwire drops a load-bearing pillar.' },
+  { name: 'Poison Needle Lock', cr: 2, type: 'mech', trigger: 'touch', reset: 'repair', search: 22, disable: 20, defense: 'Atk +12 (1 piercing)', effect: 'plus blue whinnis — Fort DC 14, 1 Con / unconsciousness', note: 'In the lock itself; opening without checking springs it.' },
+  { name: 'Spiked Pendulum (heavy)', cr: 6, type: 'mech', trigger: 'location', reset: 'automatic', search: 20, disable: 25, defense: 'Atk +20 melee', effect: '6d6+10 piercing', note: 'Massive blade on a long arc; times its swing to the corridor.' },
+  { name: 'Net Trap', cr: 1, type: 'mech', trigger: 'location', reset: 'manual', search: 20, disable: 20, defense: 'Reflex DC 14', effect: 'entangled (weighted net); Escape Artist DC 20 or Str DC 25 to break free', note: 'Drops from above to hold prey for whatever comes next.' },
+  { name: 'Hail of Needles', cr: 3, type: 'mech', trigger: 'location', reset: 'repair', search: 22, disable: 22, defense: 'Atk +20 ranged', effect: '2d4 piercing', note: 'Wall sprays a dense volley down the hall.' },
+  { name: 'Crushing Walls', cr: 10, type: 'mech', trigger: 'location', reset: 'automatic', search: 20, disable: 25, defense: '—', effect: 'Walls close over 5 rounds; on close, 18d6 + pinned. Str/Disable to stop, or escape the room', note: 'A classic deathtrap room — the exit is the puzzle.' },
+  { name: 'Razor Wire', cr: 1, type: 'mech', trigger: 'location', reset: 'no reset', search: 22, disable: 18, defense: 'Reflex DC 20', effect: '2d6 slashing; failure halves speed (bleeding legs) until healed', note: 'Nearly invisible at ankle height across a doorway.' },
+
+  // ---- magic ----
+  { name: 'Fire Trap (spell)', cr: 3, type: 'magic', trigger: 'touch', reset: 'no reset', search: 27, disable: 27, defense: 'Reflex DC 13 half', effect: '1d4 + 1/level (≈1d4+10) fire in a 5-ft burst', note: 'Wards a container; the warded object is unharmed.' },
+  { name: 'Glyph of Warding (blast)', cr: 4, type: 'magic', trigger: 'proximity', reset: 'no reset', search: 28, disable: 28, defense: 'Reflex DC 14 half', effect: '2d8 energy (acid/cold/fire/electricity/sonic)', note: 'Inscribed across a threshold or object.' },
+  { name: 'Sepia Snake Sigil', cr: 3, type: 'magic', trigger: 'visual (reading)', reset: 'no reset', search: 27, disable: 27, defense: 'Reflex DC 14', effect: 'held in suspended animation 1d4 days +1/level', note: 'Hidden in text; springs when read.' },
+  { name: 'Lightning Bolt Trap', cr: 4, type: 'magic', trigger: 'proximity (alarm)', reset: 'no reset', search: 27, disable: 27, defense: 'Reflex DC 14 half', effect: '5d6 electricity in a line', note: 'Fires down a straight corridor.' },
+  { name: 'Fireball Trap', cr: 5, type: 'magic', trigger: 'proximity', reset: 'no reset', search: 28, disable: 28, defense: 'Reflex DC 14 half', effect: '5d6 fire, 20-ft radius', note: 'Centered on the most-trafficked tile.' },
+  { name: 'Symbol of Sleep', cr: 5, type: 'magic', trigger: 'visual', reset: 'automatic', search: 30, disable: 30, defense: 'Will DC 16 negates', effect: 'sleep 3d6×10 minutes (no HD limit)', note: 'Glowing rune; affects all who see it.' },
+  { name: 'Symbol of Pain', cr: 5, type: 'magic', trigger: 'visual', reset: 'automatic', search: 30, disable: 30, defense: 'Fort DC 16 negates', effect: '−4 attacks, skills & ability checks for 1 hour', note: 'Lingers; re-triggers on each viewer.' },
+  { name: 'Phantasmal Killer Trap', cr: 6, type: 'magic', trigger: 'proximity', reset: 'no reset', search: 29, disable: 29, defense: 'Will DC 16 then Fort DC 16', effect: 'Will disbelief; failure → Fort or die (success = 3d6)', note: 'Conjures the viewer\'s own worst fear.' },
+  { name: 'Summon Monster VI Trap', cr: 6, type: 'magic', trigger: 'proximity', reset: 'no reset', search: 30, disable: 30, defense: '—', effect: 'summons a hostile outsider that fights ~7 rounds', note: 'Buys time / softens intruders before the real fight.' },
+  { name: 'Acid Fog Trap', cr: 6, type: 'magic', trigger: 'proximity', reset: 'no reset', search: 28, disable: 28, defense: '—', effect: '2d6/round acid in a 20-ft fog that also slows; lasts ~7 rounds', note: 'Fills a chamber; blocks sight and escape.' },
+  { name: 'Symbol of Stunning', cr: 7, type: 'magic', trigger: 'visual', reset: 'automatic', search: 31, disable: 31, defense: 'Will DC 19 negates', effect: 'stunned 1d6 rounds', note: 'Drop the party right before an ambush.' },
+  { name: 'Greater Glyph (Destruction)', cr: 7, type: 'magic', trigger: 'proximity', reset: 'no reset', search: 31, disable: 31, defense: 'Reflex DC 19 half', effect: 'up to 10d8 energy', note: 'A serious ward over a vault door.' },
+  { name: 'Energy Drain Trap', cr: 8, type: 'magic', trigger: 'touch', reset: 'no reset', search: 31, disable: 31, defense: 'Fort DC 23 (24h later)', effect: '2d4 negative levels', note: 'Wards something the makers never meant found.' },
+  { name: 'Power Word Stun Trap', cr: 7, type: 'magic', trigger: 'proximity', reset: 'no reset', search: 31, disable: 31, defense: 'none (HP-based)', effect: 'stunned (≤150 hp: 1d4 rounds; ≤100: 2d4; ≤50: 4d4)', note: 'No save — just gates on current HP.' },
+];
+
+const TRIGGERS = ['location (pressure plate)', 'location (tripwire)', 'proximity (10 ft)', 'touch', 'timed', 'visual (sight)', 'sound', 'opening a door/lid'];
+const RESETS = ['no reset', 'manual', 'repair', 'automatic'];
+const MECH_EFFECTS = [
+  ['pit', 'fall'], ['blade', 'slashing'], ['darts', 'piercing'], ['block', 'bludgeoning'],
+  ['spikes', 'piercing'], ['gas', 'poison'], ['flame jet', 'fire'], ['crossbows', 'piercing'],
+];
+
+function fmtSample(t) {
+  let out = '<span class="head">[' + t.name.toUpperCase() + ' — CR ' + t.cr + ' · ' + (t.type === 'magic' ? 'magic' : 'mechanical') + ']</span>\n';
+  out += 'Trigger: ' + t.trigger + ' · Reset: ' + t.reset + '\n';
+  out += 'Search DC ' + t.search + ' · Disable Device DC ' + t.disable + (t.type === 'magic' ? ' (trapfinding only)' : '') + '\n';
+  out += 'Defense: ' + t.defense + '\n';
+  out += 'Effect: ' + t.effect + '\n';
+  out += '<span class="muted">' + t.note + '</span>';
+  return out;
+}
+
+function pickSample(cr, kind) {
+  let pool = SAMPLES.filter((t) => kind === 'any' || t.type === kind);
+  if (!pool.length) pool = SAMPLES.slice();
+  // nearest CR, widening tolerance
+  for (let tol = 0; tol <= 12; tol++) {
+    const c = pool.filter((t) => Math.abs(t.cr - cr) <= tol);
+    if (c.length) return D.pick(c);
+  }
+  return D.pick(pool);
+}
+
+// ---- assembler: build a fresh trap scaled to CR ----
+function assemble(cr, kind) {
+  const type = kind === 'any' ? (D.coinFlip() ? 'mech' : 'magic') : kind;
+  const trigger = D.pick(TRIGGERS);
+  const reset = D.pick(RESETS);
+  let out, defense, effect, search, disable, name;
+  if (type === 'mech') {
+    const [mech, dmg] = D.pick(MECH_EFFECTS);
+    const atkBonus = cr + D.range(3, 6);
+    const dice = Math.max(1, Math.round(cr * 0.8)) + (dmg === 'fall' ? cr : 0);
+    search = 18 + D.range(0, 8);
+    disable = 18 + D.range(0, 8);
+    name = 'Improvised ' + mech.charAt(0).toUpperCase() + mech.slice(1) + ' Trap';
+    if (D.coinFlip()) { defense = 'Atk +' + atkBonus + ' ' + (dmg === 'piercing' || dmg === 'slashing' ? 'melee/ranged' : 'melee'); effect = (Math.max(2, dice)) + 'd6 ' + dmg; }
+    else { defense = 'Reflex DC ' + (12 + cr) + ' half'; effect = (Math.max(2, dice + 1)) + 'd6 ' + dmg; }
+  } else {
+    const spellLvl = Math.max(1, Math.min(9, cr - 1));
+    search = 25 + spellLvl;
+    disable = 25 + spellLvl;
+    const saveDC = 10 + spellLvl + 3;
+    const flavor = D.pick([
+      ['energy blast', (spellLvl + 2) + 'd6 ' + D.pick(['fire', 'acid', 'cold', 'electricity', 'sonic']), 'Reflex DC ' + saveDC + ' half'],
+      ['hold/stasis', 'held immobile ' + D.range(2, 5) + ' rounds', 'Will DC ' + saveDC + ' negates'],
+      ['fear/pain', '−' + (2 + Math.floor(spellLvl / 3)) + ' to attacks & saves for ' + D.range(2, 6) + ' rounds', 'Will DC ' + saveDC + ' negates'],
+      ['summon', 'summons a CR ' + Math.max(1, cr - 2) + ' creature that attacks', '—'],
+      ['debilitate', D.pick(['nauseated', 'stunned', 'blinded', 'paralyzed']) + ' ' + D.range(1, 4) + ' rounds', 'Fort DC ' + saveDC + ' negates'],
+    ]);
+    name = 'Warding Glyph (' + flavor[0] + ')';
+    defense = flavor[2]; effect = flavor[1];
+  }
+  out = '<span class="head">[' + name.toUpperCase() + ' — CR ' + cr + ' · ' + (type === 'magic' ? 'magic' : 'mechanical') + ']</span>\n';
+  out += 'Trigger: ' + trigger + ' · Reset: ' + reset + '\n';
+  out += 'Search DC ' + search + ' · Disable Device DC ' + disable + (type === 'magic' ? ' (trapfinding only)' : '') + '\n';
+  out += 'Defense: ' + defense + '\n';
+  out += 'Effect: ' + effect + '\n';
+  out += '<span class="muted">Assembled to threaten a level-' + cr + ' party. Reskin freely.</span>';
+  return out;
+}
+
+export default function Traps() {
+  const log = useLog();
+  const [mode, setMode] = useState('sample');
+  const [cr, setCr] = useState('3');
+  const [kind, setKind] = useState('any');
+
+  function generate() {
+    const crN = Math.max(1, Math.min(15, parseInt(cr, 10) || 3));
+    log.append(mode === 'assemble' ? assemble(crN, kind) : fmtSample(pickSample(crN, kind)));
+  }
+
+  return (
+    <Layout title="Trap Generator" sub="Mechanical & magic traps, ready to spring" contextBar={false}>
+      <div className="runner-main">
+        <div className="panel">
+          <h2>Trap</h2>
+          <label>Mode</label>
+          <select value={mode} onChange={(e) => setMode(e.target.value)}>
+            <option value="sample">Sample trap (canonical, near CR)</option>
+            <option value="assemble">Assemble a trap (random, by CR)</option>
+          </select>
+
+          <label>Target CR (1–10)</label>
+          <input type="number" min="1" max="10" value={cr} onChange={(e) => setCr(e.target.value)} />
+
+          <label>Type</label>
+          <select value={kind} onChange={(e) => setKind(e.target.value)}>
+            <option value="any">Any</option>
+            <option value="mech">Mechanical</option>
+            <option value="magic">Magic</option>
+          </select>
+
+          <button className="primary" onClick={generate}>Generate Trap</button>
+          <SeedControl />
+          <p className="hint">DMG-style traps with full mechanics. <b>Mechanical</b>: Search/Disable by build quality. <b>Magic</b>: Search &amp; Disable DC = 25 + spell level; only a character with <i>trapfinding</i> (rogue) can disarm. CR ≈ party level for a fair threat.</p>
+        </div>
+        <Log log={log} title="Trap Log" />
+      </div>
+    </Layout>
+  );
+}

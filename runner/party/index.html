@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Party Roster — Ptolus Runner</title>
+<link rel="stylesheet" href="../shared/ui.css">
+<style>
+  .wrap { padding:16px 20px 60px; }
+  table.party { border-collapse:collapse; width:100%; max-width:1000px; }
+  table.party th { text-align:left; color:var(--gold); font-size:12px; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--line); padding:6px 6px; }
+  table.party td { border-bottom:1px solid var(--line); padding:4px 6px; }
+  table.party input { width:100%; padding:5px 6px; }
+  table.party input.num { width:56px; text-align:center; }
+  table.party input.name { min-width:120px; }
+  .derived { color:var(--gold); font-size:16px; margin:10px 0; }
+  .ref { margin-top:18px; }
+  .ref h2 { color:var(--gold); font-size:14px; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--line); padding-bottom:4px; }
+  .hint2 { color:var(--muted); font-size:13px; }
+  .pcrow td:first-child { border-left:3px solid var(--gold-dim); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="derived" id="derived"></div>
+  <table class="party">
+    <thead><tr>
+      <th>PC</th><th>Lvl</th><th>Class</th><th>AC</th><th>HP</th><th>Fort</th><th>Ref</th><th>Will</th><th>Init</th><th>Pass.&nbsp;Per</th><th></th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <button class="primary" id="add" style="width:auto;margin-top:10px;">+ Add PC</button>
+  <button id="clear" style="margin-top:10px;">Clear Roster</button>
+  <p class="hint2">Saved in this browser and shared across tools — the Combat Tracker can add the party, the XP calculator auto-fills size &amp; level, and the player display shows initiative. Init/save fields are modifiers (e.g. +6); Passive Per is the full value (10 + Perception).</p>
+
+  <div class="ref">
+    <h2>At a glance (GM reference)</h2>
+    <div id="glance" class="hint2"></div>
+  </div>
+</div>
+
+<script src="../shared/dice.js"></script>
+<script src="../shared/state.js"></script>
+<script src="../shared/ui.js"></script>
+<script>
+UI.mountHead('Party Roster', 'Your PCs — shared across every tool');
+UI.diceTray();
+const FIELDS = ['name','level','cls','ac','hp','fort','ref','will','init','perc'];
+const NUM = { level:1, ac:1, hp:1, fort:1, ref:1, will:1, init:1, perc:1 };
+
+function read() {
+  const out = [];
+  UI.el('rows').querySelectorAll('tr').forEach(tr => {
+    const pc = {};
+    FIELDS.forEach(f => {
+      const inp = tr.querySelector('[data-k="' + f + '"]');
+      let v = inp ? inp.value : '';
+      if (NUM[f]) v = v === '' ? '' : (parseInt(v, 10) || 0);
+      pc[f] = v;
+    });
+    if (pc.name || pc.level) out.push(pc);
+  });
+  return out;
+}
+function commit() { Ctx.setParty(read()); renderDerived(); }
+
+function rowHTML(pc) {
+  pc = pc || {};
+  const cell = (k, cls) => '<td><input class="' + (cls || '') + '" data-k="' + k + '" value="' + UI.esc(pc[k] != null ? pc[k] : '') + '"></td>';
+  return '<tr class="pcrow">' +
+    cell('name', 'name') + cell('level', 'num') + '<td><input data-k="cls" value="' + UI.esc(pc.cls || '') + '"></td>' +
+    cell('ac', 'num') + cell('hp', 'num') + cell('fort', 'num') + cell('ref', 'num') + cell('will', 'num') +
+    cell('init', 'num') + cell('perc', 'num') +
+    '<td><button data-act="del">✕</button></td></tr>';
+}
+function render() {
+  const party = Ctx.party();
+  UI.el('rows').innerHTML = (party.length ? party : []).map(rowHTML).join('') || rowHTML({});
+  renderDerived();
+}
+function renderDerived() {
+  const p = Ctx.party();
+  if (!p.length) { UI.el('derived').textContent = 'No PCs yet — add your party below.'; UI.el('glance').textContent = ''; return; }
+  const apl = Math.round(p.reduce((a, x) => a + (x.level || 0), 0) / p.length);
+  UI.el('derived').textContent = 'Party of ' + p.length + ' · APL ' + apl;
+  const acs = p.map(x => x.ac).filter(Boolean), pers = p.map(x => x.perc).filter(Boolean);
+  UI.el('glance').innerHTML =
+    p.map(x => '<div>' + UI.esc(x.name || '(PC)') + ' — L' + (x.level || '?') + ' ' + UI.esc(x.cls || '') +
+      ' · AC ' + (x.ac || '?') + ' · HP ' + (x.hp || '?') + ' · Fort ' + sgn(x.fort) + ' Ref ' + sgn(x.ref) + ' Will ' + sgn(x.will) +
+      ' · passive Per ' + (x.perc || '?') + '</div>').join('') +
+    (acs.length ? '<div style="margin-top:6px">Lowest AC ' + Math.min.apply(null, acs) + ' · Highest passive Per ' + (pers.length ? Math.max.apply(null, pers) : '?') + '</div>' : '');
+}
+function sgn(n) { return n === '' || n == null ? '?' : (n >= 0 ? '+' + n : '' + n); }
+
+UI.el('rows').addEventListener('input', commit);
+UI.el('rows').addEventListener('change', commit);
+UI.el('rows').addEventListener('click', e => {
+  const b = e.target.closest('[data-act="del"]'); if (!b) return;
+  b.closest('tr').remove(); commit();
+  if (!UI.el('rows').querySelector('tr')) UI.el('rows').innerHTML = rowHTML({});
+});
+UI.el('add').addEventListener('click', () => { UI.el('rows').insertAdjacentHTML('beforeend', rowHTML({})); });
+UI.el('clear').addEventListener('click', () => { if (confirm('Clear the whole roster?')) { Ctx.setParty([]); render(); } });
+
+render();
+</script>
+</body>
+</html>
