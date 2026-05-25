@@ -2,3 +2,5 @@ node_modules/
 dist/
 *.local
 .DS_Store
+# campaign notes are mirrored in here by scripts/sync-campaign.mjs (GM secrets — never commit/publish)
+src/content/campaign/

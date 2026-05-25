@@ -29,6 +29,10 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - run: npm ci
       - run: npm run build
+        # Opt-in: bundle campaign/ notes into the Library on the deployed site.
+        # Remove this env to keep GM notes off a public Pages site.
+        env:
+          VITE_BUNDLE_CAMPAIGN: '1'
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web/dist

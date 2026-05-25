@@ -12,6 +12,7 @@ export const CATALOG = [
 
   // Generators
   { path: 'encounters', name: '⚔ Encounters', desc: 'Random encounter by region + party level, with EL and average loot.', cat: 'Generators', component: 'Encounters' },
+  { path: 'encounter-builder', name: '🎯 Encounter Builder', desc: 'Hand-pick monsters to a target EL — live difficulty, XP budget & loot.', cat: 'Generators', component: 'EncounterBuilder' },
   { path: 'loot', name: '💰 Treasure / Loot', desc: 'Treasure parcels by EL — coins, goods, magic items (DMG 7-4).', cat: 'Generators', component: 'Loot' },
   { path: 'npcs', name: '🎭 NPCs', desc: 'Instant NPC: race, class, personality, quirk, secret, motive.', cat: 'Generators', component: 'Npcs' },
   { path: 'names', name: '📜 Names', desc: 'Culture-keyed names for people, places, and factions.', cat: 'Generators', component: 'Names' },

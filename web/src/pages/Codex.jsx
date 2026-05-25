@@ -2,6 +2,21 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { DATA } from '../data/index.js';
 import { Layout } from '../components/ui.jsx';
+import featsMd from '../content/rules/feats.md?raw';
+
+// Feats are derived from rules/feats.md so the Library prose stays the single
+// source of truth. Lines look like: **Name** (prereq): effect — grouped by ##.
+const FEATS = (() => {
+  const out = []; let cat = '';
+  for (const raw of featsMd.split('\n')) {
+    const line = raw.trim();
+    const h = line.match(/^##\s+(.+)$/);
+    if (h) { cat = h[1].trim(); continue; }
+    const m = line.match(/^\*\*(.+?)\*\*\s*(?:\(([^)]*)\))?\s*:\s*(.+)$/);
+    if (m) out.push({ name: m[1].trim(), prereq: (m[2] || '').trim(), effect: m[3].trim(), category: cat });
+  }
+  return out;
+})();
 
 /* ---- helpers ---- */
 function fmtGp(n) { return n == null ? '—' : Number(n).toLocaleString('en-US') + ' gp'; }
@@ -148,6 +163,19 @@ function PowerDetail({ p }) {
   );
 }
 
+function FeatDetail({ f }) {
+  return (
+    <>
+      <h2>{f.name}</h2>
+      <div className="line">{f.category}</div>
+      <hr />
+      <Line k="Prerequisite" v={f.prereq || 'None'} />
+      <Line k="Benefit" v={f.effect} />
+      <div className="src">D&amp;D 3.5e — see Library › Rules › Feats</div>
+    </>
+  );
+}
+
 /* ---- tab definitions ---- */
 const TABS = [
   {
@@ -194,6 +222,14 @@ const TABS = [
       { id: 'lvl', label: 'Level', opts: (d) => distinct(d, (p) => Object.values(p.level || {})).map(String), test: (p, v) => Object.values(p.level || {}).indexOf(+v) !== -1 },
     ],
   },
+  {
+    key: 'feats', label: 'Feats', data: () => FEATS, sort: nameSort, Detail: FeatDetail,
+    sub: (f) => f.category + (f.prereq ? ' · ' + f.prereq : ''),
+    text: (f) => (f.name + ' ' + f.prereq + ' ' + f.effect + ' ' + f.category).toLowerCase(),
+    filters: [
+      { id: 'cat', label: 'Group', opts: (d) => distinct(d, (f) => f.category), test: (f, v) => f.category === v },
+    ],
+  },
 ];
 
 export default function Codex() {
@@ -235,7 +271,7 @@ export default function Codex() {
   const Detail = tab.Detail;
 
   return (
-    <Layout title="Codex" sub="Monsters · spells · items · powers" contextBar={false}>
+    <Layout title="Codex" sub="Monsters · spells · items · powers · feats" contextBar={false}>
       <style>{`
         .codex-tabs { display:flex; gap:6px; padding:10px 20px 0; flex-wrap:wrap; }
         .codex-tabs button { font-size:14px; padding:7px 12px; width:auto; }
@@ -317,5 +353,6 @@ function detailProp(key) {
   if (key === 'monsters') return 'm';
   if (key === 'spells') return 's';
   if (key === 'powers') return 'p';
+  if (key === 'feats') return 'f';
   return 'it';
 }

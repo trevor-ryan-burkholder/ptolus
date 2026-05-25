@@ -3,8 +3,9 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Layout } from '../components/ui.jsx';
 
-const GROUPS = { docs: 'Runner Design Docs', rules: 'Rules', classes: 'Classes', races: 'Races', ptolus: 'Ptolus' };
-const GROUP_ORDER = ['ptolus', 'rules', 'classes', 'races', 'docs'];
+const GROUPS = { campaign: 'Your Campaign', docs: 'Runner Design Docs', rules: 'Rules', classes: 'Classes', races: 'Races', ptolus: 'Ptolus' };
+// 'campaign' is populated locally by scripts/sync-campaign.mjs (off in prod by default).
+const GROUP_ORDER = ['campaign', 'ptolus', 'rules', 'classes', 'races', 'docs'];
 
 const FILES = import.meta.glob('../content/**/*.md', { query: '?raw', import: 'default', eager: true });
 
