@@ -10173,5 +10173,1078 @@
       "evil",
       "capstone"
     ]
+  },
+  {
+    "name": "Rhodintor",
+    "cr": "7",
+    "cr_value": 7,
+    "size": "Medium",
+    "type": "Monstrous Humanoid",
+    "subtype": null,
+    "alignment": "Always CE",
+    "hd": "8d8+24",
+    "hp": 60,
+    "initiative": 2,
+    "speed": "30 ft.",
+    "ac": {
+      "total": 24,
+      "touch": 12,
+      "flat_footed": 22,
+      "notes": "+2 Dex, +9 natural, +3 shield"
+    },
+    "bab": 8,
+    "grapple": 11,
+    "attacks": {
+      "melee": "+1 battleaxe +12 (1d8+4)",
+      "ranged": null,
+      "full_attack": "+1 battleaxe +12/+7 (1d8+4) and head butt +6 (1d6+1)"
+    },
+    "space_reach": "5 ft./5 ft.",
+    "special_attacks": [
+      "spell-like abilities (Kravren or Sarycal)"
+    ],
+    "special_qualities": [
+      "darkvision 60 ft.",
+      "arcane aura (mage armor at will)",
+      "DR 5/magic",
+      "SR 20",
+      "resistance to fire 10, cold 10, electricity 10"
+    ],
+    "saves": {
+      "fort": 5,
+      "ref": 8,
+      "will": 9
+    },
+    "abilities": {
+      "str": 16,
+      "dex": 15,
+      "con": 16,
+      "int": 20,
+      "wis": 17,
+      "cha": 21
+    },
+    "skills": [
+      "Concentration +14",
+      "Craft (chaositech) +13",
+      "Hide +12",
+      "Knowledge (arcana) +16",
+      "Knowledge (religion) +16",
+      "Listen +14",
+      "Move Silently +12",
+      "Spellcraft +18",
+      "Spot +14",
+      "Tumble +13"
+    ],
+    "feats": [
+      "Craft Magic Arms and Armor",
+      "Craft Wondrous Item",
+      "Power Attack"
+    ],
+    "environments": [
+      "ptolus_dungeon",
+      "ptolus_undercity",
+      "underground"
+    ],
+    "organization": "Solitary or cabal (3-8)",
+    "treasure": "Standard plus +1 battleaxe and +1 heavy steel shield",
+    "languages": [
+      "Common"
+    ],
+    "source": "Ptolus 628",
+    "tags": [
+      "monstrous-humanoid",
+      "galchutt",
+      "chaositech",
+      "spellcaster",
+      "ptolus-native"
+    ],
+    "description": "Earthbound demons created by the Galchutt to ensure the Night of Dissolution comes to pass. Ram-horned, backward-legged arcanists; the Kravren path enhances the body, the Sarycal path favors spells."
+  },
+  {
+    "name": "Shaadom",
+    "cr": "18",
+    "cr_value": 18,
+    "size": "Large",
+    "type": "Outsider",
+    "subtype": "Chaotic, Evil",
+    "alignment": "Always CE",
+    "hd": "20d8+100",
+    "hp": 190,
+    "initiative": 3,
+    "speed": "fly 50 ft.",
+    "ac": {
+      "total": 27,
+      "touch": 15,
+      "flat_footed": 24,
+      "notes": "-1 size, +3 Dex, +12 natural, +3 deflection (chaotic nature)"
+    },
+    "bab": 20,
+    "grapple": 31,
+    "attacks": {
+      "melee": "Bite +26 (2d6+7 plus poison)",
+      "ranged": null,
+      "full_attack": "Bite +26 (2d6+7 plus poison) and 2 claws +27 (1d8+3)"
+    },
+    "space_reach": "10 ft./10 ft.",
+    "special_attacks": [
+      "poison (DC 25, 2d6 Int)",
+      "chaos weaving",
+      "spell-like abilities",
+      "spells (as 17th-level wizard)"
+    ],
+    "special_qualities": [
+      "chaotic nature (10% miss/spell failure, +3 deflection)",
+      "dire contact (DC 27 or insane)",
+      "SR 25",
+      "DR 15/law",
+      "Galchutt qualities",
+      "energy resistance 20",
+      "vulnerable to force effects"
+    ],
+    "saves": {
+      "fort": 17,
+      "ref": 15,
+      "will": 19
+    },
+    "abilities": {
+      "str": 24,
+      "dex": 17,
+      "con": 20,
+      "int": 25,
+      "wis": 24,
+      "cha": 25
+    },
+    "skills": [
+      "Bluff +30",
+      "Concentration +28",
+      "Craft (alchemy) +30",
+      "Craft (chaositech) +23",
+      "Diplomacy +34",
+      "Intimidate +32",
+      "Knowledge (arcana) +30",
+      "Knowledge (the planes) +30",
+      "Knowledge (religion) +30",
+      "Listen +30",
+      "Search +30",
+      "Sense Motive +30",
+      "Spellcraft +32",
+      "Spot +30"
+    ],
+    "feats": [
+      "Combat Casting",
+      "Empower Spell-Like Ability (lightning bolt)",
+      "Multiattack",
+      "Quicken Spell-Like Ability (lightning bolt)",
+      "Silent Spell",
+      "Spell Penetration",
+      "Still Spell"
+    ],
+    "environments": [
+      "ptolus_dungeon",
+      "ptolus_necropolis"
+    ],
+    "organization": "Solitary",
+    "treasure": "Double standard",
+    "languages": [
+      "telepathy only"
+    ],
+    "source": "Ptolus 629",
+    "tags": [
+      "outsider",
+      "galchutt",
+      "chaos-lord",
+      "spellcaster",
+      "poison-user",
+      "ptolus-native"
+    ],
+    "description": "A Chaos Lord of the Galchutt: the consummate chaos mage, an arachnoid-headed floating horror that weaves disorder into its spells. Found in the Caverns of the Galchutt and the Dark Reliquary."
+  },
+  {
+    "name": "Skulk",
+    "cr": "5",
+    "cr_value": 5,
+    "size": "Medium",
+    "type": "Humanoid",
+    "subtype": "Skulk",
+    "alignment": "Usually N",
+    "hd": "2d8+2 plus 3d6+3",
+    "hp": 24,
+    "initiative": 8,
+    "speed": "40 ft.",
+    "ac": {
+      "total": 15,
+      "touch": 14,
+      "flat_footed": 11,
+      "notes": "+4 Dex, +1 natural"
+    },
+    "bab": 3,
+    "grapple": 3,
+    "attacks": {
+      "melee": "Short sword +7 (1d6)",
+      "ranged": null,
+      "full_attack": "Short sword +7 (1d6)"
+    },
+    "space_reach": "5 ft./5 ft.",
+    "special_attacks": [
+      "sneak attack +3d6"
+    ],
+    "special_qualities": [
+      "darkvision 60 ft.",
+      "evasion",
+      "trap sense +1",
+      "blur (20% miss)",
+      "greater invisibility at will",
+      "hide in plain sight",
+      "untrackable",
+      "mutable form"
+    ],
+    "saves": {
+      "fort": 2,
+      "ref": 10,
+      "will": 2
+    },
+    "abilities": {
+      "str": 10,
+      "dex": 19,
+      "con": 12,
+      "int": 12,
+      "wis": 12,
+      "cha": 6
+    },
+    "skills": [
+      "Escape Artist +12",
+      "Hide +18",
+      "Knowledge (local) +14",
+      "Listen +6",
+      "Move Silently +18",
+      "Open Lock +12",
+      "Spot +6",
+      "Tumble +11"
+    ],
+    "feats": [
+      "Dodge",
+      "Improved Initiative",
+      "Weapon Finesse"
+    ],
+    "environments": [
+      "ptolus_undercity",
+      "ptolus_streets",
+      "sewer",
+      "urban"
+    ],
+    "organization": "Solitary or band (3-8)",
+    "treasure": "Standard",
+    "languages": [
+      "Common"
+    ],
+    "source": "Ptolus 630 (stats include 3 rogue levels)",
+    "tags": [
+      "humanoid",
+      "skulk",
+      "rogue",
+      "stealth",
+      "ptolus-native"
+    ],
+    "description": "The ignored and disenfranchised who literally faded into the shadows. An aura makes others unable to focus on them (affects even mindless undead). No Ptolus skulk has fewer than 3 rogue levels."
+  },
+  {
+    "name": "Wintersouled",
+    "cr": "16",
+    "cr_value": 16,
+    "size": "Medium",
+    "type": "Undead",
+    "subtype": "Incorporeal",
+    "alignment": "Always LE",
+    "hd": "20d12",
+    "hp": 130,
+    "initiative": 9,
+    "speed": "40 ft., fly 80 ft. (perfect)",
+    "ac": {
+      "total": 22,
+      "touch": 22,
+      "flat_footed": 17,
+      "notes": "+5 Dex, +7 deflection"
+    },
+    "bab": 10,
+    "grapple": null,
+    "attacks": {
+      "melee": "Incorporeal touch +15 (1d8 plus energy drain)",
+      "ranged": null,
+      "full_attack": "Incorporeal touch +15 (1d8 plus energy drain)"
+    },
+    "space_reach": "5 ft./5 ft.",
+    "special_attacks": [
+      "energy drain (2 levels)",
+      "create spawn (spectres)",
+      "control undead",
+      "spell-like abilities",
+      "spells (as 14th-level sorcerer)"
+    ],
+    "special_qualities": [
+      "darkvision 60 ft.",
+      "incorporeal traits",
+      "+2 turn resistance",
+      "immune to cold",
+      "sunlight powerlessness",
+      "undead traits",
+      "unnatural aura"
+    ],
+    "saves": {
+      "fort": 6,
+      "ref": 13,
+      "will": 18
+    },
+    "abilities": {
+      "str": null,
+      "dex": 20,
+      "con": null,
+      "int": 20,
+      "wis": 19,
+      "cha": 25
+    },
+    "skills": [
+      "Concentration +23",
+      "Hide +28",
+      "Intimidate +30",
+      "Knowledge (arcana) +28",
+      "Knowledge (history) +28",
+      "Knowledge (religion) +20",
+      "Listen +25",
+      "Search +25",
+      "Spellcraft +28",
+      "Spot +25"
+    ],
+    "feats": [
+      "Craft Wondrous Item",
+      "Heighten Spell",
+      "Improved Initiative",
+      "Iron Will",
+      "Lightning Reflexes",
+      "Maximize Spell",
+      "Spell Focus (necromancy)"
+    ],
+    "environments": [
+      "ptolus_necropolis",
+      "ptolus_dungeon"
+    ],
+    "organization": "Solitary or conclave (3-12)",
+    "treasure": "Double normal",
+    "languages": [
+      "Common"
+    ],
+    "source": "Ptolus 632",
+    "tags": [
+      "undead",
+      "incorporeal",
+      "forsaken",
+      "spellcaster",
+      "ptolus-native"
+    ],
+    "description": "Oldest of all undead; the first spirits to cross the veil. They built the Dark Reliquary and created the Forsaken. All known Wintersouled sleep beneath the Reliquary, awaiting the Galchutt's rise."
+  },
+  {
+    "name": "Zaug",
+    "cr": "13",
+    "cr_value": 13,
+    "size": "Large",
+    "type": "Outsider",
+    "subtype": "Chaotic, Evil, Extraplanar",
+    "alignment": "Always CE",
+    "hd": "12d8+84",
+    "hp": 138,
+    "initiative": 0,
+    "speed": "20 ft., fly 30 ft. (clumsy)",
+    "ac": {
+      "total": 19,
+      "touch": 9,
+      "flat_footed": 19,
+      "notes": "-1 size, +10 natural"
+    },
+    "bab": 12,
+    "grapple": 20,
+    "attacks": {
+      "melee": "Claw +18 (1d8+7 plus disease)",
+      "ranged": null,
+      "full_attack": "2 claws +18 (1d8+7 plus disease) and bite +13 (2d6+3 plus disease)"
+    },
+    "space_reach": "5 ft./10 ft.",
+    "special_attacks": [
+      "spell-like abilities",
+      "disease",
+      "corruption spew"
+    ],
+    "special_qualities": [
+      "chaotic nature",
+      "revulsion",
+      "corrupt healing",
+      "SR 22",
+      "dire contact",
+      "Galchutt qualities",
+      "energy resistance 20",
+      "vulnerable to force effects"
+    ],
+    "saves": {
+      "fort": 17,
+      "ref": 10,
+      "will": 12
+    },
+    "abilities": {
+      "str": 24,
+      "dex": 10,
+      "con": 25,
+      "int": 8,
+      "wis": 14,
+      "cha": 15
+    },
+    "skills": [
+      "Concentration +22",
+      "Intimidate +17",
+      "Knowledge (arcana) +9",
+      "Knowledge (the planes) +9",
+      "Listen +19",
+      "Move Silently +10",
+      "Search +14",
+      "Spot +19"
+    ],
+    "feats": [
+      "Alertness",
+      "Combat Reflexes",
+      "Great Fortitude",
+      "Iron Will",
+      "Lightning Reflexes"
+    ],
+    "environments": [
+      "ptolus_dungeon",
+      "ptolus_necropolis"
+    ],
+    "organization": "Solitary",
+    "treasure": "Standard",
+    "languages": [
+      "telepathy only"
+    ],
+    "source": "Ptolus 633",
+    "tags": [
+      "outsider",
+      "galchutt",
+      "disease",
+      "ptolus-native"
+    ],
+    "description": "Least of the Galchutt (save the Elder Brood): a seething mound of plague and corruption covered in wounds that never heal. The 'god' of the lost Shrine of the Despoiler."
+  },
+  {
+    "name": "Ochremeshk (Demon Prince)",
+    "cr": "20",
+    "cr_value": 20,
+    "size": "Large",
+    "type": "Outsider",
+    "subtype": "Chaotic, Evil, Extraplanar",
+    "alignment": "Always CE",
+    "hd": "16d8+80",
+    "hp": 162,
+    "initiative": 7,
+    "speed": "40 ft.",
+    "ac": {
+      "total": 38,
+      "touch": 12,
+      "flat_footed": 35,
+      "notes": "-1 size, +3 Dex, +26 natural"
+    },
+    "bab": 16,
+    "grapple": 28,
+    "attacks": {
+      "melee": "Greatsword +25 (3d6+14 plus 2d6 unholy) or slam +23 (1d6+8 plus touch of fear)",
+      "ranged": null,
+      "full_attack": "Greatsword +25/+20/+15 (3d6+14 plus 2d6 unholy) or 2 slams +23 (1d6+8 plus touch of fear)"
+    },
+    "space_reach": "10 ft./10 ft.",
+    "special_attacks": [
+      "spell-like abilities",
+      "touch of fear",
+      "death visage",
+      "body flames",
+      "summon demon",
+      "vorpal sword"
+    ],
+    "special_qualities": [
+      "DR 15/cold iron and good",
+      "SR 30",
+      "immunities and resistances",
+      "ring of evasion",
+      "death throes",
+      "darkvision 60 ft.",
+      "telepathy 100 ft.",
+      "true seeing"
+    ],
+    "saves": {
+      "fort": 14,
+      "ref": 12,
+      "will": 16
+    },
+    "abilities": {
+      "str": 26,
+      "dex": 17,
+      "con": 20,
+      "int": 22,
+      "wis": 24,
+      "cha": 22
+    },
+    "skills": [
+      "Bluff +25",
+      "Concentration +25",
+      "Diplomacy +29",
+      "Hide +18",
+      "Intimidate +27",
+      "Knowledge (arcana) +22",
+      "Knowledge (history) +22",
+      "Knowledge (the planes) +22",
+      "Knowledge (religion) +23",
+      "Listen +30",
+      "Move Silently +22",
+      "Search +25",
+      "Sense Motive +26",
+      "Spellcraft +27",
+      "Spot +30"
+    ],
+    "feats": [
+      "Cleave",
+      "Great Cleave",
+      "Improved Grapple",
+      "Improved Initiative",
+      "Improved Sunder",
+      "Power Attack"
+    ],
+    "environments": [
+      "ptolus_necropolis",
+      "ptolus_dungeon",
+      "ptolus_spire"
+    ],
+    "organization": "Solitary, or with followers (12 balors and 14 mariliths)",
+    "treasure": "Standard (unique)",
+    "languages": [
+      "Abyssal",
+      "Common",
+      "telepathy 100 ft."
+    ],
+    "source": "Ptolus 622",
+    "tags": [
+      "outsider",
+      "demon",
+      "demon-prince",
+      "unique",
+      "ptolus-native"
+    ],
+    "description": "A unique demon prince: a wingless, flame-sheathed balor who clawed near the top of the Abyss. Trapped in a cruciform prison beneath the Dark Reliquary; if freed he would seize Goth Gulgamel and Ghul's old domain."
+  },
+  {
+    "name": "Ratling (Ptolus)",
+    "cr": "1/2",
+    "cr_value": 0.5,
+    "size": "Small",
+    "type": "Monstrous Humanoid",
+    "subtype": null,
+    "alignment": "Usually CE",
+    "hd": "1d8+2",
+    "hp": 6,
+    "initiative": 1,
+    "speed": "20 ft.",
+    "ac": {
+      "total": 16,
+      "touch": 12,
+      "flat_footed": 15,
+      "notes": "+1 size, +1 Dex, +2 natural, +2 leather armor"
+    },
+    "bab": 1,
+    "grapple": -3,
+    "attacks": {
+      "melee": "Longsword +2 (1d6)",
+      "ranged": null,
+      "full_attack": "Longsword +2 (1d6) and bite -3 (1d4 plus disease)"
+    },
+    "space_reach": "5 ft./5 ft.",
+    "special_attacks": [
+      "disease (filth fever, bite)"
+    ],
+    "special_qualities": [
+      "darkvision 60 ft.",
+      "immune to disease",
+      "fear of light"
+    ],
+    "saves": {
+      "fort": 2,
+      "ref": 3,
+      "will": 1
+    },
+    "abilities": {
+      "str": 10,
+      "dex": 13,
+      "con": 14,
+      "int": 8,
+      "wis": 9,
+      "cha": 7
+    },
+    "skills": [
+      "Climb +4",
+      "Escape Artist +5",
+      "Hide +9",
+      "Move Silently +9",
+      "Swim +4"
+    ],
+    "feats": [
+      "Stealthy"
+    ],
+    "environments": [
+      "ptolus_undercity",
+      "sewer",
+      "ptolus_dungeon",
+      "underground"
+    ],
+    "organization": "Pack (3-6), fester (7-12 plus 1 ratlord), or nest (13-24 plus ratlords, ratbrute, and 3-6 dire rats)",
+    "treasure": "Standard",
+    "languages": [
+      "Rattish",
+      "Common"
+    ],
+    "source": "Ptolus 625",
+    "tags": [
+      "monstrous-humanoid",
+      "ratman",
+      "disease",
+      "ptolus-native"
+    ],
+    "description": "The smallest and most common ratmen — degenerate, chaos-aligned rat-folk of the sewers and undercity. Most ratmen are ratlings."
+  },
+  {
+    "name": "Ratlord (Ptolus)",
+    "cr": "2",
+    "cr_value": 2,
+    "size": "Medium",
+    "type": "Monstrous Humanoid",
+    "subtype": null,
+    "alignment": "Usually CE",
+    "hd": "3d8+9",
+    "hp": 22,
+    "initiative": 1,
+    "speed": "30 ft.",
+    "ac": {
+      "total": 17,
+      "touch": 11,
+      "flat_footed": 16,
+      "notes": "+1 Dex, +4 natural, +2 leather armor"
+    },
+    "bab": 3,
+    "grapple": 3,
+    "attacks": {
+      "melee": "Longsword +4 (1d8)",
+      "ranged": "Dragon pistol +4 (1d12)",
+      "full_attack": "Longsword +4 (1d8) and bite -2 (1d6 plus disease); or dragon pistol +4 ranged (1d12)"
+    },
+    "space_reach": "5 ft./5 ft.",
+    "special_attacks": [
+      "disease (filth fever, bite)",
+      "sneak attack +1d6"
+    ],
+    "special_qualities": [
+      "darkvision 60 ft.",
+      "immune to disease",
+      "fear of light"
+    ],
+    "saves": {
+      "fort": 4,
+      "ref": 4,
+      "will": 3
+    },
+    "abilities": {
+      "str": 11,
+      "dex": 13,
+      "con": 16,
+      "int": 10,
+      "wis": 11,
+      "cha": 10
+    },
+    "skills": [
+      "Climb +4",
+      "Escape Artist +5",
+      "Hide +9",
+      "Move Silently +13",
+      "Swim +4"
+    ],
+    "feats": [
+      "Exotic Weapon Proficiency (firearms)",
+      "Stealthy",
+      "Weapon Focus (longsword)"
+    ],
+    "environments": [
+      "ptolus_undercity",
+      "sewer",
+      "ptolus_dungeon",
+      "underground"
+    ],
+    "organization": "Pair, fester (1 plus 7-12 ratlings), or nest",
+    "treasure": "Standard",
+    "languages": [
+      "Rattish",
+      "Common"
+    ],
+    "source": "Ptolus 625",
+    "tags": [
+      "monstrous-humanoid",
+      "ratman",
+      "disease",
+      "ptolus-native"
+    ],
+    "description": "Human-sized ratmen — the leaders of packs and festers. A few wield stolen firearms such as the dragon pistol."
+  },
+  {
+    "name": "Ratbrute (Ptolus)",
+    "cr": "4",
+    "cr_value": 4,
+    "size": "Large",
+    "type": "Monstrous Humanoid",
+    "subtype": null,
+    "alignment": "Usually CE",
+    "hd": "6d8+24",
+    "hp": 51,
+    "initiative": 1,
+    "speed": "30 ft.",
+    "ac": {
+      "total": 20,
+      "touch": 10,
+      "flat_footed": 19,
+      "notes": "-1 size, +1 Dex, +8 natural, +2 leather armor"
+    },
+    "bab": 6,
+    "grapple": 15,
+    "attacks": {
+      "melee": "Greatsword +11 (3d6+7)",
+      "ranged": null,
+      "full_attack": "Greatsword +11/+6 (3d6+7) and bite +5 (1d8+2 plus disease)"
+    },
+    "space_reach": "5 ft./10 ft.",
+    "special_attacks": [
+      "disease (filth fever, bite)"
+    ],
+    "special_qualities": [
+      "darkvision 60 ft.",
+      "immune to disease",
+      "fear of light"
+    ],
+    "saves": {
+      "fort": 6,
+      "ref": 6,
+      "will": 5
+    },
+    "abilities": {
+      "str": 20,
+      "dex": 13,
+      "con": 18,
+      "int": 10,
+      "wis": 10,
+      "cha": 11
+    },
+    "skills": [
+      "Climb +9",
+      "Escape Artist +5",
+      "Hide +8",
+      "Move Silently +16",
+      "Swim +9"
+    ],
+    "feats": [
+      "Power Attack",
+      "Stealthy",
+      "Weapon Focus (greatsword)"
+    ],
+    "environments": [
+      "ptolus_undercity",
+      "sewer",
+      "ptolus_dungeon",
+      "underground"
+    ],
+    "organization": "Solitary, pair, or nest",
+    "treasure": "Standard",
+    "languages": [
+      "Rattish",
+      "Common"
+    ],
+    "source": "Ptolus 625",
+    "tags": [
+      "monstrous-humanoid",
+      "ratman",
+      "disease",
+      "ptolus-native"
+    ],
+    "description": "The rarest and largest ratmen, ogre-sized brutes that anchor a warren's defense. Some claim they are simply the oldest ratmen, never having stopped growing."
+  },
+  {
+    "name": "D'stradi Abductor",
+    "cr": "7",
+    "cr_value": 7,
+    "size": "Medium",
+    "type": "Outsider",
+    "subtype": "Chaotic, Evil, Extraplanar",
+    "alignment": "Always CE",
+    "hd": "7d8+14",
+    "hp": 45,
+    "initiative": 7,
+    "speed": "40 ft.",
+    "ac": {
+      "total": 22,
+      "touch": 13,
+      "flat_footed": 19,
+      "notes": "+3 Dex, +9 natural"
+    },
+    "bab": 7,
+    "grapple": 11,
+    "attacks": {
+      "melee": "Bloodblade +12 (1d10+7) or claw +11 (1d6+4)",
+      "ranged": null,
+      "full_attack": "Bloodblade +12/+7 (1d10+7) and bite +6 (1d6+2); or 2 claws +11 (1d6+4) and bite +6 (1d6+2)"
+    },
+    "space_reach": "5 ft./5 ft.",
+    "special_attacks": [
+      "sneak attack +2d6",
+      "improved grab",
+      "spell-like abilities",
+      "summon demon"
+    ],
+    "special_qualities": [
+      "DR 10/magic",
+      "darkvision 60 ft.",
+      "immunity to poison and electricity",
+      "resistance to acid 10, cold 10, fire 10",
+      "SR 20",
+      "telepathy 100 ft."
+    ],
+    "saves": {
+      "fort": 7,
+      "ref": 8,
+      "will": 6
+    },
+    "abilities": {
+      "str": 18,
+      "dex": 17,
+      "con": 14,
+      "int": 11,
+      "wis": 13,
+      "cha": 13
+    },
+    "skills": [
+      "Climb +14",
+      "Escape Artist +13",
+      "Hide +13",
+      "Intimidate +11",
+      "Jump +14",
+      "Listen +11",
+      "Move Silently +13",
+      "Spot +11"
+    ],
+    "feats": [
+      "Combat Reflexes",
+      "Dodge",
+      "Improved Initiative"
+    ],
+    "environments": [
+      "ptolus_necropolis",
+      "ptolus_dungeon",
+      "planar_lower"
+    ],
+    "organization": "Solitary or gang (3-6)",
+    "treasure": "Bloodblade (+1 wounding bastard sword)",
+    "languages": [
+      "Abyssal",
+      "Common",
+      "telepathy 100 ft."
+    ],
+    "source": "Ptolus 621",
+    "tags": [
+      "outsider",
+      "demon",
+      "dstradi",
+      "ptolus-native"
+    ],
+    "description": "A D'stradi demon of the Dark Reliquary. Teleports in, grabs a victim, and teleports away; fights with a blood-powered wounding bastard sword called a bloodblade."
+  },
+  {
+    "name": "D'stradi Dancer",
+    "cr": "9",
+    "cr_value": 9,
+    "size": "Medium",
+    "type": "Outsider",
+    "subtype": "Chaotic, Evil, Extraplanar",
+    "alignment": "Always CE",
+    "hd": "10d8+10",
+    "hp": 55,
+    "initiative": 7,
+    "speed": "40 ft.",
+    "ac": {
+      "total": 27,
+      "touch": 17,
+      "flat_footed": 20,
+      "notes": "+7 Dex, +10 natural"
+    },
+    "bab": 10,
+    "grapple": 13,
+    "attacks": {
+      "melee": "+1 quarterstaff +14 (1d6+5) or claw +13 (1d6+3)",
+      "ranged": null,
+      "full_attack": "+1 quarterstaff +12/+7 and +12 (1d6+4 / 1d6+2); or 2 claws +13 (1d6+3)"
+    },
+    "space_reach": "5 ft./5 ft.",
+    "special_attacks": [
+      "pounce",
+      "magic dance",
+      "spell-like abilities"
+    ],
+    "special_qualities": [
+      "magic dance",
+      "DR 10/magic",
+      "darkvision 60 ft.",
+      "immunity to electricity and poison",
+      "resistance to acid 10, cold 10, fire 10",
+      "SR 17",
+      "telepathy 100 ft."
+    ],
+    "saves": {
+      "fort": 8,
+      "ref": 14,
+      "will": 10
+    },
+    "abilities": {
+      "str": 16,
+      "dex": 24,
+      "con": 13,
+      "int": 13,
+      "wis": 17,
+      "cha": 14
+    },
+    "skills": [
+      "Balance +22",
+      "Concentration +14",
+      "Hide +20",
+      "Intimidate +18",
+      "Listen +20",
+      "Move Silently +16",
+      "Perform (dance) +16",
+      "Search +14",
+      "Spot +18",
+      "Tumble +20"
+    ],
+    "feats": [
+      "Alertness",
+      "Combat Expertise",
+      "Combat Reflexes",
+      "Two-Weapon Fighting"
+    ],
+    "environments": [
+      "ptolus_necropolis",
+      "ptolus_dungeon",
+      "planar_lower"
+    ],
+    "organization": "Solitary or pair",
+    "treasure": "Standard plus +1 quarterstaff",
+    "languages": [
+      "Abyssal",
+      "Common",
+      "telepathy 100 ft."
+    ],
+    "source": "Ptolus 621",
+    "tags": [
+      "outsider",
+      "demon",
+      "dstradi",
+      "ptolus-native"
+    ],
+    "description": "A D'stradi demon that leaps into battle performing horrid, chaotic magical dances (battle, ruin, speed, shielding, warding) to buff allies or blast foes. Linked to the dwarven concept of madness."
+  },
+  {
+    "name": "D'stradi Annihilator",
+    "cr": "13",
+    "cr_value": 13,
+    "size": "Large",
+    "type": "Outsider",
+    "subtype": "Chaotic, Evil, Extraplanar",
+    "alignment": "Always CE",
+    "hd": "13d8+65",
+    "hp": 123,
+    "initiative": 1,
+    "speed": "30 ft.",
+    "ac": {
+      "total": 24,
+      "touch": 10,
+      "flat_footed": 23,
+      "notes": "-1 size, +1 Dex, +14 natural"
+    },
+    "bab": 13,
+    "grapple": 23,
+    "attacks": {
+      "melee": "Claw +18 (2d6+6 plus poison) or bite +18 (2d8+3 plus poison)",
+      "ranged": null,
+      "full_attack": "2 claws +18 (2d6+6 plus poison) and bite +16 (2d8+3 plus poison)"
+    },
+    "space_reach": "10 ft./10 ft.",
+    "special_attacks": [
+      "energy-draining spew",
+      "poison",
+      "spell-like abilities",
+      "summon demon"
+    ],
+    "special_qualities": [
+      "DR 15/magic",
+      "darkvision 60 ft.",
+      "immunity to electricity and poison",
+      "resistance to acid 10, cold 10, fire 10",
+      "SR 26",
+      "telepathy 100 ft."
+    ],
+    "saves": {
+      "fort": 13,
+      "ref": 9,
+      "will": 12
+    },
+    "abilities": {
+      "str": 22,
+      "dex": 13,
+      "con": 20,
+      "int": 10,
+      "wis": 14,
+      "cha": 15
+    },
+    "skills": [
+      "Climb +22",
+      "Concentration +21",
+      "Intimidate +14",
+      "Knowledge (the planes) +16",
+      "Listen +20",
+      "Search +16",
+      "Spot +20",
+      "Survival +18"
+    ],
+    "feats": [
+      "Alertness",
+      "Cleave",
+      "Iron Will",
+      "Multiattack",
+      "Power Attack"
+    ],
+    "environments": [
+      "ptolus_necropolis",
+      "ptolus_dungeon",
+      "planar_lower"
+    ],
+    "organization": "Solitary or pack (4-7)",
+    "treasure": "Standard",
+    "languages": [
+      "Abyssal",
+      "Common",
+      "telepathy 100 ft."
+    ],
+    "source": "Ptolus 621",
+    "tags": [
+      "outsider",
+      "demon",
+      "dstradi",
+      "poison-user",
+      "ptolus-native"
+    ],
+    "description": "The largest D'stradi demon — a poison-clawed brute that vomits energy-draining bile and summons more of its kind. The shock-troops of the Fallen at the Dark Reliquary."
   }
 ]
