@@ -106,7 +106,7 @@ export default function NobleSchemes() {
   }
 
   return (
-    <Layout title="Noble Scheme Generator" sub="Two houses, a contested asset, and what nobody says">
+    <Layout title="Noble Scheme Generator" sub="Two houses, a contested asset, and what nobody says" accent="crimson">
       <div className="runner-main">
         <div className="panel">
           <h2>Noble Scheme</h2>

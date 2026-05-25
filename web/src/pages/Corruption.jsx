@@ -155,7 +155,7 @@ export default function Corruption() {
   const names = Object.keys(state.chars || {});
 
   return (
-    <Layout title="Corruption / Taint Tracker" sub="Chaositech, the Pits, and the Galchutt's mark" contextBar={false}>
+    <Layout title="Corruption / Taint Tracker" sub="Chaositech, the Pits, and the Galchutt's mark" contextBar={false} accent="chaos">
       <style>{CSS}</style>
       <div className="corr-toolbar">
         <div className="f"><label>Add character</label><input placeholder="name" value={cname} onChange={(e) => setCname(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') addChar(); }} /></div>

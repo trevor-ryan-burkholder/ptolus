@@ -112,7 +112,7 @@ export default function Chaos() {
   }
 
   return (
-    <Layout title="Pits of Insanity" sub="Chaos mutation & warping effects" contextBar={false}>
+    <Layout title="Pits of Insanity" sub="Chaos mutation & warping effects" contextBar={false} accent="chaos">
       <div className="runner-main">
         <div className="panel">
           <h2>Chaos Exposure</h2>

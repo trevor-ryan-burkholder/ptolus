@@ -8,10 +8,25 @@ export function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-export function Layout({ title, sub, contextBar = true, children }) {
+// The Spire — campaign motif rendered at the head of every masthead.
+export function SpireMark() {
   return (
-    <>
+    <svg className="spire-mark" viewBox="0 0 16 30" aria-hidden="true">
+      <polygon points="8,1 12,25 4,25" fill="#cda74e" />
+      <polygon points="8,1 8,25 4,25" fill="#8a7530" />
+      <rect x="2.5" y="25" width="11" height="3" rx="1" fill="#8a7530" />
+      <circle cx="8" cy="8" r="1.1" fill="#13100c" />
+    </svg>
+  );
+}
+
+// accent: optional tool tint ('chaos' | 'crimson'). Overrides the --gold ramp
+// for everything inside, so the masthead, panels, buttons and log all recolor.
+export function Layout({ title, sub, contextBar = true, accent, children }) {
+  return (
+    <div className={'tool' + (accent ? ' tool-' + accent : '')}>
       <header className="runner-head">
+        <SpireMark />
         <h1>{title || 'Ptolus Adventure Runner'}</h1>
         {sub && <span className="sub">{sub}</span>}
         <Link className="home" to="/">← Runner Home</Link>
@@ -19,7 +34,7 @@ export function Layout({ title, sub, contextBar = true, children }) {
       {contextBar && <ContextBar />}
       {children}
       <DiceTray />
-    </>
+    </div>
   );
 }
 

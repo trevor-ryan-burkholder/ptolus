@@ -1,7 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#1a1a1a"/>
-  <polygon points="256,52 322,360 190,360" fill="#c8a84b"/>
+  <defs>
+    <linearGradient id="gild" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ecca77"/>
+      <stop offset="0.55" stop-color="#cda74e"/>
+      <stop offset="1" stop-color="#8a7530"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0.5" cy="0.32" r="0.55">
+      <stop offset="0" stop-color="#cda74e" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#cda74e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="#13100c"/>
+  <circle cx="256" cy="170" r="200" fill="url(#halo)"/>
+  <polygon points="256,52 322,360 190,360" fill="url(#gild)"/>
   <polygon points="256,52 256,360 190,360" fill="#8a7530"/>
   <rect x="168" y="360" width="176" height="28" rx="6" fill="#8a7530"/>
-  <circle cx="256" cy="150" r="10" fill="#1a1a1a"/>
+  <circle cx="256" cy="150" r="10" fill="#13100c"/>
 </svg>

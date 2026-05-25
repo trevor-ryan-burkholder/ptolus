@@ -107,7 +107,7 @@ export default function Investigations() {
   }
 
   return (
-    <Layout title="Investigation Seed Generator" sub="Victim · method · false lead · real clue">
+    <Layout title="Investigation Seed Generator" sub="Victim · method · false lead · real clue" accent="crimson">
       <div className="runner-main">
         <div className="panel">
           <h2>Investigation</h2>

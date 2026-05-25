@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CATALOG, CATEGORIES } from '../catalog.js';
 import { DATA, DIVINE, WHOSWHO } from '../data/index.js';
-import { DiceTray } from '../components/ui.jsx';
+import { DiceTray, SpireMark } from '../components/ui.jsx';
 
 const TOOLS = CATALOG.filter((t) => !t.banner);
 const BANNERS = CATALOG.filter((t) => t.banner);
@@ -34,6 +34,7 @@ export default function Home() {
   return (
     <>
       <header className="runner-head">
+        <SpireMark />
         <h1>Ptolus Adventure Runner</h1>
         <span className="sub">GM tools for the City by the Spire — 3.5e / d20</span>
       </header>

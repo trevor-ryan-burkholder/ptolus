@@ -117,7 +117,7 @@ export default function Chaositech() {
   }
 
   return (
-    <Layout title="Chaositech Generator" sub="Bones of steel — function, glitch, flavor" contextBar={false}>
+    <Layout title="Chaositech Generator" sub="Bones of steel — function, glitch, flavor" contextBar={false} accent="chaos">
       <div className="runner-main">
         <div className="panel">
           <h2>Chaositech</h2>
