@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { DIVINE } from '../data/index.js';
 import { Layout } from '../components/ui.jsx';
 
@@ -56,8 +57,9 @@ function DeityCard({ de, onChip }) {
 const DEITY_NAMES = DEI.slice().sort((a, b) => a.name.localeCompare(b.name));
 
 export default function Divine() {
-  const [view, setView] = useState('deities');
-  const [q, setQ] = useState('');
+  const [sp] = useSearchParams();
+  const [view, setView] = useState(['deities', 'domains', 'bydeity'].includes(sp.get('view')) ? sp.get('view') : 'deities');
+  const [q, setQ] = useState(sp.get('q') || '');
   const [src, setSrc] = useState('all');
   const [deity, setDeity] = useState(DEITY_NAMES.length ? DEITY_NAMES[0].name : '');
 

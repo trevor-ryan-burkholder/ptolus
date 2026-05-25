@@ -10,3 +10,4 @@ if (!navigator.clipboard) {
 }
 if (!URL.createObjectURL) URL.createObjectURL = () => 'blob:mock';
 if (!URL.revokeObjectURL) URL.revokeObjectURL = () => {};
+if (!Element.prototype.scrollIntoView) Element.prototype.scrollIntoView = () => {};

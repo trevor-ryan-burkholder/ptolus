@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { DATA } from '../data/index.js';
 import { Layout } from '../components/ui.jsx';
 
@@ -196,37 +196,24 @@ const TABS = [
   },
 ];
 
-function parseHash(hash) {
-  const raw = (hash || '').replace(/^#/, '');
-  if (!raw) return { key: null, name: '' };
-  const ci = raw.indexOf(':');
-  const key = ci < 0 ? decodeURIComponent(raw) : raw.slice(0, ci);
-  const name = ci < 0 ? '' : decodeURIComponent(raw.slice(ci + 1));
-  return { key, name };
-}
-
 export default function Codex() {
-  const location = useLocation();
-  const hashInit = parseHash(location.hash);
-  const initialTab = TABS.find((t) => t.key === hashInit.key) || TABS[0];
+  // deep-link via query (?tab=monsters&q=Goblin) — works under HashRouter
+  const [sp] = useSearchParams();
+  const initialTab = TABS.find((t) => t.key === sp.get('tab')) || TABS[0];
 
   const [tabKey, setTabKey] = useState(initialTab.key);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(sp.get('q') || '');
   const [filters, setFilters] = useState({});
-  const [selected, setSelected] = useState(hashInit.name || null);
+  const [selected, setSelected] = useState(null);
 
   const tab = TABS.find((t) => t.key === tabKey) || TABS[0];
 
-  // accept deep-link via hash on mount / hash change
+  // re-sync when the query changes (e.g. picking a different palette result)
+  const spTab = sp.get('tab'); const spQ = sp.get('q');
   useEffect(() => {
-    const { key, name } = parseHash(location.hash);
-    if (key && TABS.some((t) => t.key === key)) {
-      setTabKey(key);
-      setSelected(name || null);
-      setFilters({});
-      setSearch('');
-    }
-  }, [location.hash]);
+    if (spTab && TABS.some((t) => t.key === spTab)) { setTabKey(spTab); setFilters({}); }
+    if (spQ != null) { setSearch(spQ); setSelected(null); }
+  }, [spTab, spQ]);
 
   function switchTab(key) {
     setTabKey(key);

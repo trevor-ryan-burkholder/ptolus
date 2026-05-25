@@ -16,9 +16,9 @@ export default function Home() {
     const tools = CATALOG.filter((t) => t.name.toLowerCase().includes(ql)).slice(0, 8)
       .map((t) => ({ label: t.name.replace(/^[^\w]+\s*/, ''), to: '/' + t.path }));
     const hit = (arr, fn) => (arr || []).filter((e) => e.name.toLowerCase().includes(ql)).slice(0, 6).map(fn);
-    const npcs = hit(WHOSWHO.npcs, (e) => ({ label: e.name, sub: e.faction && e.faction !== '—' ? e.faction : e.role, to: '/whoswho?q=' + encodeURIComponent(e.name) }));
-    const venues = hit(WHOSWHO.venues, (e) => ({ label: e.name, sub: e.type, to: '/whoswho?q=' + encodeURIComponent(e.name) }));
-    const deities = hit(DIVINE.deities, (e) => ({ label: e.name, sub: e.title, to: '/divine?q=' + encodeURIComponent(e.name) }));
+    const npcs = hit(WHOSWHO.npcs, (e) => ({ label: e.name, sub: e.faction && e.faction !== '—' ? e.faction : e.role, to: '/whoswho?view=npcs&q=' + encodeURIComponent(e.name) }));
+    const venues = hit(WHOSWHO.venues, (e) => ({ label: e.name, sub: e.type, to: '/whoswho?view=venues&q=' + encodeURIComponent(e.name) }));
+    const deities = hit(DIVINE.deities, (e) => ({ label: e.name, sub: e.title, to: '/divine?view=deities&q=' + encodeURIComponent(e.name) }));
     const monsters = hit(DATA.monsters, (e) => ({ label: e.name, sub: 'CR ' + e.cr, to: '/codex?tab=monsters&q=' + encodeURIComponent(e.name) }));
     const spells = hit(DATA.spells, (e) => ({ label: e.name, sub: e.school, to: '/codex?tab=spells&q=' + encodeURIComponent(e.name) }));
     const items = hit(DATA.magicItems, (e) => ({ label: e.name, sub: e.tier, to: '/codex?tab=magicItems&q=' + encodeURIComponent(e.name) }));

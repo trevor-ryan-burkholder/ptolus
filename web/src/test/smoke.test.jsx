@@ -21,10 +21,10 @@ const pages = import.meta.glob('../pages/*.jsx', { eager: true });
 for (const [path, mod] of Object.entries(pages)) {
   const name = path.split('/').pop().replace('.jsx', '');
   const Comp = mod.default;
-  test('mounts + primary action ' + name, () => {
+  test('mounts + every button ' + name, () => {
     const { container, unmount } = render(wrap(<Comp />));
-    // exercise the main action button(s) — catches handler crashes, not just mount
-    container.querySelectorAll('button.primary').forEach((b) => fireEvent.click(b));
+    // click EVERY button — catches handler crashes across all controls
+    container.querySelectorAll('button').forEach((b) => fireEvent.click(b));
     unmount();
   });
 }

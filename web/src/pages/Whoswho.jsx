@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { WHOSWHO } from '../data/index.js';
 import { Layout } from '../components/ui.jsx';
 
@@ -46,8 +47,9 @@ function VenueCard({ v }) {
 }
 
 export default function Whoswho() {
-  const [view, setView] = useState('npcs');
-  const [q, setQ] = useState('');
+  const [sp] = useSearchParams();
+  const [view, setView] = useState(sp.get('view') === 'venues' ? 'venues' : 'npcs');
+  const [q, setQ] = useState(sp.get('q') || '');
   const [district, setDistrict] = useState('all');
   const [faction, setFaction] = useState('all');
   const [vtype, setVtype] = useState('all');
